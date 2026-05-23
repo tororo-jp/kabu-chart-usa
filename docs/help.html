@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide | US Stock Technical Scanner</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/help.css" />
+</head>
+<body>
+
+<header>
+  <div class="help-header-inner">
+    <a href="index.html" class="back-link">&larr; Back to Scanner</a>
+    <h1>Guide</h1>
+  </div>
+</header>
+
+<div class="help-layout">
+
+  <nav class="help-nav" id="help-nav">
+    <ul>
+      <li class="nav-section">Introduction</li>
+      <li><a href="#overview">About This Tool</a></li>
+      <li><a href="#basic">Basic Usage</a></li>
+      <li class="nav-section">Filters</li>
+      <li><a href="#filters">Filter Details</a></li>
+      <li><a href="#presets">Presets</a></li>
+      <li class="nav-section">How It Works</li>
+      <li><a href="#scan-target">Scan Target &amp; Data</a></li>
+      <li><a href="#scoring">Scoring</a></li>
+      <li><a href="#score-vs-prob">Score vs Probability</a></li>
+      <li><a href="#patterns">Chart Patterns</a></li>
+      <li><a href="#target-calc">Target &amp; Stop Loss</a></li>
+      <li class="nav-section">Features</li>
+      <li><a href="#backtest">Backtest</a></li>
+      <li><a href="#favorites">Favorites</a></li>
+      <li class="nav-section">Entry</li>
+      <li><a href="#entry-guide">Entry Decision Guide</a></li>
+      <li><a href="#entry-gap">Gap-Up Entry Judgment</a></li>
+      <li><a href="#entry-checklist">Entry Checklist</a></li>
+      <li><a href="#entry-split">Scaling In</a></li>
+      <li class="nav-section">Other</li>
+      <li><a href="#disclaimer">Disclaimer</a></li>
+    </ul>
+  </nav>
+
+  <main class="help-content">
+
+    <section class="help-section" id="overview">
+      <h2>About This Tool</h2>
+      <p>All S&amp;P 500 constituents (~503 stocks) are automatically scanned every trading day after market close (ET), and stocks with strong technical setups are displayed ranked by score.</p>
+      <div class="info-box">
+        <p>This tool is for informational purposes only. Scores and probabilities are mechanical calculations and do not guarantee future price movements. All investment decisions are at your own risk.</p>
+      </div>
+
+      <h3>Key Features</h3>
+      <ul>
+        <li>30+ chart pattern detection (Inverse H&amp;S, Double Bottom, VCP, Perfect Order, etc.)</li>
+        <li>20+ technical indicators (RSI, MACD, ADX, Ichimoku, OBV, etc.)</li>
+        <li>Composite scoring across 5 categories (0&ndash;100 points)</li>
+        <li>Algorithmic calculation of win probability, target price, stop-loss, and RR ratio</li>
+        <li>Interactive TradingView-style candlestick charts</li>
+        <li>Automated backtest of historical signals (weekly update)</li>
+        <li>Favorites saved in browser localStorage</li>
+      </ul>
+
+      <h3>Data Flow</h3>
+      <div class="step-list">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Price Fetch</strong><span>Historical OHLCV data for the past 400 trading days fetched via Yahoo Finance (yfinance). Batch download of 50 stocks at a time.</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Indicator Calculation</strong><span>SMA, EMA, RSI, MACD, ADX, ATR, OBV, Ichimoku, and 20+ other indicators computed with pandas.</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Pattern Detection</strong><span>scipy.signal and custom logic detect 30+ chart patterns, each assigned a confidence score (0&ndash;1.0).</span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Scoring</strong><span>Trend, Pattern, Momentum, Volume, and RS evaluated across 5 categories on a 100-point scale.</span></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Publish</strong><span>Results written to results.json &rarr; committed to GitHub &rarr; auto-deployed to GitHub Pages &rarr; viewable in browser.</span></div></div>
+      </div>
+    </section>
+
+    <section class="help-section" id="basic">
+      <h2>Basic Usage</h2>
+
+      <h3>Main Screen Layout</h3>
+      <table class="h-table">
+        <thead><tr><th>Area</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Left Sidebar</td><td>Filter settings and scan stats (scanned count, signal count, showing count, favorites count)</td></tr>
+          <tr><td>Sort Bar</td><td>Sort by Score / Prob / RR / Price; toggle Favorites filter; open Backtest page</td></tr>
+          <tr><td>Results Table</td><td>Filtered stock list. Click a row to open the chart panel. &#9734; button saves to Favorites.</td></tr>
+          <tr><td>Chart Panel</td><td>Candlestick chart (120 trading days) + moving averages + target &amp; stop lines + signal details</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Table Controls</h3>
+      <ul>
+        <li><strong>Row click</strong>: Opens the chart panel for that stock. Click another row to switch.</li>
+        <li><strong>&#9734; button</strong>: Toggle Favorites. Does not open the chart.</li>
+        <li><strong>Sort buttons</strong>: Click the same button twice to toggle ascending/descending.</li>
+      </ul>
+
+      <h3>Chart Elements</h3>
+      <table class="h-table">
+        <thead><tr><th>Element</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Candlesticks</td><td>Past 120 trading days (shorter for recently listed stocks)</td></tr>
+          <tr><td>SMA5 (thin line)</td><td>5-day simple moving average &mdash; ultra-short-term trend</td></tr>
+          <tr><td>SMA25 (medium line)</td><td>25-day simple moving average &mdash; short-term trend baseline</td></tr>
+          <tr><td>SMA75 (thick line)</td><td>75-day simple moving average &mdash; medium-term trend</td></tr>
+          <tr><td>SMA200 (thickest line)</td><td>200-day simple moving average &mdash; long-term trend judgment</td></tr>
+          <tr><td class="good">Green horizontal line</td><td>Target price (algorithm-calculated)</td></tr>
+          <tr><td class="bad">Red horizontal line</td><td>Stop-loss price (ATR&times;2 based)</td></tr>
+          <tr><td>&#9650; marker</td><td>Signal detection point of the detected pattern</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Signal Detail Panel</h3>
+      <table class="h-table">
+        <thead><tr><th>Item</th><th>Meaning / Target Range</th></tr></thead>
+        <tbody>
+          <tr><td>RSI</td><td>Relative Strength Index (14-day). 50&ndash;70 is healthy uptrend. Above 70 = overheated.</td></tr>
+          <tr><td>ADX</td><td>Trend strength. &ge; 25 = clear trend, &ge; 50 = strong trend.</td></tr>
+          <tr><td>Vol Ratio</td><td>Recent volume &divide; 20-day avg volume. &ge; 1.5&times; = notable activity.</td></tr>
+          <tr><td>Target</td><td>Target price from pattern, Fibonacci, or ATR calculation</td></tr>
+          <tr><td>Est. Period</td><td>Estimated time to reach target (e.g. 2&ndash;4 wks). Reference value only.</td></tr>
+          <tr><td>Stop Loss</td><td>Estimated stop-loss price. Use as position management baseline.</td></tr>
+          <tr><td>RR Ratio</td><td>Risk-reward ratio. 2:1 or higher is preferred.</td></tr>
+          <tr><td>RS Score</td><td>Relative strength score among all scanned stocks (0&ndash;99). Higher = outperforming market average.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="help-section" id="filters">
+      <h2>Filter Details</h2>
+      <p>Combine sidebar filters to display only matching stocks. Filters apply in real time.</p>
+
+      <table class="h-table">
+        <thead><tr><th>Filter</th><th>Description</th><th>Recommended</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Search</td>
+            <td>Filter by ticker (e.g. AAPL) or company name. Partial match, case-insensitive.</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>Pattern</td>
+            <td>Show only stocks with a specific chart pattern. &ldquo;All&rdquo; includes all patterns.</td>
+            <td>Strategy-dependent</td>
+          </tr>
+          <tr>
+            <td>Probability (&ge;)</td>
+            <td>Lower bound on the algorithm&rsquo;s estimated win probability. Combines score, pattern confidence, and RS.</td>
+            <td>&ge; 60%</td>
+          </tr>
+          <tr>
+            <td>Score (&ge;)</td>
+            <td>Lower bound on the total score (0&ndash;100). Higher = more technical indicators aligned favorably.</td>
+            <td>&ge; 50</td>
+          </tr>
+          <tr>
+            <td>RR Ratio (&ge;)</td>
+            <td>Lower bound on the risk-reward ratio. &ge; 1.5 recommended. &ge; 2.0 is an especially good setup.</td>
+            <td>&ge; 1.5</td>
+          </tr>
+          <tr>
+            <td>Sector</td>
+            <td>Filter by GICS sector (from S&amp;P 500 constituent data). Useful for sector rotation analysis.</td>
+            <td>&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <p>&#128161; Score &ge; 70 + Prob &ge; 60% + RR &ge; 1.8 is the filter used in the backtest. At this setting you&rsquo;ll typically see 0&ndash;3 stocks per day.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="presets">
+      <h2>Presets</h2>
+      <p>Apply common filter combinations with one click.</p>
+
+      <table class="h-table">
+        <thead><tr><th>Preset</th><th>Target Pattern</th><th>Use Case</th><th>Trading Style</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Breakout Play</td>
+            <td>Resistance Breakout</td>
+            <td>New-high / resistance-break stocks with strong buying pressure.</td>
+            <td>Trend-following</td>
+          </tr>
+          <tr>
+            <td>Bottom Reversal</td>
+            <td>Inverse H&amp;S</td>
+            <td>Patterns indicating end of downtrend. Target reversal from the bottom.</td>
+            <td>Contrarian / pullback-buy</td>
+          </tr>
+          <tr>
+            <td>Momentum Continuation</td>
+            <td>Perfect Order</td>
+            <td>All moving averages in full bullish alignment &mdash; the strongest trend state.</td>
+            <td>Trend-following / momentum</td>
+          </tr>
+          <tr>
+            <td>MA Squeeze Watchlist</td>
+            <td>MA Compression</td>
+            <td>Multiple MAs converging &mdash; energy building before breakout.</td>
+            <td>Pre-entry observation</td>
+          </tr>
+          <tr>
+            <td>Ichimoku Bullish</td>
+            <td>Ichimoku Cloud Break</td>
+            <td>Cloud breakout + conversion line bullish alignment.</td>
+            <td>Swing / medium-term trend</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="help-section" id="scan-target">
+      <h2>Scan Target &amp; Data</h2>
+
+      <h3>Universe</h3>
+      <table class="h-table">
+        <thead><tr><th>Item</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr><td>Market</td><td>S&amp;P 500 (NYSE / NASDAQ)</td></tr>
+          <tr><td>Stock count</td><td>~503 stocks (from Wikipedia S&amp;P 500 constituent list)</td></tr>
+          <tr><td>Ticker filter</td><td>Common equity only; ETF and non-equity products excluded</td></tr>
+          <tr><td>Excluded</td><td>ETFs, REITs, and non-stock instruments</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Data Sources</h3>
+      <table class="h-table">
+        <thead><tr><th>Source</th><th>Role</th><th>Period</th></tr></thead>
+        <tbody>
+          <tr><td>Yahoo Finance (yfinance)</td><td>Primary OHLCV source. Batch download of 50 stocks at a time.</td><td>Past 400 trading days</td></tr>
+          <tr><td>Wikipedia S&amp;P 500 list</td><td>Stock universe (tickers + GICS sectors). Fetched with each scan run.</td><td>Updated each run</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Update Schedule</h3>
+      <table class="h-table">
+        <thead><tr><th>Timing</th><th>Content</th></tr></thead>
+        <tbody>
+          <tr><td>Daily after 4 PM ET</td><td>Scan runs after US market close. Holidays and market closures are skipped.</td></tr>
+          <tr><td>Every Monday 9 AM ET</td><td>Backtest results updated (historical signal win/loss re-tallied).</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Execution Environment</h3>
+      <ul>
+        <li>4 parallel GitHub Actions VMs (Ubuntu) launch concurrently</li>
+        <li>Each VM processes ~125 stocks (1/4 of the S&amp;P 500)</li>
+        <li>Results merged across all VMs and written to results.json</li>
+        <li>results.json committed to GitHub &rarr; GitHub Pages auto-deploys</li>
+      </ul>
+
+      <div class="warn-box">
+        <p>&#9888;&#65039; Yahoo Finance data is via an unofficial API. Server-side changes or rate limits may cause some stocks to fail to fetch. Stocks with fetch failures are not shown in scan results.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="scoring">
+      <h2>Scoring Details</h2>
+      <p>Five categories are combined for a 100-point total. Higher score = more technical indicators simultaneously favorable.</p>
+
+      <div class="score-breakdown">
+        <div class="sb-row">
+          <span class="sb-label">Pattern</span>
+          <span class="sb-pts">35 pts</span>
+          <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:35%;background:var(--orange)"></div></div>
+        </div>
+        <div class="sb-row">
+          <span class="sb-label">Trend</span>
+          <span class="sb-pts">25 pts</span>
+          <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:25%;background:var(--accent)"></div></div>
+        </div>
+        <div class="sb-row">
+          <span class="sb-label">Momentum</span>
+          <span class="sb-pts">20 pts</span>
+          <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:20%;background:var(--green)"></div></div>
+        </div>
+        <div class="sb-row">
+          <span class="sb-label">Volume</span>
+          <span class="sb-pts">15 pts</span>
+          <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:15%;background:var(--yellow)"></div></div>
+        </div>
+        <div class="sb-row">
+          <span class="sb-label">RS Score</span>
+          <span class="sb-pts">5 pts</span>
+          <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:5%;background:#d2a8ff"></div></div>
+        </div>
+      </div>
+
+      <h3>&#9312; Pattern Score (max 35 pts)</h3>
+      <p>Each detected pattern is scored as <strong>confidence (0&ndash;1.0) &times; pattern weight (max 1.0)</strong>, normalized to 35 points. The highest-scoring pattern is used. Additional patterns are halved (prevents stacking of weak signals).</p>
+      <table class="h-table">
+        <thead><tr><th>Pattern</th><th>Weight</th><th>Characteristics</th></tr></thead>
+        <tbody>
+          <tr><td>Inverse H&amp;S</td><td class="good">0.95</td><td>One of the most reliable reversal patterns</td></tr>
+          <tr><td>Double Bottom</td><td class="good">0.90</td><td>Clear support confirmation at the bottom</td></tr>
+          <tr><td>Cup with Handle</td><td class="good">0.85</td><td>Growth stock continuation signal</td></tr>
+          <tr><td>Resistance Breakout</td><td class="good">0.85</td><td>Volume-confirmed breakout</td></tr>
+          <tr><td>Wyckoff Spring</td><td class="mid">0.80</td><td>Institutional accumulation complete signal</td></tr>
+          <tr><td>Perfect Order</td><td class="mid">0.80</td><td>Strongest trend state confirmed</td></tr>
+          <tr><td>VCP</td><td class="mid">0.75</td><td>On the verge of explosion after volatility contraction</td></tr>
+          <tr><td>Bull Flag</td><td class="mid">0.75</td><td>Continuation after brief consolidation</td></tr>
+          <tr><td>Falling Wedge</td><td class="mid">0.75</td><td>Reversal breakout after compression</td></tr>
+          <tr><td>Symmetric Triangle, SR Flip, Donchian Break</td><td>0.60</td><td>Direction confirmation required</td></tr>
+          <tr><td>Channel Pullback</td><td>0.60</td><td>Pullback-buy within ongoing channel</td></tr>
+          <tr><td>Golden Cross (various)</td><td>0.55&ndash;0.70</td><td>Weight varies by timeframe</td></tr>
+        </tbody>
+      </table>
+
+      <h3>&#9313; Trend Score (max 25 pts)</h3>
+      <table class="h-table">
+        <thead><tr><th>Evaluation</th><th>Scoring Condition</th></tr></thead>
+        <tbody>
+          <tr><td>SMA alignment</td><td>SMA5 &gt; SMA25 &gt; SMA75 &gt; SMA200 full bullish order earns max points</td></tr>
+          <tr><td>SMA slope</td><td>Bonus for each SMA pointing upward</td></tr>
+          <tr><td>ADX strength</td><td>Bonus at &ge; 25, additional bonus at &ge; 50</td></tr>
+          <tr><td>Ichimoku</td><td>Bonus when price is above the cloud</td></tr>
+          <tr><td>52-week high proximity</td><td>Bonus when price is &ge; 90% of 52-week high</td></tr>
+        </tbody>
+      </table>
+
+      <h3>&#9314; Momentum Score (max 20 pts)</h3>
+      <table class="h-table">
+        <thead><tr><th>Indicator</th><th>Evaluation</th></tr></thead>
+        <tbody>
+          <tr><td>RSI (14-day)</td><td>50&ndash;70 is ideal. Below 50 = deduction. Above 70 = overheated, no bonus.</td></tr>
+          <tr><td>MACD</td><td>Bonus when MACD line is above signal line. Extra bonus when histogram is expanding.</td></tr>
+          <tr><td>ROC (20-day rate of change)</td><td>Bonus for positive 20-day price change. Larger change = higher score.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>&#9315; Volume Score (max 15 pts)</h3>
+      <table class="h-table">
+        <thead><tr><th>Indicator</th><th>Evaluation</th></tr></thead>
+        <tbody>
+          <tr><td>Recent volume ratio</td><td>Recent volume &divide; 20-day avg. Bonus at &ge; 1.5&times;, max bonus at &ge; 3.0&times;.</td></tr>
+          <tr><td>OBV trend</td><td>Bonus when cumulative volume (OBV) is rising. Evaluated by OBV slope and position relative to its moving average.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>&#9316; RS Score (max 5 pts)</h3>
+      <p>The 12-month price change of all stocks scanned that day is ranked. Top 20% earns max (5 pts); bottom 40% earns 0 pts.</p>
+
+      <div class="info-box">
+        <p>The score is not an absolute indicator. High-score stocks can still decline, and low-score stocks can rise. Always combine with other information and use your own judgment.</p>
+      </div>
+
+      <h3>Win Probability Calculation</h3>
+      <p>A heuristic estimate combining score, pattern confidence, and RS rank with custom weights. It is derived from statistical analysis of past backtests &mdash; use it as a reference, not a guarantee.</p>
+      <div class="formula">probability &asymp; (score &times; 0.5 + pattern_confidence &times; 0.3 + rs_rank &times; 0.2) &times; adjustment_factor</div>
+    </section>
+
+    <section class="help-section" id="score-vs-prob">
+      <h2>Score vs Probability</h2>
+      <p>Score and probability are both important but measure different things. Use each appropriately.</p>
+
+      <table class="h-table">
+        <thead><tr><th>Metric</th><th>What It Measures</th><th>Best Used When</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Score (0&ndash;100)</strong></td>
+            <td>Overall technical environment quality. 5-axis evaluation: Trend, Pattern, Momentum, Volume, RS.</td>
+            <td>Checking if the stock is technically in good shape right now</td>
+          </tr>
+          <tr>
+            <td><strong>Probability (0&ndash;100%)</strong></td>
+            <td>Estimated win probability blending historical pattern win rates with score.</td>
+            <td>Assessing whether the expected value of the entry is sufficient</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Recommended Priority Order</h3>
+      <div class="step-list">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>RR ratio first</strong><span>Even the best signal can have negative expected value if RR is below 1.5. Aim for RR &ge; 2.0.</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Score &ge; 50 as baseline</strong><span>Higher score = more indicators aligned simultaneously. Score &ge; 50 tends to show statistically meaningful edge.</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Probability &ge; 60% for confirmation</strong><span>Probability depends heavily on pattern type and strength. Signals &ge; 60% tend toward higher backtested win rates.</span></div></div>
+      </div>
+
+      <div class="tip-box">
+        <p>&#128161; <strong>When in doubt, prioritize score.</strong> Probability is heavily influenced by score, so high score usually means high probability too. Score &ge; 60, Prob &ge; 60%, RR &ge; 2.0 &mdash; the ideal &ldquo;triple confluence&rdquo; setup.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="patterns">
+      <h2>Chart Pattern Reference</h2>
+      <p>Currently detects 31+ patterns. Multiple pattern confluence increases reliability.</p>
+
+      <h3>Reversal Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Inverse H&amp;S</div>
+          <div class="pattern-card-tag tag-reversal">Reversal</div>
+          <p>One of the most reliable reversal patterns. Three lows (left shoulder, head, right shoulder). Confirmed entry on neckline breakout with rising volume. Target = head-to-neckline distance projected upward.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Double Bottom</div>
+          <div class="pattern-card-tag tag-reversal">Reversal</div>
+          <p>After testing nearly the same low twice, price breaks above the intermediate high (neckline). Reliability increases when the second bottom bounces to the same level as the first.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Triple Bottom</div>
+          <div class="pattern-card-tag tag-reversal">Reversal</div>
+          <p>Extension of Double Bottom. Three tests of the same support level before a breakout. Takes longer to form &mdash; more reliable but rarer than Double Bottom.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Falling Wedge</div>
+          <div class="pattern-card-tag tag-reversal">Reversal</div>
+          <p>A converging range where both highs and lows decline. A strong reversal signal in downtrends. Ideal when volume increases on the upper trendline breakout. Opposite of a rising wedge &mdash; this is a bullish pattern.</p>
+        </div>
+      </div>
+
+      <h3>Continuation Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Cup with Handle</div>
+          <div class="pattern-card-tag tag-cont">Continuation</div>
+          <p>A rounded base (cup) followed by a small consolidation (handle) before the breakout. Forms during uptrends and is considered evidence of institutional accumulation. Volume contraction in the handle is ideal.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Bull Flag</div>
+          <div class="pattern-card-tag tag-cont">Continuation</div>
+          <p>A tight downward drift (flag) after a sharp surge (pole), followed by an upside breakout. Volume contracts during the flag and surges on the break. Target = the pole&rsquo;s length projected from the breakout.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">VCP (Volatility Contraction)</div>
+          <div class="pattern-card-tag tag-cont">Continuation</div>
+          <p>A series of progressively smaller price contractions (e.g. 15%&rarr;10%&rarr;7%&rarr;4%). Volatility contraction signals energy buildup. Mark Minervini&rsquo;s growth-stock technique.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">50MA Pullback</div>
+          <div class="pattern-card-tag tag-cont">Continuation</div>
+          <p>A pullback to the 50-day moving average during an uptrend, followed by a bounce. A healthy consolidation in an uptrend that often provides the entry point for the next leg higher.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Channel Pullback</div>
+          <div class="pattern-card-tag tag-cont">Continuation</div>
+          <p>A pullback to the lower trendline (support) of an ascending channel, followed by a bounce. More reliable when the channel is well-defined. Ideal entry: volume contracts at the lower touch and surges on the bounce.</p>
+        </div>
+      </div>
+
+      <h3>Breakout Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Resistance Breakout</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>Price breaks above a resistance level that has been tested multiple times, accompanied by rising volume. The more tests, the stronger the breakout tends to be.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">New 52-Week High</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>Price makes a new 52-week high. A strong momentum signal breaking through long-term resistance. At all-time highs there is no overhead resistance, so further gains are expected.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">BB Squeeze (Bollinger)</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>A breakout following Bollinger Band contraction (squeeze). An upside break from band-width below the 20th percentile signals impending volatility expansion.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Ascending Triangle</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>Price is capped by a horizontal resistance while lows rise. Gradually increasing buying pressure eventually breaks above the resistance.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Symmetric Triangle</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>A converging triangle where highs decline and lows rise symmetrically. Direction is uncertain &mdash; wait to confirm the breakout. An upside break is a bullish signal.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Donchian Break</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>Price breaks above the N-day high (upper Donchian channel). Popularized by the Turtle Traders. A simple, mechanically detectable price-range breakout.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">SR Flip</div>
+          <div class="pattern-card-tag tag-breakout">Breakout</div>
+          <p>After breaking above a prior resistance, that price zone flips to support. A bounce from the new support confirms a reliable continuation signal.</p>
+        </div>
+      </div>
+
+      <h3>Moving Average Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Golden Cross (Short-term)</div>
+          <div class="pattern-card-tag tag-ma">Moving Avg</div>
+          <p>SMA5 crosses above SMA25. Short-term trend reversal signal. Highly sensitive but prone to false signals &mdash; use in combination with other indicators.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Golden Cross (Medium-term)</div>
+          <div class="pattern-card-tag tag-ma">Moving Avg</div>
+          <p>SMA25 crosses above SMA75. Medium-term trend reversal signal. Lags the short-term GC but is more reliable.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Golden Cross (Long-term)</div>
+          <div class="pattern-card-tag tag-ma">Moving Avg</div>
+          <p>SMA75 crosses above SMA200. Signals a long-term bear-to-bull transition. Low frequency but high significance.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Perfect Order</div>
+          <div class="pattern-card-tag tag-ma">Moving Avg</div>
+          <p>SMA5 &gt; SMA25 &gt; SMA75 &gt; SMA200 with all MAs pointing upward. The strongest uptrend signal. Tends to generate high scores &mdash; beware of entering near a top.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">MA Compression</div>
+          <div class="pattern-card-tag tag-ma">Moving Avg</div>
+          <p>Multiple moving averages converging toward a single point. Evidence of energy buildup &mdash; a pre-breakout setup. Direction must be confirmed.</p>
+        </div>
+      </div>
+
+      <h3>Ichimoku Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Cloud Break (Kumo Break)</div>
+          <div class="pattern-card-tag tag-ichimoku">Ichimoku</div>
+          <p>Price breaks above the Ichimoku cloud (resistance zone). Thinner clouds are easier to break; after the break, the cloud becomes support. Widely watched by institutional traders.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Ichimoku Bullish Triple</div>
+          <div class="pattern-card-tag tag-ichimoku">Ichimoku</div>
+          <p>All three conditions true simultaneously: &#9312; Price above cloud &#9313; Tenkan &gt; Kijun &#9314; Chikou above past price. The strongest Ichimoku bullish signal. Rare because all conditions must align.</p>
+        </div>
+      </div>
+
+      <h3>Divergence Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">RSI Divergence</div>
+          <div class="pattern-card-tag tag-divergence">Divergence</div>
+          <p>&ldquo;Bullish divergence&rdquo; where price makes lower lows but RSI makes higher lows. Signals weakening selling pressure &mdash; often precedes a bottom reversal.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">MACD Divergence</div>
+          <div class="pattern-card-tag tag-divergence">Divergence</div>
+          <p>Price and MACD histogram diverge in direction &mdash; a sign of potential trend reversal. More reliable when occurring simultaneously with RSI divergence.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">RSI Hidden Divergence</div>
+          <div class="pattern-card-tag tag-divergence">Divergence</div>
+          <p>&ldquo;Hidden divergence&rdquo; where price makes higher highs but RSI makes lower highs. Unlike regular divergence, this signals trend continuation. Suggests re-acceleration after a pullback.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">OBV Divergence</div>
+          <div class="pattern-card-tag tag-divergence">Divergence</div>
+          <p>Price falling or flat while OBV (cumulative volume) rises. Evidence of quiet institutional accumulation. OBV improvement often leads price recovery.</p>
+        </div>
+      </div>
+
+      <h3>Candlestick Patterns</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Hammer</div>
+          <div class="pattern-card-tag tag-candle">Candlestick</div>
+          <p>A candle with a long lower shadow and short body. At the end of a downtrend, it&rsquo;s a strong bullish reversal signal. Detected when lower shadow is 2&times; or more the body length.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Bullish Engulfing</div>
+          <div class="pattern-card-tag tag-candle">Candlestick</div>
+          <p>A large bullish candle completely engulfs the previous bearish candle. Strong evidence of buying pressure. More reliable with rising volume.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Morning Star</div>
+          <div class="pattern-card-tag tag-candle">Candlestick</div>
+          <p>Three-candle pattern: bearish candle &rarr; small gap-down candle (or doji) &rarr; large bullish candle. A strong reversal signal from downtrend to uptrend.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Three White Soldiers</div>
+          <div class="pattern-card-tag tag-candle">Candlestick</div>
+          <p>Three consecutive bullish candles, each opening above the prior close. Signals sustained buying pressure. Appearing after a sharp rally may indicate overheating.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Piercing Line</div>
+          <div class="pattern-card-tag tag-candle">Candlestick</div>
+          <p>After a large bearish candle, price gaps down but recovers above the midpoint of the prior candle. A two-candle bottom-reversal signal showing selling pressure dissipating rapidly.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-name">Three Gap Reversal</div>
+          <div class="pattern-card-tag tag-candle">Candlestick</div>
+          <p>A reversal signal after three consecutive downside gaps. Known in classic trading lore as a bottom signal following panic-driven selling.</p>
+        </div>
+      </div>
+
+      <h3>Wyckoff Accumulation</h3>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-name">Wyckoff Spring</div>
+          <div class="pattern-card-tag tag-wyckoff">Wyckoff</div>
+          <p>Detects the Wyckoff accumulation phase: Selling Climax &rarr; volume dry-up (Spring) &rarr; Sign of Strength. A breakout after institutional accumulation at the bottom. One of the most reliable long-term signals.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="help-section" id="target-calc">
+      <h2>Target &amp; Stop Loss</h2>
+
+      <h3>Target Price Calculation (priority order)</h3>
+      <p>Candidates are evaluated in priority order; the first candidate exceeding the current price by +2% (minimum margin) is adopted.</p>
+      <table class="h-table">
+        <thead><tr><th>Priority</th><th>Method</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td>1st</td><td>Pattern target</td><td>Pattern height added to breakout point (e.g. Double Bottom depth &divide; neckline &times; upward direction)</td></tr>
+          <tr><td>2nd</td><td>Fibonacci 127%</td><td>Recent swing range &times; 1.272 added to the low</td></tr>
+          <tr><td>3rd</td><td>Fibonacci 162%</td><td>Recent swing range &times; 1.618 added to the low</td></tr>
+          <tr><td>4th (fallback)</td><td>ATR &times; 3</td><td>Current price + ATR(14d) &times; 3 (always above current price)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <p>When a past pattern target is below the current price (stock already surged past target), the system automatically falls back to Fibonacci or ATR multiples.</p>
+      </div>
+
+      <h3>Stop-Loss Price</h3>
+      <div class="formula">Stop Loss = Current Price &minus; ATR(14d) &times; 2</div>
+      <p>Capped so that stop-loss is always at least &minus;1% below current price (upper bound: current price &times; 0.99).</p>
+
+      <h3>RR Ratio (Risk-Reward)</h3>
+      <div class="formula">RR = (Target &minus; Current Price) &divide; (Current Price &minus; Stop Loss)</div>
+      <table class="h-table">
+        <thead><tr><th>RR Ratio</th><th>Rating</th><th>Display</th></tr></thead>
+        <tbody>
+          <tr><td>&ge; 2.0</td><td class="good">Good</td><td class="good">Green</td></tr>
+          <tr><td>1.5 &ndash; 2.0</td><td class="mid">Acceptable</td><td class="mid">Yellow</td></tr>
+          <tr><td>&lt; 1.5</td><td class="bad">Caution</td><td style="color:var(--text-muted)">Gray</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Estimated Period (weeks_min &ndash; weeks_max)</h3>
+      <p>Reference values based on typical historical achievement times per pattern. Actual market conditions can vary widely.</p>
+      <table class="h-table">
+        <thead><tr><th>Pattern</th><th>Typical Period</th></tr></thead>
+        <tbody>
+          <tr><td>Bull Flag, BB Squeeze</td><td>1&ndash;3 weeks</td></tr>
+          <tr><td>Resistance Breakout, Golden Cross (short)</td><td>2&ndash;4 weeks</td></tr>
+          <tr><td>Golden Cross (medium), Double Bottom</td><td>4&ndash;8 weeks</td></tr>
+          <tr><td>Inverse H&amp;S, Perfect Order, Wyckoff</td><td>4&ndash;12 weeks</td></tr>
+          <tr><td>Cup with Handle</td><td>4&ndash;10 weeks</td></tr>
+          <tr><td>Golden Cross (long-term)</td><td>8&ndash;16 weeks</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="help-section" id="backtest">
+      <h2>Backtest</h2>
+      <p>Historical signals are evaluated against actual price data to verify this tool&rsquo;s signal accuracy. Auto-updated every Monday 9 AM ET.</p>
+
+      <h3>Backtest Filters</h3>
+      <table class="h-table">
+        <thead><tr><th>Condition</th><th>Value</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>Score</td><td class="good">&ge; 70</td><td>Only high-quality signals</td></tr>
+          <tr><td>Probability</td><td class="good">&ge; 60%</td><td>Only setups the algorithm judges favorably</td></tr>
+          <tr><td>RR ratio</td><td class="good">&ge; 1.8</td><td>Only setups with positive expected value</td></tr>
+          <tr><td>Cooldown</td><td>10 days same stock</td><td>Avoids consecutive entries on the same stock</td></tr>
+          <tr><td>Daily cap</td><td>Max 3 signals</td><td>Limits concentration risk</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Win/Loss Rules</h3>
+      <table class="h-table">
+        <thead><tr><th>Result</th><th>Condition</th></tr></thead>
+        <tbody>
+          <tr><td class="good">&#10003; Target Hit (win)</td><td>High touches the target price within the allowed period.</td></tr>
+          <tr><td class="bad">&#10007; Stopped Out (loss)</td><td>Low touches the stop-loss price.</td></tr>
+          <tr><td class="mid">&#8987; Expired</td><td>Neither hit within weeks_max &rarr; exit at period-end close.</td></tr>
+          <tr><td style="color:var(--text-muted)">&#128200; Open</td><td>Result not yet determined. Not included in statistics.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Statistics Shown</h3>
+      <table class="h-table">
+        <thead><tr><th>Metric</th><th>Calculation</th><th>Target</th></tr></thead>
+        <tbody>
+          <tr><td>Win Rate</td><td>Wins &divide; completed trades (excluding open)</td><td>&ge; 60%</td></tr>
+          <tr><td>Avg Return</td><td>Average of actual returns (%)</td><td>Positive</td></tr>
+          <tr><td>Profit Factor</td><td>Total profit &divide; total loss</td><td>&ge; 1.5</td></tr>
+          <tr><td>Expected Value</td><td>Win rate &times; avg win + loss rate &times; avg loss</td><td>Positive</td></tr>
+          <tr><td>$10,000 Simulation</td><td>Capital curve using fixed 1% risk per signal</td><td>Reference</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Backtest Limitations</h3>
+      <ul>
+        <li><strong>Data accumulation needed</strong>: Only signals since scanner launch are evaluated. 100+ trades needed for statistical significance (1&ndash;3 months).</li>
+        <li><strong>Slippage &amp; liquidity not modeled</strong>: Real fills may differ from theoretical prices.</li>
+        <li><strong>Taxes &amp; commissions not included</strong>: Actual returns will be lower.</li>
+        <li><strong>No simultaneous entry optimization</strong>: All signals evaluated independently.</li>
+      </ul>
+
+      <div class="warn-box">
+        <p>&#9888;&#65039; Good past backtest results do not guarantee future performance. Market regime changes can cause the same signals to produce very different outcomes.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="favorites">
+      <h2>Favorites</h2>
+      <p>Save stocks of interest for quick access anytime.</p>
+
+      <h3>How to Use</h3>
+      <ol>
+        <li>Click the <strong>&#9734; button</strong> in the first column of the results table to save (changes to &#11088;)</li>
+        <li>Click <strong>&#11088; Favorites (N)</strong> in the sort bar to show only saved stocks</li>
+        <li>Click again to return to normal view</li>
+        <li>Other filters (pattern, score, etc.) remain active in Favorites mode</li>
+      </ol>
+
+      <h3>Storage</h3>
+      <ul>
+        <li>Saved in browser <strong>localStorage</strong>. Persists across page reloads.</li>
+        <li>Cleared when browser cache / history is deleted.</li>
+        <li>Not shared across browsers or devices (never sent to any server).</li>
+      </ul>
+
+      <div class="info-box">
+        <p>Favorited stocks persist to the next scan. However, if a stock has no signal in the new scan results, it will not be shown even in Favorites mode.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="entry-guide">
+      <h2>Entry Decision Guide</h2>
+      <p>The scan runs on the prior day&rsquo;s closing prices. Between reviewing results in the evening and entering the next morning, prices will have moved. <strong>Do not use scan results directly &mdash; reassess at the open.</strong></p>
+
+      <h3>After-Market to Open Flow</h3>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>After Market (4 PM ET onwards): Review scan results</strong>
+            <span>Check score, pattern, RR ratio. Narrow your watch list and set tentative limit prices based on current closing prices.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Pre-Market (9:15&ndash;9:29 AM ET): Check pre-market prices</strong>
+            <span>Use your brokerage app to check pre-market quotes. If gap-up exceeds 2%, recalculate RR before the open.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Market Open (9:30 AM ET): Final decision at the open</strong>
+            <span>Enter the actual open price in the order memo&rsquo;s &ldquo;Entry Price&rdquo; field and recheck RR. RR &ge; 1.5 &rarr; enter. RR &lt; 1.5 &rarr; skip.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Post-Entry: Register in Position Manager</strong>
+            <span>Enter your actual fill price and share count. Target, stop-loss, and ATR will be auto-filled.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="help-section" id="entry-gap">
+      <h2>Gap-Up Entry Judgment</h2>
+      <p>Stocks in strong uptrends or with positive catalysts may open above the prior close (gap up). A gap-up itself can signal strength, but <strong>always recheck the RR ratio</strong>.</p>
+
+      <h3>RR Recalculation</h3>
+      <p>Target and stop-loss prices are based on technical levels (resistance, ATR, etc.) and do not change with the entry price. Only the RR ratio changes.</p>
+
+      <div class="info-box">
+        <strong>Example: RR Deterioration from Gap-Up</strong>
+        <table class="h-table" style="margin-top:10px">
+          <thead><tr><th></th><th>At Scan Close</th><th>After Gap-Up</th></tr></thead>
+          <tbody>
+            <tr><td>Entry Price</td><td>$100.00</td><td class="bad">$106.00 (+6%)</td></tr>
+            <tr><td>Target</td><td>$133.00</td><td>$133.00 (unchanged)</td></tr>
+            <tr><td>Stop Loss</td><td>$90.00</td><td>$90.00 (unchanged)</td></tr>
+            <tr><td>RR Ratio</td><td class="good">3.3:1</td><td class="bad">1.7:1</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:8px">Enter the open price in the order memo&rsquo;s &ldquo;Entry Price&rdquo; field to automatically see updated RR and entry eligibility.</p>
+      </div>
+
+      <h3>Gap Size vs Action</h3>
+      <table class="h-table">
+        <thead><tr><th>Gap vs Prior Close</th><th>Action</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>+1&ndash;2%</td>
+            <td class="good">Within expectation. Verify RR then enter.</td>
+            <td>Minor gap with small RR impact.</td>
+          </tr>
+          <tr>
+            <td>+2&ndash;5%</td>
+            <td>Recalculate RR. Enter if &ge; 1.5.</td>
+            <td>Visible RR deterioration &mdash; confirmation required.</td>
+          </tr>
+          <tr>
+            <td>+5%+</td>
+            <td class="bad">Generally skip. Wait for a pullback.</td>
+            <td>RR almost certainly fails. High risk of buying the top.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>The &ldquo;Wait for Pullback&rdquo; Option</h3>
+      <p>Gap-up stocks sometimes pull back to the prior day&rsquo;s high around 10&ndash;11 AM ET. For breakout patterns where the broken level becomes new support (Resistance Breakout, SR Flip), this retest can offer a <strong>better entry price than the open</strong>.</p>
+      <div class="info-box">
+        <strong>When pullback-waiting works</strong><br>
+        Patterns where the broken price level becomes new support: Resistance Breakout, New 52W High, SR Flip. The breakout level retested is the second entry point.
+      </div>
+      <div class="warn-box">
+        <strong>When pullback-waiting is risky</strong><br>
+        If volume is thin on the breakout, the &ldquo;pullback&rdquo; may become a full reversal (false break). Only use this approach for breakouts with volume ratio &ge; 1.5&times;.
+      </div>
+    </section>
+
+    <section class="help-section" id="entry-checklist">
+      <h2>Entry Checklist</h2>
+      <p>Confirm these items before every entry. More checkmarks = higher confidence.</p>
+
+      <h3>After Market (Scan Review)</h3>
+      <table class="h-table">
+        <thead><tr><th>Check Item</th><th>Target</th></tr></thead>
+        <tbody>
+          <tr><td>Is the score sufficient?</td><td>&ge; 60 recommended (minimum &ge; 50)</td></tr>
+          <tr><td>Is the RR ratio sufficient?</td><td>&ge; 2.0 recommended (minimum &ge; 1.5)</td></tr>
+          <tr><td>Is the probability sufficient?</td><td>&ge; 60%</td></tr>
+          <tr><td>Is RSI in a healthy range?</td><td>50&ndash;70 (above 75 = elevated top risk)</td></tr>
+          <tr><td>Does ADX confirm a trend?</td><td>&ge; 25</td></tr>
+          <tr><td>Is volume elevated?</td><td>Vol ratio &ge; 1.5&times;</td></tr>
+          <tr><td>Is RS score strong?</td><td>&ge; 60 (outperforming market average)</td></tr>
+          <tr><td>Is there an upcoming earnings?</td><td>&#128197; badge = handle with care</td></tr>
+          <tr><td>Is there a &#9733; Recommended badge?</td><td>Score, Prob, and RR all meet baseline criteria</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Pre-Market / At Open</h3>
+      <table class="h-table">
+        <thead><tr><th>Check Item</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Checked pre-market price</td><td>9:15&ndash;9:29 AM ET in brokerage app</td></tr>
+          <tr><td>Recalculated RR for gap-up</td><td>Enter open price in order memo field</td></tr>
+          <tr><td>RR is still &ge; 1.5</td><td>Order memo shows &ldquo;&#10003; Entry OK&rdquo;</td></tr>
+          <tr><td>Stop order set in brokerage</td><td>Submit stop order simultaneously with entry</td></tr>
+          <tr><td>Position size within risk budget</td><td>Avoid concentrating in a single stock</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Post-Entry (Position Management)</h3>
+      <table class="h-table">
+        <thead><tr><th>Timing</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Immediately after entry</td><td>Register actual fill price and shares in Position Manager</td></tr>
+          <tr><td>Daily (after scan update)</td><td>Raise stop-loss if Stop Advice shows an update</td></tr>
+          <tr><td>Past the trade deadline</td><td>Review position regardless of price (avoid time-based losses)</td></tr>
+          <tr><td>Near target price</td><td>Consider partial or full profit-taking. Don&rsquo;t be greedy.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="help-section" id="entry-split">
+      <h2>Scaling In</h2>
+      <p>Instead of entering your full position at once, build it in multiple tranches. Effective when confidence, liquidity, or market conditions are not 100% ideal.</p>
+
+      <div class="info-box info-box-blue" style="margin-bottom:16px">
+        <strong>Core idea:</strong> &ldquo;Limit damage if wrong.&rdquo; Enter half first, observe the market&rsquo;s reaction, then add the rest. If wrong, only the first tranche takes the loss.
+      </div>
+
+      <table class="h-table">
+        <thead><tr><th>Case</th><th>Reason</th><th>Split Ratio</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>&#128167; Low liquidity<br><small>Daily volume &lt; $500K</small></td>
+            <td>Large orders move the price against you (slippage).</td>
+            <td>Time-slice (morning / afternoon) or spread over multiple days</td>
+          </tr>
+          <tr>
+            <td>Pattern still forming</td>
+            <td>Breakout not yet confirmed &mdash; higher false-break risk.</td>
+            <td>50% now &rarr; 50% after breakout confirmed</td>
+          </tr>
+          <tr>
+            <td>Medium signal strength<br><small>Score 60&ndash;70</small></td>
+            <td>Not fully confident. Enter small to observe before adding.</td>
+            <td>50% &rarr; 50% after uptrend confirmed</td>
+          </tr>
+          <tr>
+            <td>Unstable market<br><small>S&amp;P 500 near 200-day MA or bear mode</small></td>
+            <td>Individual stocks can be dragged down with the market.</td>
+            <td>30&ndash;50% &rarr; add after market stabilizes</td>
+          </tr>
+          <tr>
+            <td>High volatility<br><small>Large ATR, wide BB</small></td>
+            <td>Wide stop needed &rarr; reduce share count to keep risk fixed.</td>
+            <td>Recalculate with 1% risk rule, then enter in 1&ndash;2 tranches</td>
+          </tr>
+          <tr>
+            <td>&#128197; Earnings within 3 days</td>
+            <td>Avoid earnings gamble &mdash; wait for post-earnings reaction.</td>
+            <td>30% now &rarr; 70% after earnings pass (or skip)</td>
+          </tr>
+          <tr>
+            <td>Building a large position</td>
+            <td>Institutional-style accumulation over time.</td>
+            <td>3&ndash;5 tranches, add while price trend is up</td>
+          </tr>
+          <tr>
+            <td>Pre-breakout advance entry<br><small>Near resistance / handle bottom</small></td>
+            <td>Favorable price with higher risk &mdash; minimize first tranche.</td>
+            <td>30&ndash;50% now &rarr; 50&ndash;70% after breakout</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Split Timing by Pattern</h3>
+      <table class="h-table">
+        <thead><tr><th>Pattern</th><th>Tranche 1 Timing</th><th>Tranche 2 Timing</th><th>Ratio</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Resistance Breakout<br>New 52W High</td>
+            <td>Breakout confirmed (close above resistance)</td>
+            <td>First pullback (broken resistance holds as support)</td>
+            <td>60 / 40</td>
+          </tr>
+          <tr>
+            <td>VCP<br>Cup with Handle</td>
+            <td>Near pivot (handle bottom) or at scan signal</td>
+            <td>Breakout day (volume surge confirmed)</td>
+            <td>50 / 50</td>
+          </tr>
+          <tr>
+            <td>Inverse H&amp;S<br>Double Bottom</td>
+            <td>Near right shoulder / right bottom</td>
+            <td>After neckline breakout confirmed</td>
+            <td>50 / 50</td>
+          </tr>
+          <tr>
+            <td>Wyckoff Spring</td>
+            <td>Spring confirmed (false breakdown &rarr; strong reversal)</td>
+            <td>Sign of Strength (SOS) with volume</td>
+            <td>40 / 60</td>
+          </tr>
+          <tr>
+            <td>MA Compression</td>
+            <td>When breakout direction is decided</td>
+            <td>1&ndash;2 days later if momentum continues</td>
+            <td>60 / 40</td>
+          </tr>
+          <tr>
+            <td>Low-liquidity stocks</td>
+            <td>Small tranche during liquid morning hours</td>
+            <td>Rest spread over the same day afternoon or next day</td>
+            <td>33 / 33 / 33</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Scaling-In Pitfalls</h3>
+      <div class="help-grid" style="margin-top:12px">
+        <div class="help-card help-card-warn">
+          <h4>&#9888; What NOT to Do</h4>
+          <ul>
+            <li><strong>Add when price drops (averaging down)</strong> &mdash; Scaling in means adding after confirmation of upward movement, not adding into losses.</li>
+            <li><strong>Keep the same stop-loss when adding shares</strong> &mdash; More shares = more risk. Recalculate stop and share count before adding.</li>
+            <li><strong>Exceed your risk budget because tranche 1 is profitable</strong> &mdash; Total risk (loss if stop is hit) must stay within 1&ndash;2% of capital.</li>
+          </ul>
+        </div>
+
+        <div class="help-card help-card-ok">
+          <h4>&#10003; When Full-Size Entry Is Appropriate</h4>
+          <ul>
+            <li>Score <strong>&ge; 80</strong>, Probability <strong>&ge; 65%</strong> &mdash; strong signal</li>
+            <li>Sufficient liquidity (daily volume <strong>&ge; $1M/day</strong>)</li>
+            <li>Breakout <strong>clearly confirmed</strong> with volume surge (&ge; 2&times;)</li>
+            <li>RR ratio <strong>&ge; 2.0</strong></li>
+            <li>Market environment is bullish</li>
+          </ul>
+          <p style="margin-top:8px;font-size:12px;color:var(--text-muted)">
+            If a &#9733; Recommended badge appears (Score &ge; 60, Prob &ge; 60%, RR &ge; 2.0) and no &#128167; liquidity warning is shown, a full-size entry may be appropriate.
+          </p>
+        </div>
+      </div>
+
+      <div class="info-box" style="margin-top:16px">
+        <p><strong>Risk Management Principle:</strong> Whether scaling in or entering full-size, <em>total risk per trade must stay within 1&ndash;2% of capital</em>. Scaling in is not about distributing the stop-loss &mdash; it&rsquo;s about incrementally building risk as confidence grows. Set your stop-loss and share count from tranche 1, and manage subsequent tranches within the same risk envelope.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="disclaimer">
+      <h2>Disclaimer</h2>
+
+      <div class="disclaimer-big">
+        <h3>&#9888;&#65039; Not Investment Advice</h3>
+        <p>This tool is for informational purposes only and does not recommend or advise the purchase or sale of any specific security. Even high-score, high-probability stocks can result in losses. All investment decisions are at your own risk.</p>
+      </div>
+
+      <h3>Data Accuracy</h3>
+      <ul>
+        <li>Price data is obtained via Yahoo Finance (unofficial API). Accuracy and completeness are not guaranteed.</li>
+        <li>Some stocks may fail to fetch and will not appear in scan results.</li>
+        <li>Scans run daily after 4 PM ET but may be delayed by GitHub Actions issues.</li>
+        <li>Market holidays and closures are skipped.</li>
+      </ul>
+
+      <h3>Algorithm Limitations</h3>
+      <ul>
+        <li>Scores and probabilities are mechanical calculations. Fundamentals (earnings, news, guidance) are not considered.</li>
+        <li>Pattern detection uses statistical algorithms &mdash; false signals (fakeouts) can and do occur.</li>
+        <li>Backtest results are historical reference values and do not guarantee future performance.</li>
+        <li>Extreme market events (circuit breakers, flash crashes) may not be handled correctly.</li>
+      </ul>
+
+      <h3>Risk Disclosure</h3>
+      <ul>
+        <li>Stock investing involves the risk of losing principal. Only invest money you can afford to lose.</li>
+        <li>Do not base investment decisions solely on this tool&rsquo;s output.</li>
+        <li>The developers of this tool accept no liability for any losses incurred.</li>
+      </ul>
+
+      <h3>Usage Notes</h3>
+      <ul>
+        <li>This tool is open-source (<a href="https://github.com/tororo-jp/kabu-chart-usa" style="color:#79c0ff" target="_blank">GitHub</a>). Feel free to modify and self-host.</li>
+        <li>Data source: Yahoo Finance / Wikipedia (S&amp;P 500 constituent list)</li>
+        <li>Coverage: S&amp;P 500 constituents, updated daily after US market close (ET)</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
+  Data: Yahoo Finance &nbsp;|&nbsp; S&amp;P 500 constituents, updated daily after market close (ET)
+</footer>
+
+<script>
+  const sections = document.querySelectorAll(".help-section");
+  const navLinks = document.querySelectorAll(".help-nav a");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove("active"));
+        const id = entry.target.id;
+        const link = document.querySelector(`.help-nav a[href="#${id}"]`);
+        if (link) link.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
