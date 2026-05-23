@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backtest | US Stock Technical Scanner</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .bt-page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .back-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .back-link:hover { color: var(--text); }
+
+    .bt-filter-bar {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+    .bt-filter-label { color: var(--text-muted); }
+    .bt-filter-chip {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .bt-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .bt-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .breakdown-table th {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-align: left;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .breakdown-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .breakdown-table tbody tr:last-child td { border-bottom: none; }
+    .bd-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 160px;
+    }
+    .bd-bar-bg {
+      flex: 1;
+      height: 7px;
+      background: var(--bg3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bd-bar-fill-win  { height: 100%; background: var(--green); border-radius: 4px; }
+    .bd-bar-fill-loss { height: 100%; background: var(--red);   border-radius: 4px; }
+    .bd-val { width: 36px; text-align: right; font-size: 12px; font-weight: 600; }
+    .bd-max { color: var(--text-muted); font-size: 12px; }
+    .bd-diff-pos { color: var(--green); font-weight: 600; }
+    .bd-diff-neg { color: var(--red);   font-weight: 600; }
+    .bd-diff-neu { color: var(--text-muted); }
+    .bd-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .bt-tables-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .bt-signals-scroll {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .bt-signals-tbl {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      background: var(--bg3);
+    }
+    .bt-signals-tbl th {
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .bt-signals-tbl td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .bt-signals-tbl tbody tr:last-child td { border-bottom: none; }
+    .score-bd-cell {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .bt-empty-page {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 48px 24px;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .capital-chart-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .capital-chart-container { height: 220px; }
+
+    .calib-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .calib-table th {
+      font-size: 11px; color: var(--text-muted); font-weight: 600;
+      letter-spacing: 0.04em; text-align: left;
+      padding: 6px 10px; border-bottom: 1px solid var(--border);
+    }
+    .calib-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    .calib-table tbody tr:last-child td { border-bottom: none; }
+    .calib-bar-wrap {
+      display: flex; align-items: center; gap: 8px; min-width: 120px;
+    }
+    .calib-bar-bg {
+      flex: 1; height: 7px; background: var(--bg3); border-radius: 4px; overflow: hidden;
+    }
+    .calib-bar-fill { height: 100%; border-radius: 4px; }
+    .calib-note {
+      font-size: 11px; color: var(--text-muted); margin-top: 10px;
+    }
+
+    .bt-guide {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .bt-guide-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      cursor: pointer;
+      user-select: none;
+      gap: 10px;
+    }
+    .bt-guide-toggle:hover { background: rgba(255,255,255,0.03); }
+    .bt-guide-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bt-guide-arrow {
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    .bt-guide-arrow.open { transform: rotate(180deg); }
+    .bt-guide-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 20px 20px 24px;
+    }
+    .bt-guide-body.open { display: block; }
+    .bt-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .bt-guide-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .bt-guide-card h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 10px;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bt-guide-card p, .bt-guide-card li {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+    .bt-guide-card ul { padding-left: 16px; margin: 6px 0 0; }
+    .bt-guide-card li { margin-bottom: 3px; }
+    .bt-guide-card strong { color: var(--text); }
+    .bt-guide-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+      margin: 10px 0 0;
+    }
+    .bt-metric-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 10px;
+      background: var(--bg);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .bt-metric-name  { font-size: 11px; font-weight: 600; color: var(--text); }
+    .bt-metric-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+    .bt-metric-bench { font-size: 11px; color: #58a6ff; margin-top: 2px; }
+    .bt-score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .bt-score-table th {
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .bt-score-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .bt-score-table td:first-child { color: var(--text); font-weight: 600; }
+    .bt-score-table tbody tr:last-child td { border-bottom: none; }
+    .bt-guide-caution {
+      background: rgba(210,153,34,0.08);
+      border: 1px solid rgba(210,153,34,0.25);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 4px;
+    }
+    .bt-guide-caution strong { color: var(--yellow); }
+
+    @media (max-width: 768px) {
+      .bt-tables-row { grid-template-columns: 1fr; }
+      .bt-guide-grid { grid-template-columns: 1fr; }
+      .bt-page { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="index.html" class="back-link">&larr; Back to Scanner</a>
+      <h1>&#128202; Backtest Results</h1>
+    </div>
+    <span id="bt-updated" class="last-update"></span>
+  </div>
+</header>
+
+<div class="bt-page" id="bt-page">
+
+  <!-- Filter bar -->
+  <div class="bt-filter-bar">
+    <span class="bt-filter-label">Backtest Filters:</span>
+    <span id="bt-filter-score" class="bt-filter-chip">-</span>
+    <span id="bt-filter-prob"  class="bt-filter-chip">-</span>
+    <span id="bt-filter-rr"   class="bt-filter-chip">-</span>
+    <span id="bt-filter-limit" class="bt-filter-chip">-</span>
+    <span id="bt-filter-cooldown" class="bt-filter-chip">-</span>
+  </div>
+
+  <!-- Collapsible guide -->
+  <div class="bt-guide">
+    <div class="bt-guide-toggle" onclick="toggleGuide()">
+      <span class="bt-guide-title">&#128214; Backtest Methodology &amp; How to Read the Results</span>
+      <span class="bt-guide-arrow" id="guide-arrow">&#9660;</span>
+    </div>
+    <div class="bt-guide-body" id="guide-body">
+
+      <div class="bt-guide-grid">
+
+        <div class="bt-guide-card">
+          <h4>&#128302; What Are We Testing?</h4>
+          <p>Every signal detected by the daily scanner is simulated using a simple rule: <strong>buy at the next open, sell when the target or stop-loss is hit.</strong></p>
+          <ul>
+            <li>All signals from past scan archives are loaded</li>
+            <li>Filtered to match real entry criteria (see below)</li>
+            <li>Win/loss determined against actual OHLCV data from Yahoo Finance</li>
+          </ul>
+        </div>
+
+        <div class="bt-guide-card">
+          <h4>&#127919; Entry Selection Logic (Filters)</h4>
+          <p>Rather than testing every signal, entries are filtered to match realistic trading criteria.</p>
+          <ul>
+            <li><strong>Score &ge; 60</strong>: Only stocks with solid technical backing</li>
+            <li><strong>Prob &ge; 55%</strong>: Model judges the setup as favorable</li>
+            <li><strong>RR &ge; 1.5</strong>: Expected reward at least 1.5&times; the risk</li>
+            <li><strong>Max 5/day</strong>: Limits daily concentration risk</li>
+            <li><strong>Cooldown 5 days</strong>: Skips repeat signals on the same stock</li>
+          </ul>
+          <p style="margin-top:8px">On each day, the top 5 signals by score are selected.</p>
+        </div>
+
+        <div class="bt-guide-card">
+          <h4>&#9878;&#65039; Win/Loss Rules</h4>
+          <p>After entry, the outcome is determined by <strong>whichever price is reached first</strong>:</p>
+          <ul>
+            <li>&#10003; <strong>Target Hit</strong>: High touches the target price first</li>
+            <li>&#10007; <strong>Stopped Out</strong>: Low touches the stop-loss first</li>
+            <li>&#8987; <strong>Expired</strong>: Neither hit within weeks_max &rarr; exit at period-end close</li>
+            <li>&#128200; <strong>Open</strong>: Result not yet determined</li>
+          </ul>
+          <p style="margin-top:8px">"Expired" trades are close to a loss but may finish slightly positive.</p>
+        </div>
+
+        <div class="bt-guide-card">
+          <h4>&#128176; Capital Simulation</h4>
+          <p><strong>$10,000 starting capital, fixed 1% risk per trade.</strong></p>
+          <ul>
+            <li>Risk amount = Capital &times; 1%</li>
+            <li>Shares = Risk amount &divide; (Entry &minus; Stop price)</li>
+            <li>Example: Capital $10,000, stop width $2.00 &rarr; buy 50 shares</li>
+          </ul>
+          <p style="margin-top:8px">Slippage, commissions, and taxes are <strong>not included</strong>. Actual performance may be 1&ndash;2% worse.</p>
+        </div>
+
+      </div>
+
+      <h4 style="font-size:13px;font-weight:700;margin:0 0 10px;color:var(--text)">&#128202; Reading the Metrics</h4>
+      <div class="bt-guide-metrics">
+
+        <div class="bt-metric-row">
+          <span class="bt-metric-name">Win Rate</span>
+          <span class="bt-metric-desc">Percentage of completed trades that hit the target.</span>
+          <span class="bt-metric-bench">Target: &ge; 55% stable, &ge; 60% excellent</span>
+        </div>
+
+        <div class="bt-metric-row">
+          <span class="bt-metric-name">Profit Factor (PF)</span>
+          <span class="bt-metric-desc">Total profit &divide; total loss. PF &le; 1.0 means long-term losses. High RR ratio allows PF &gt; 1 even with lower win rate.</span>
+          <span class="bt-metric-bench">Target: &ge; 1.5, &ge; 2.0 excellent</span>
+        </div>
+
+        <div class="bt-metric-row">
+          <span class="bt-metric-name">Expected Value (EV)</span>
+          <span class="bt-metric-desc">Average expected return per trade (%).<br>= Win rate &times; avg win + loss rate &times; avg loss</span>
+          <span class="bt-metric-bench">Target: &ge; 0% (positive edge)</span>
+        </div>
+
+        <div class="bt-metric-row">
+          <span class="bt-metric-name">Sharpe Ratio (annualized)</span>
+          <span class="bt-metric-desc">Return &divide; risk (std dev), annualized. Higher = better return per unit of volatility.</span>
+          <span class="bt-metric-bench">Target: &ge; 1.0 good, &ge; 1.5 excellent</span>
+        </div>
+
+        <div class="bt-metric-row">
+          <span class="bt-metric-name">Max Drawdown (MDD)</span>
+          <span class="bt-metric-desc">Largest peak-to-trough decline in capital (%). High MDD makes it psychologically hard to stay in.</span>
+          <span class="bt-metric-bench">Target: keep under 20%</span>
+        </div>
+
+        <div class="bt-metric-row">
+          <span class="bt-metric-name">Expired</span>
+          <span class="bt-metric-desc">Trades that reached weeks_max without hitting target or stop. Too many may indicate targets are set too far.</span>
+          <span class="bt-metric-bench">Ideal: &le; 20% of all trades</span>
+        </div>
+
+      </div>
+
+      <h4 style="font-size:13px;font-weight:700;margin:20px 0 10px;color:var(--text)">&#128290; Scoring System (100-point scale)</h4>
+      <div class="bt-guide-card" style="margin-bottom:16px">
+        <table class="bt-score-table">
+          <thead>
+            <tr><th>Component</th><th>Max</th><th>Scoring Criteria</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trend</td><td>25 pts</td>
+              <td>Perfect Order(+10), above 200MA(+5), MA compression(+7), Ichimoku bullish(+3)</td>
+            </tr>
+            <tr>
+              <td>Pattern</td><td>35 pts</td>
+              <td>Pattern weight &times; confidence. 2nd+ patterns are halved. Only confidence &ge; 0.4 counted.</td>
+            </tr>
+            <tr>
+              <td>Momentum</td><td>20 pts</td>
+              <td>RSI 50&ndash;75(+8), 75&ndash;80(+5), MACD golden cross within 5d(+7), divergence(+2&times;count)</td>
+            </tr>
+            <tr>
+              <td>Volume Surge</td><td>10 pts</td>
+              <td>Daily volume vs 20-day avg. &ge;3.0&times;(+7), &ge;2.0&times;(+5), &ge;1.5&times;(+3), OBV rising(+3)</td>
+            </tr>
+            <tr>
+              <td>Liquidity</td><td>5 pts</td>
+              <td>20-day avg daily $ volume. &ge;$5M(+5), &ge;$1M(+4), &ge;$500K(+3), &ge;$200K(+1)</td>
+            </tr>
+            <tr>
+              <td>RS Score</td><td>5 pts</td>
+              <td>RS &ge;80(+5), &ge;65(+4), &ge;50(+2), below(0). Relative strength vs all scanned stocks.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bt-guide-grid" style="margin-bottom:16px">
+        <div class="bt-guide-card">
+          <h4>&#128208; Probability Calculation</h4>
+          <p>Win probability is a blend of two components:</p>
+          <ul>
+            <li><strong>Score-based probability (60% weight)</strong>: 0.30 + (score/100) &times; 0.50. Score 60 &rarr; 60%, Score 80 &rarr; 70%.</li>
+            <li><strong>Pattern win rate (40% weight)</strong>: Theoretical win rate per pattern, weighted by (pattern weight &times; confidence). High-precision patterns like VCP/CwH are weighted more heavily.</li>
+          </ul>
+          <p style="margin-top:8px">RS is already included in the score, so it is not double-counted in the probability (only a tiny bonus for RS &ge; 90).</p>
+        </div>
+
+        <div class="bt-guide-card">
+          <h4>&#128260; Using Score Component Analysis</h4>
+          <p>Compare which score components differ between winning and losing trades.</p>
+          <ul>
+            <li>Positive diff &rarr; component correlates with wins</li>
+            <li>Near zero &rarr; component may have weak predictive power</li>
+            <li>Negative diff &rarr; component may be counterproductive</li>
+          </ul>
+          <p style="margin-top:8px">As data accumulates, increase weights for high-diff components and reduce weights for low-diff ones to improve the model.</p>
+        </div>
+
+        <div class="bt-guide-card">
+          <h4>&#128207; Reading Probability Calibration</h4>
+          <p>Compares the scanner's predicted probability against actual win rate.</p>
+          <ul>
+            <li><strong>Deviation &asymp; 0</strong>: Model is well calibrated</li>
+            <li><strong>Actual &gt; Predicted (positive gap)</strong>: Underestimating. Consider raising probability thresholds.</li>
+            <li><strong>Actual &lt; Predicted (negative gap)</strong>: Overestimating. Tighten the threshold.</li>
+          </ul>
+          <p style="margin-top:8px">At least 20&ndash;30 trades per bucket are needed for statistically valid conclusions.</p>
+        </div>
+
+        <div class="bt-guide-card">
+          <h4>&#8987; Model Improvement Cycle</h4>
+          <p>Once backtest data accumulates, improve the model with these steps:</p>
+          <ul>
+            <li>&#9312; <strong>Score component analysis</strong>: identify high-diff components</li>
+            <li>&#9313; <strong>By-pattern breakdown</strong>: find patterns where actual win rate diverges from theoretical</li>
+            <li>&#9314; <strong>Calibration</strong>: assess overall over/under-estimation</li>
+            <li>&#9315; Update weights in <code>scorer.py</code> and <code>PATTERN_WIN_RATES</code></li>
+            <li>&#9316; Re-scan &rarr; accumulate data &rarr; repeat</li>
+          </ul>
+          <p style="margin-top:8px">Rough timeline: 3 months for calibration baseline, 6 months for meaningful improvement decisions.</p>
+        </div>
+
+      </div>
+
+      <div class="bt-guide-caution">
+        <strong>&#9888;&#65039; Backtest Limitations &amp; Caveats</strong><br>
+        &#9312; <strong>Slippage not included</strong>: Gap-up/down at the open shifts actual entry price. Real returns may be 1&ndash;3% worse.<br>
+        &#9313; <strong>Commissions &amp; taxes excluded</strong>: US long-term gains are taxed at 0/15/20%; short-term at ordinary income rates.<br>
+        &#9314; <strong>Curve-fitting risk</strong>: Parameters optimized on historical data may not hold in the future.<br>
+        &#9315; <strong>Liquidity risk</strong>: Thinly traded stocks may not fill at the theoretical price.<br>
+        &#9316; <strong>Market regime dependence</strong>: Pattern effectiveness changes significantly between bull and bear markets. Use the market-environment filter.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div id="bt-summary-cards" class="bt-cards"></div>
+
+  <!-- Capital curve -->
+  <div class="capital-chart-wrap" id="capital-chart-wrap" style="display:none">
+    <div class="pos-table-head" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;">
+      <span class="bt-section-title" style="margin:0">Capital Curve ($10,000 Start, 1% Fixed Risk)</span>
+      <span id="capital-chart-sub" style="font-size:11px;color:var(--text-muted)"></span>
+    </div>
+    <div class="capital-chart-container" id="capital-chart-container"></div>
+  </div>
+
+  <!-- Score component analysis -->
+  <div class="bt-section">
+    <div class="bt-section-title">Score Component Analysis &mdash; Win / Loss Comparison</div>
+    <div id="bt-breakdown"></div>
+  </div>
+
+  <!-- Probability calibration -->
+  <div class="bt-section">
+    <div class="bt-section-title">Probability Calibration &mdash; Predicted vs Actual Win Rate</div>
+    <div id="bt-calibration"></div>
+  </div>
+
+  <!-- Pattern + score tables -->
+  <div class="bt-tables-row">
+    <div class="bt-section">
+      <div class="bt-section-title">By Pattern</div>
+      <table class="bt-table">
+        <thead><tr><th>Pattern</th><th>Count</th><th>Win Rate</th><th>Avg Return</th></tr></thead>
+        <tbody id="bt-pattern-body"></tbody>
+      </table>
+    </div>
+    <div class="bt-section">
+      <div class="bt-section-title">By Score Range</div>
+      <table class="bt-table">
+        <thead><tr><th>Score</th><th>Count</th><th>Win Rate</th><th>Avg Return</th></tr></thead>
+        <tbody id="bt-score-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Signal list -->
+  <div class="bt-section">
+    <div class="bt-section-title">Signal List (newest first)</div>
+    <div class="bt-signals-scroll">
+      <table class="bt-signals-tbl">
+        <thead>
+          <tr>
+            <th>Detected</th>
+            <th>Ticker</th>
+            <th>Company</th>
+            <th>Score / Breakdown</th>
+            <th>Pattern</th>
+            <th>Entry</th>
+            <th>Target</th>
+            <th>Result</th>
+            <th>Return</th>
+            <th>Holding Days</th>
+          </tr>
+        </thead>
+        <tbody id="bt-signals-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="bt-disclaimer">
+    * Backtest results are based on historical data and do not guarantee future performance.
+    Slippage, commissions, and taxes are not included.
+  </p>
+
+</div>
+
+<footer class="site-footer">
+  This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
+  Data: Yahoo Finance &nbsp;|&nbsp; S&amp;P 500 constituents, updated daily after market close (ET)
+</footer>
+
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<script src="js/backtest.js"></script>
+<script>
+function toggleGuide() {
+  const body  = document.getElementById("guide-body");
+  const arrow = document.getElementById("guide-arrow");
+  const open  = body.classList.toggle("open");
+  arrow.classList.toggle("open", open);
+}
+</script>
+</body>
+</html>

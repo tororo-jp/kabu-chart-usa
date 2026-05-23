@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>US Stock Technical Scanner</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>&#127482;&#127480; US Stock Technical Scanner</h1>
+      <div class="header-right">
+        <span id="last-update" class="last-update">Loading...</span>
+        <a href="positions.html" class="help-btn" rel="noopener">&#128203; Positions</a>
+        <a href="help.html" class="help-btn" target="_blank" rel="noopener">Guide</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Sidebar filters -->
+    <aside class="sidebar">
+      <section class="filter-section">
+        <h2>Filters</h2>
+
+        <label>Search
+          <input type="search" id="filter-search" placeholder="Ticker / Company" autocomplete="off" />
+        </label>
+
+        <label>Pattern
+          <select id="filter-pattern">
+            <option value="">All</option>
+            <optgroup label="&#9472;&#9472; Reversal">
+              <option value="inverse_head_shoulders">Inverse H&amp;S</option>
+              <option value="double_bottom">Double Bottom</option>
+              <option value="triple_bottom">Triple Bottom</option>
+              <option value="falling_wedge">Falling Wedge</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Continuation">
+              <option value="cup_with_handle">Cup w/ Handle</option>
+              <option value="bull_flag">Bull Flag</option>
+              <option value="vcp">VCP</option>
+              <option value="channel_pullback">Channel Pullback</option>
+              <option value="ma_pullback">50MA Pullback</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Breakout">
+              <option value="resistance_breakout">Resistance Breakout</option>
+              <option value="new_52w_high">New 52W High</option>
+              <option value="donchian_break">Donchian Break</option>
+              <option value="sr_flip">SR Flip</option>
+              <option value="bb_squeeze">BB Squeeze</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Triangle">
+              <option value="ascending_triangle">Ascending Triangle</option>
+              <option value="symmetric_triangle">Symmetric Triangle</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Moving Average">
+              <option value="perfect_order">Perfect Order</option>
+              <option value="golden_cross">Golden Cross</option>
+              <option value="ma_compression">MA Compression</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Ichimoku">
+              <option value="ichimoku_cloud_break">Ichimoku Cloud Break</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Divergence">
+              <option value="rsi_divergence">RSI Divergence</option>
+              <option value="rsi_hidden_divergence">RSI Hidden Divergence</option>
+              <option value="macd_divergence">MACD Divergence</option>
+              <option value="obv_divergence">OBV Divergence</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Candlestick">
+              <option value="morning_star">Morning Star</option>
+              <option value="bullish_engulfing">Bullish Engulfing</option>
+              <option value="three_white_soldiers">Three White Soldiers</option>
+              <option value="piercing_line">Piercing Line</option>
+              <option value="hammer">Hammer</option>
+              <option value="three_gap_reversal">Three Gap Reversal</option>
+            </optgroup>
+            <optgroup label="&#9472;&#9472; Wyckoff">
+              <option value="wyckoff_spring">Wyckoff Spring</option>
+            </optgroup>
+          </select>
+        </label>
+
+        <label>Probability (&ge;)
+          <select id="filter-prob">
+            <option value="0">All</option>
+            <option value="0.5" selected>&ge; 50%</option>
+            <option value="0.6">&ge; 60%</option>
+            <option value="0.7">&ge; 70%</option>
+          </select>
+        </label>
+
+        <label>Score (&ge;)
+          <select id="filter-score">
+            <option value="0">All</option>
+            <option value="30" selected>&ge; 30</option>
+            <option value="50">&ge; 50</option>
+            <option value="60">&ge; 60</option>
+            <option value="70">&ge; 70</option>
+          </select>
+        </label>
+
+        <label>RR Ratio (&ge;)
+          <select id="filter-rr">
+            <option value="0">All</option>
+            <option value="1.5">&ge; 1.5</option>
+            <option value="2">&ge; 2.0</option>
+            <option value="3">&ge; 3.0</option>
+          </select>
+        </label>
+
+        <label>Sector
+          <select id="filter-sector">
+            <option value="">All</option>
+          </select>
+        </label>
+
+        <div class="filter-label-row">
+          <span class="filter-label-text">Preset</span>
+          <button class="preset-help-btn" id="preset-help-btn" aria-label="Preset descriptions" type="button">?</button>
+        </div>
+        <div id="preset-tooltip" class="preset-tooltip hidden">
+          <div class="preset-tip-item"><strong>Breakout Play</strong><span>Resistance breakout stocks. Prob &ge; 50%, Score &ge; 30, RR &ge; 1.5. Trend-following oriented.</span></div>
+          <div class="preset-tip-item"><strong>Bottom Reversal</strong><span>Inverse H&amp;S and bottom patterns. Prob &ge; 50%, Score &ge; 30. Contrarian / pullback-buy oriented.</span></div>
+          <div class="preset-tip-item"><strong>Momentum Continuation</strong><span>Perfect Order forming &mdash; strong trend stocks. Prob &ge; 50%, Score &ge; 50.</span></div>
+          <div class="preset-tip-item"><strong>MA Squeeze Watchlist</strong><span>Multiple MAs converging &mdash; pre-breakout setup. No prob/RR filter, Score &ge; 30. Good for observation before entry.</span></div>
+          <div class="preset-tip-item"><strong>Ichimoku Bullish</strong><span>Cloud breakout + conversion line bullish. Prob &ge; 50%, Score &ge; 30. Suited for swing trades.</span></div>
+        </div>
+        <select id="preset">
+          <option value="">Custom</option>
+          <option value="breakout">Breakout Play</option>
+          <option value="reversal">Bottom Reversal</option>
+          <option value="momentum">Momentum Continuation</option>
+          <option value="ma_squeeze">MA Squeeze Watchlist</option>
+          <option value="ichimoku">Ichimoku Bullish</option>
+        </select>
+      </section>
+
+      <section class="stats-section">
+        <h2>Scan Stats</h2>
+        <div id="stats" class="stats">
+          <div class="stat-item">
+            <span class="stat-label">Scanned</span>
+            <span id="stat-scanned" class="stat-value">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Signals</span>
+            <span id="stat-signals" class="stat-value">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Showing</span>
+            <span id="stat-showing" class="stat-value">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Favorites</span>
+            <span id="stat-favorites" class="stat-value">0</span>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+      <!-- Sort bar -->
+      <div class="sort-bar">
+        <span>Sort:</span>
+        <button class="sort-btn active" data-sort="score">Score &#9660;</button>
+        <button class="sort-btn" data-sort="probability">Prob</button>
+        <button class="sort-btn" data-sort="rr_ratio">RR</button>
+        <button class="sort-btn" data-sort="price">Price</button>
+        <div class="sort-bar-right">
+          <button id="rec-toggle-btn" class="fav-toggle-btn">&#9733; Recommended</button>
+          <button id="fav-toggle-btn" class="fav-toggle-btn">&#11088; Favorites</button>
+          <a href="backtest.html" class="bt-toggle-btn" target="_blank" rel="noopener">&#128202; Backtest</a>
+        </div>
+      </div>
+
+      <!-- Market condition banner -->
+      <div id="market-banner" class="market-banner hidden"></div>
+
+      <!-- Results table -->
+      <div class="table-wrapper">
+        <table id="results-table">
+          <thead>
+            <tr>
+              <th class="star-th"></th>
+              <th>Ticker</th>
+              <th>Company</th>
+              <th>Score</th>
+              <th>Day &Delta;</th>
+              <th>Wk &Delta;</th>
+              <th>Prob</th>
+              <th>Price</th>
+              <th>Target</th>
+              <th>Stop</th>
+              <th>RR</th>
+              <th>Pattern</th>
+            </tr>
+          </thead>
+          <tbody id="results-body">
+            <tr><td colspan="12" class="loading">Loading data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Chart panel -->
+      <div id="chart-panel" class="chart-panel hidden">
+        <div class="chart-header">
+          <span id="chart-title"></span>
+          <button id="chart-close" class="chart-close">&#10005;</button>
+        </div>
+        <div id="chart-container"></div>
+        <div id="order-memo"></div>
+        <div id="signal-detail" class="signal-detail"></div>
+        <div id="ind-help-panel" class="ind-help-panel hidden"></div>
+        <div class="pattern-list-section">
+          <div class="pattern-list-header">Detected Patterns</div>
+          <div id="pattern-list" class="pattern-list"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
+    Data: Yahoo Finance &nbsp;|&nbsp; S&amp;P 500 constituents, updated daily after market close (ET)
+  </footer>
+
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
