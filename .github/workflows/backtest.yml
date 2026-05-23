@@ -1,0 +1,41 @@
+name: Backtest (Weekly)
+
+on:
+  schedule:
+    # Every Friday at 22:00 UTC (safely after US market close)
+    - cron: '0 22 * * 5'
+
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scanner/requirements.txt
+
+      - name: Run backtest
+        run: |
+          python scanner/backtest.py \
+            --data-dir docs/data \
+            --output docs/data/backtest.json
+
+      - name: Commit results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/backtest.json
+          git diff --staged --quiet || \
+            git commit -m "$(TZ=America/New_York date '+%Y-%m-%d') backtest updated"
+          git push
