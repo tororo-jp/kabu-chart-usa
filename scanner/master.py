@@ -1,10 +1,24 @@
-"""S&P 500 stock list reader and metadata fetcher."""
+"""Stock universe reader and metadata fetcher.
 
+Primary source: stocks/universe.txt (NYSE + NASDAQ, sector-filtered).
+Fallback:       S&P 500 from Wikipedia.
+"""
+
+import json
 import logging
 import os
 import pandas as pd
 
 logger = logging.getLogger(__name__)
+
+# yfinance sector names for the sectors to exclude
+EXCLUDED_SECTORS: set[str] = {
+    "Utilities",
+    "Real Estate",
+    "Consumer Defensive",   # Consumer Staples in GICS
+    "Healthcare",           # Health Care in GICS
+    "Financial Services",   # Financials in GICS
+}
 
 _SP500_WIKI_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
@@ -99,6 +113,58 @@ def get_stock_info(master_path: str = "stocks/sp500_info.csv") -> dict[str, dict
         df.to_csv(master_path, index=False)
 
     return _df_to_info(df)
+
+
+def get_universe_tickers(
+    universe_path: str = "stocks/universe.txt",
+    master_path: str = "stocks/sp500_info.csv",
+    txt_cache: str = "stocks/sp500_tickers.txt",
+) -> list[str]:
+    """Return universe tickers (NYSE + NASDAQ, sector-filtered).
+
+    Falls back to S&P 500 if stocks/universe.txt has not been built yet.
+    Run scanner/build_universe.py (or the refresh-universe workflow) to build it.
+    """
+    if os.path.exists(universe_path):
+        with open(universe_path) as f:
+            tickers = [line.strip() for line in f if line.strip()]
+        if tickers:
+            logger.info("Loaded %d tickers from universe %s", len(tickers), universe_path)
+            return tickers
+
+    logger.warning(
+        "%s not found — falling back to S&P 500. "
+        "Run scanner/build_universe.py to build the full universe.",
+        universe_path,
+    )
+    return get_sp500_tickers(master_path, txt_cache)
+
+
+def get_universe_info(
+    sector_map_path: str = "stocks/sector_map.json",
+    master_path: str = "stocks/sp500_info.csv",
+) -> dict[str, dict]:
+    """Return {ticker: {name, sector, sub_sector}} from sector_map or S&P 500 CSV."""
+    # Try sector_map.json first (covers full NYSE + NASDAQ universe)
+    if os.path.exists(sector_map_path):
+        try:
+            with open(sector_map_path, encoding="utf-8") as f:
+                raw: dict[str, dict] = json.load(f)
+            info = {
+                ticker: {
+                    "name":       entry.get("name", ticker),
+                    "sector":     entry.get("sector", ""),
+                    "sub_sector": "",
+                }
+                for ticker, entry in raw.items()
+            }
+            logger.info("Loaded info for %d tickers from %s", len(info), sector_map_path)
+            return info
+        except Exception as e:
+            logger.warning("Failed to read sector map: %s", e)
+
+    # Fall back to S&P 500 CSV
+    return get_stock_info(master_path)
 
 
 def _df_to_info(df: pd.DataFrame) -> dict[str, dict]:
