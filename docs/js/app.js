@@ -49,7 +49,7 @@ function _syncFavUI() {
   const count = favorites.size;
   document.getElementById("stat-favorites").textContent = count;
   document.getElementById("fav-toggle-btn").textContent =
-    `⭐ Favorites${count > 0 ? ` (${count})` : ""}`;
+    `⭐ お気に入り${count > 0 ? ` (${count})` : ""}`;
 }
 
 // ── Presets ──────────────────────────────────────────────────
@@ -127,7 +127,7 @@ async function loadHistoricalScores(scanDateStr) {
 }
 
 function scoreDeltaHtml(score, historical, code) {
-  if (!(code in historical)) return `<span class="score-delta score-delta-new">New</span>`;
+  if (!(code in historical)) return `<span class="score-delta score-delta-new">新規</span>`;
   const d = score - historical[code];
   if (d === 0) return `<span class="score-delta score-delta-flat">±0</span>`;
   const sign = d > 0 ? "+" : "";
@@ -153,7 +153,7 @@ async function loadData() {
       : new Date().toISOString().slice(0, 10);
     loadHistoricalScores(scanDateStr).then(() => renderTable());
     document.getElementById("last-update").textContent =
-      scanMeta.generated_at ? `Last Update: ${scanMeta.generated_at}` : "";
+      scanMeta.generated_at ? `最終更新：${scanMeta.generated_at}` : "";
     document.getElementById("stat-scanned").textContent = scanMeta.total_scanned.toLocaleString();
     document.getElementById("stat-signals").textContent = scanMeta.total_signals.toLocaleString();
 
@@ -165,7 +165,7 @@ async function loadData() {
     if (urlCode) openChart(urlCode);
   } catch (e) {
     const tbody = document.getElementById("results-body");
-    tbody.innerHTML = `<tr><td colspan="12" class="loading" style="color:#f85149">Failed to load data: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="12" class="loading" style="color:#f85149">データの読み込みに失敗しました：${e.message}</td></tr>`;
   }
 }
 
@@ -181,8 +181,8 @@ function _renderMarketBanner() {
   const sma200 = env.sma200 ? env.sma200.toLocaleString("en-US") : "-";
   banner.className = `market-banner ${bull ? "market-bull" : "market-bear"}`;
   banner.innerHTML = bull
-    ? `🟢 <strong>Bull Market</strong> — S&amp;P 500 ${sp500} is above the 200MA ${sma200}. Favorable entry environment.`
-    : `🔴 <strong>Bear Market</strong> — S&amp;P 500 ${sp500} is below the 200MA ${sma200}. Exercise caution on new entries.`;
+    ? `🟢 <strong>強気市場</strong> — S&amp;P 500 ${sp500} は200MA ${sma200} を上回っています。エントリーに有利な環境です。`
+    : `🔴 <strong>弱気市場</strong> — S&amp;P 500 ${sp500} は200MA ${sma200} を下回っています。新規エントリーには注意が必要です。`;
 }
 
 function _buildSectorFilter() {
@@ -252,10 +252,10 @@ function renderTable() {
   const tbody = document.getElementById("results-body");
   if (filteredResults.length === 0) {
     const msg = showFavoritesOnly
-      ? "No favorites saved. Click ☆ to add stocks."
+      ? "お気に入りがありません。☆をクリックして追加してください。"
       : showRecOnly
-      ? "No recommended candidates (Score 60+, Prob 60%+, RR 2.0+, no earnings)."
-      : "No stocks match the current filters";
+      ? "推奨候補なし（スコア60以上、確率60%以上、RR 2.0以上、決算なし）"
+      : "現在のフィルターに一致する銘柄がありません";
     tbody.innerHTML = `<tr><td colspan="12" class="loading">${msg}</td></tr>`;
     return;
   }
@@ -362,7 +362,7 @@ function openChart(code) {
   } catch (e) {
     console.error("Chart render error:", e);
     document.getElementById("chart-container").innerHTML =
-      `<div style="padding:20px;color:#7d8590">Chart render failed: ${e.message}</div>`;
+      `<div style="padding:20px;color:#7d8590">チャートの描画に失敗しました：${e.message}</div>`;
   }
 
   _chartStock = stock;
@@ -372,17 +372,17 @@ function openChart(code) {
   const details = [
     { label: "RSI", value: ind.rsi != null ? `${ind.rsi}` : "-" },
     { label: "ADX", value: ind.adx != null ? `${ind.adx}` : "-" },
-    { label: "Vol Ratio", value: ind.vol_ratio != null ? `${ind.vol_ratio}×` : "-" },
-    { label: "Avg Volume", value: ind.avg_daily_value != null
+    { label: "出来高比", value: ind.vol_ratio != null ? `${ind.vol_ratio}×` : "-" },
+    { label: "平均出来高", value: ind.avg_daily_value != null
         ? `$${ind.avg_daily_value >= 1000
             ? (ind.avg_daily_value / 1000).toFixed(1) + "B"
-            : ind.avg_daily_value.toFixed(1) + "M"}/day${stock.liquidity_warning ? " 💧" : ""}`
+            : ind.avg_daily_value.toFixed(1) + "M"}/日${stock.liquidity_warning ? " 💧" : ""}`
         : "-" },
-    { label: "Target", value: stock.target ? `$${fmt(stock.target)}` : "-" },
-    { label: "Est. Period", value: (stock.weeks_min && stock.weeks_max) ? `${stock.weeks_min}–${stock.weeks_max}wks` : "-" },
-    { label: "Stop Loss", value: stock.stop_loss ? `$${fmt(stock.stop_loss)}` : "-" },
-    { label: "RR Ratio", value: stock.rr_ratio ? `${stock.rr_ratio.toFixed(1)}:1` : "-" },
-    { label: "RS Score", value: stock.rs != null ? `${stock.rs}` : "-" },
+    { label: "目標", value: stock.target ? `$${fmt(stock.target)}` : "-" },
+    { label: "予想期間", value: (stock.weeks_min && stock.weeks_max) ? `${stock.weeks_min}–${stock.weeks_max}週` : "-" },
+    { label: "損切り", value: stock.stop_loss ? `$${fmt(stock.stop_loss)}` : "-" },
+    { label: "RR比率", value: stock.rr_ratio ? `${stock.rr_ratio.toFixed(1)}:1` : "-" },
+    { label: "RSスコア", value: stock.rs != null ? `${stock.rs}` : "-" },
   ];
 
   document.getElementById("signal-detail").innerHTML = details
@@ -406,7 +406,7 @@ function openChart(code) {
           <span class="conf-pct ${cls}">${pct}%</span>
         </div>`;
       }).join("")
-    : `<span class="conf-empty">No patterns detected</span>`;
+    : `<span class="conf-empty">パターンが検出されませんでした</span>`;
 
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -440,10 +440,10 @@ function _renderOrderMemo(stock, overrideEntry) {
       : null;
     const rrCls  = rr >= 2 ? "rr-good" : rr >= 1.5 ? "rr-ok" : "rr-bad";
     const verdict = rr >= 1.5
-      ? `<span class="entry-ok">✓ Entry OK</span>`
-      : `<span class="entry-ng">✗ Skip (poor RR)</span>`;
+      ? `<span class="entry-ok">✓ エントリーOK</span>`
+      : `<span class="entry-ng">✗ スキップ（RR不足）</span>`;
     const gapStr = sign != null
-      ? `<span class="entry-gap ${sign > 0 ? "entry-gap-up" : "entry-gap-dn'}">${sign >= 0 ? "+" : ""}${sign.toFixed(1)}% vs scan</span>`
+      ? `<span class="entry-gap ${sign > 0 ? "entry-gap-up" : "entry-gap-dn'}">${sign >= 0 ? "+" : ""}${sign.toFixed(1)}%（スキャン比）</span>`
       : "";
     rrHtml = `<span class="order-val ${rrCls}" id="order-rr-val">${rr >= 0 ? rr.toFixed(1) : "-"}:1</span>${gapStr} ${verdict}`;
   } else {
@@ -454,36 +454,36 @@ function _renderOrderMemo(stock, overrideEntry) {
 
   document.getElementById("order-memo").innerHTML = `
     <div class="order-memo">
-      <div class="order-memo-title">📝 Order Memo <button class="ind-help-btn" onclick="toggleIndHelp()" title="Indicator guide">?</button></div>
+      <div class="order-memo-title">📝 注文メモ <button class="ind-help-btn" onclick="toggleIndHelp()" title="インジケーターガイド">?</button></div>
       <div class="order-row">
-        <span class="order-label">Entry Price</span>
+        <span class="order-label">エントリー価格</span>
         <div class="order-entry-wrap">
           <span class="order-hint-prefix">$</span>
           <input id="order-entry-input" class="order-entry-input" type="number" step="0.01"
             value="${entry != null ? Number(entry).toFixed(2) : ""}"
             placeholder="${stock.price != null ? Number(stock.price).toFixed(2) : ""}"
             oninput="recalcOrderMemo()" />
-          <button class="order-entry-reset" onclick="recalcOrderMemo(true)" title="Reset to scan price">↺</button>
+          <button class="order-entry-reset" onclick="recalcOrderMemo(true)" title="スキャン価格にリセット">↺</button>
         </div>
-        <span class="order-hint">Scan close: $${fmt(stock.price)}</span>
+        <span class="order-hint">スキャン終値：$${fmt(stock.price)}</span>
       </div>
       <div class="order-row">
-        <span class="order-label">Target</span>
+        <span class="order-label">目標</span>
         <span class="order-val order-target">$${fmt(target)}</span>
-        <span class="order-hint">${stock.weeks_min || 2}–${stock.weeks_max || 4}wks</span>
+        <span class="order-hint">${stock.weeks_min || 2}–${stock.weeks_max || 4}週</span>
       </div>
       <div class="order-row">
-        <span class="order-label">Stop Loss</span>
+        <span class="order-label">損切り</span>
         <span class="order-val order-stop">$${fmt(stop)}</span>
       </div>
       <div class="order-row">
-        <span class="order-label">RR Ratio</span>
+        <span class="order-label">RR比率</span>
         ${rrHtml}
       </div>
-      ${stock.blue_sky ? `<div class="order-alert order-alert-sky">🌤 All-time high breakout (${stock.sky_years}+ yr high) — no overhead resistance. Shallow pullbacks likely.</div>` : stock.at_52w_high ? `<div class="order-alert order-alert-sky">📈 52-week high breakout — cleared recent resistance. Potential new trend.</div>` : ""}
-      ${stock.earnings_warning ? `<div class="order-alert order-alert-earnings">📅 Earnings ${stock.next_earnings_date || "upcoming"} — caution on entry</div>` : ""}
-      ${stock.liquidity_warning ? `<div class="order-alert order-alert-liq">💧 Low liquidity: avg daily volume under $1M — watch for slippage. Consider split entry.</div>` : ""}
-      ${isRec && (overrideEntry == null) ? `<div class="order-alert order-alert-rec">★ Recommended (Score, Prob, RR all above threshold)</div>` : ""}
+      ${stock.blue_sky ? `<div class="order-alert order-alert-sky">🌤 史上最高値ブレイクアウト（${stock.sky_years}年以上ぶり高値）— 上値抵抗なし。浅い押し目が予想されます。</div>` : stock.at_52w_high ? `<div class="order-alert order-alert-sky">📈 52週高値ブレイクアウト — 直近レジスタンスを突破。新トレンドの可能性。</div>` : ""}
+      ${stock.earnings_warning ? `<div class="order-alert order-alert-earnings">📅 決算 ${stock.next_earnings_date || "予定"} — エントリーに注意</div>` : ""}
+      ${stock.liquidity_warning ? `<div class="order-alert order-alert-liq">💧 流動性低下：平均日次出来高$1M未満 — スリッページに注意。分割エントリーを検討。</div>` : ""}
+      ${isRec && (overrideEntry == null) ? `<div class="order-alert order-alert-rec">★ おすすめ（スコア、確率、RRすべて基準以上）</div>` : ""}
     </div>
   `;
 }
@@ -507,38 +507,38 @@ const IND_HELP = [
   {
     name: "RSI",
     ideal: "50–65",
-    warn: "Above 75 / Below 25",
-    desc: "Relative Strength Index over 14 days (0–100). Ideal entry zone for uptrends is 50–65. Above 75 is overbought — risk of buying the top. Below 30 recovering from oversold is suitable for reversal plays combined with a pattern signal.",
+    warn: "75超 / 25未満",
+    desc: "14日間の相対力指数（0–100）。上昇トレンドへの理想的なエントリーゾーンは50–65。75超は買われすぎ — 高値掴みのリスクあり。30以下から回復中は、パターンシグナルと組み合わせた反転プレーに適している。",
   },
   {
     name: "ADX",
-    ideal: "25+",
-    warn: "Below 20",
-    desc: "Measures trend strength (0–100), direction-neutral. Above 25 indicates a clear trend; above 40 is a strong trend. Below 20 suggests a ranging market where breakout signals have a higher rate of failure.",
+    ideal: "25以上",
+    warn: "20未満",
+    desc: "トレンド強度を測定（0–100）、方向性は問わない。25超は明確なトレンドあり、40超は強いトレンド。20未満はレンジ相場を示し、ブレイクアウトシグナルの失敗率が高くなる。",
   },
   {
-    name: "Vol Ratio",
-    ideal: "1.5× or more",
-    warn: "Below 1.0×",
-    desc: "Today's volume ÷ 20-day average volume. Volume confirmation is critical for breakouts and reversals. 1.5× or more increases signal reliability; 2× or more may indicate institutional activity. Breakouts on low volume are prone to being false.",
+    name: "出来高比",
+    ideal: "1.5倍以上",
+    warn: "1.0倍未満",
+    desc: "当日出来高 ÷ 20日平均出来高。ブレイクアウトや反転においては出来高の確認が重要。1.5倍以上でシグナルの信頼性が向上、2倍以上は機関投資家の活動を示す可能性あり。出来高の少ないブレイクアウトはダマシになりやすい。",
   },
   {
-    name: "RR Ratio",
-    ideal: "2.0+",
-    warn: "Below 1.5",
-    desc: "(Target − Entry) ÷ (Entry − Stop). A ratio of 2:1 means you win twice as much as you risk per trade. At 50% win rate, a 2:1 RR is still profitable over time. Aim for 1.5 minimum, 2.0 ideally. Avoid below 1.0.",
+    name: "RR比率",
+    ideal: "2.0以上",
+    warn: "1.5未満",
+    desc: "（目標 − エントリー）÷（エントリー − 損切り）。2:1は1回のリスクに対して2倍の利益が得られることを意味する。勝率50%でも2:1のRRなら長期的にプラスになる。最低1.5、理想は2.0を目指す。1.0未満は避けること。",
   },
   {
-    name: "RS Score",
-    ideal: "60+",
-    warn: "Below 40",
-    desc: "Relative strength vs the S&P 500 (0–100). Higher means the stock outperforms the broader market. Above 80 means top 20% of all scanned stocks. Strong RS stocks tend to move sharply on market rebounds.",
+    name: "RSスコア",
+    ideal: "60以上",
+    warn: "40未満",
+    desc: "S&P 500対比の相対力スコア（0–100）。高いほど市場平均を上回るパフォーマンス。80超はスキャン全銘柄の上位20%。RSスコアが高い銘柄は市場反発時に急騰しやすい。",
   },
   {
-    name: "Daily Volume (Liquidity)",
-    ideal: "$1M/day+",
-    warn: "Under $1M/day 💧",
-    desc: "Estimated daily dollar volume (20-day avg shares × price). For swing trading, liquidity is critical — you need to be able to sell when you want. Under $1M/day means a thin order book with slippage risk. $5M+ is comfortable for most position sizes; $10M+ allows institutional-size trades. 💧 mark indicates under $1M/day.",
+    name: "日次出来高（流動性）",
+    ideal: "$100万/日以上",
+    warn: "$100万/日未満 💧",
+    desc: "推定日次ドル出来高（20日平均株数×価格）。スイングトレードでは流動性が重要 — 売りたい時に売れる必要がある。$100万/日未満は板が薄くスリッページリスクあり。$500万以上は大半のポジションサイズに問題なし、$1000万以上なら機関投資家規模の取引も可能。💧マークは$100万/日未満を示す。",
   },
 ];
 
@@ -551,8 +551,8 @@ function toggleIndHelp() {
     modal.innerHTML = `
       <div class="help-modal-box">
         <div class="help-modal-head">
-          Indicator Guide
-          <button class="help-modal-close" aria-label="Close">✕</button>
+          インジケーターガイド
+          <button class="help-modal-close" aria-label="閉じる">✕</button>
         </div>
         <div class="help-modal-body">
           ${IND_HELP.map(ind => `
@@ -561,8 +561,8 @@ function toggleIndHelp() {
               <div class="ind-help-body">
                 <div class="ind-help-desc">${ind.desc}</div>
                 <div class="ind-help-tags">
-                  <span class="ind-tag ind-tag-ideal">Ideal: ${ind.ideal}</span>
-                  <span class="ind-tag ind-tag-warn">Caution: ${ind.warn}</span>
+                  <span class="ind-tag ind-tag-ideal">理想：${ind.ideal}</span>
+                  <span class="ind-tag ind-tag-warn">注意：${ind.warn}</span>
                 </div>
               </div>
             </div>`).join("")}

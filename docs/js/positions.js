@@ -16,10 +16,10 @@ let showAfterTax = false;
 let _benchJson   = null;   // cached benchmark.json
 
 const STOP_STAGES = [
-  { label: 'Initial',     cls: 'stage-initial',   title: 'Initial stop: entry − ATR×2 (no change needed)' },
-  { label: 'Breakeven',   cls: 'stage-breakeven', title: 'Price ≥ entry + ATR → raise stop to entry (no risk)' },
-  { label: 'Lock Profit', cls: 'stage-profit',    title: '50%+ to target → raise stop to entry + ATR' },
-  { label: 'Trailing',    cls: 'stage-trailing',  title: '70%+ to target → trail stop at current − ATR×1.5' },
+  { label: '初期',           cls: 'stage-initial',   title: '初期ストップ：エントリー − ATR×2（変更不要）' },
+  { label: 'ブレイクイーブン', cls: 'stage-breakeven', title: '価格 ≥ エントリー + ATR → ストップをエントリーに引き上げ（ノーリスク）' },
+  { label: '利益確定',        cls: 'stage-profit',    title: '目標まで50%以上 → ストップをエントリー + ATRに引き上げ' },
+  { label: 'トレーリング',    cls: 'stage-trailing',  title: '目標まで70%以上 → 現在価格 − ATR×1.5でトレーリングストップ' },
 ];
 
 let formScanAtr = null;
@@ -41,9 +41,9 @@ async function loadScanData() {
     scanMeta = { generated_at: json.generated_at || "" };
     (json.results || []).forEach(r => { stockData[r.code] = r; });
     document.getElementById("pos-scan-time").textContent =
-      scanMeta.generated_at ? `Last Scan: ${scanMeta.generated_at}` : "";
+      scanMeta.generated_at ? `最終スキャン：${scanMeta.generated_at}` : "";
     document.getElementById("pos-scan-label").textContent =
-      scanMeta.generated_at ? `Scan: ${scanMeta.generated_at}` : "";
+      scanMeta.generated_at ? `スキャン：${scanMeta.generated_at}` : "";
   } catch (e) {
     console.warn("results.json load failed:", e);
   }
@@ -100,7 +100,7 @@ function toggleTax() {
   showAfterTax = !showAfterTax;
   const btn = document.getElementById("tax-btn");
   if (btn) {
-    btn.textContent = showAfterTax ? "After Tax 20%" : "Pre-tax";
+    btn.textContent = showAfterTax ? "税引後20%" : "税引前";
     btn.classList.toggle("tax-active", showAfterTax);
   }
   render();
@@ -156,14 +156,14 @@ function renderMonthlyPerf() {
 
   let badgeText, badgeCls, fillCls;
   if (pct >= MONTHLY_TARGET) {
-    badgeText = "Target Hit ✓"; badgeCls = "mpb-achieved"; fillCls = "gf-green";
+    badgeText = "目標達成 ✓"; badgeCls = "mpb-achieved"; fillCls = "gf-green";
   } else if (pct >= MONTHLY_REQUIRED) {
-    badgeText = "Required Hit";   badgeCls = "mpb-required"; fillCls = "gf-blue";
+    badgeText = "必要達成";   badgeCls = "mpb-required"; fillCls = "gf-blue";
   } else if (pct >= 0) {
-    badgeText = `${(MONTHLY_REQUIRED - pct).toFixed(1)}% to Required`;
+    badgeText = `必要まであと${(MONTHLY_REQUIRED - pct).toFixed(1)}%`;
     badgeCls = "mpb-progress"; fillCls = "gf-yellow";
   } else {
-    badgeText = "In Loss";    badgeCls = "mpb-loss";     fillCls = "gf-red";
+    badgeText = "損失中";    badgeCls = "mpb-loss";     fillCls = "gf-red";
   }
 
   const badgeEl = document.getElementById("monthly-perf-badge");
@@ -223,8 +223,8 @@ function renderOpen() {
 
   if (open.length === 0) {
     tbody.innerHTML = `<tr><td colspan="14" class="pos-empty">
-      No open positions.<br>
-      Click "＋ Add Position" to get started.
+      オープンポジションがありません。<br>
+      「＋ ポジション追加」をクリックして始めましょう。
     </td></tr>`;
     return;
   }
@@ -315,8 +315,8 @@ function renderOpen() {
       <td>${escHtml(p.entry_date || "-")}</td>
       <td>${deadlineHtml(p)}</td>
       <td>
-        <button class="pos-close-btn" onclick="showCloseModal('${p.id}')">Close</button>
-        <button class="pos-del-btn"   onclick="deletePosition('${p.id}')">Delete</button>
+        <button class="pos-close-btn" onclick="showCloseModal('${p.id}')">決済</button>
+        <button class="pos-del-btn"   onclick="deletePosition('${p.id}')">削除</button>
       </td>
     </tr>`;
   }).join("");
@@ -349,7 +349,7 @@ function renderHistory() {
       </td>
       <td>${escHtml(p.entry_date || "-")}</td>
       <td>${escHtml(p.close_date || "-")}</td>
-      <td><button class="pos-del-btn" onclick="deletePosition('${p.id}')">Delete</button></td>
+      <td><button class="pos-del-btn" onclick="deletePosition('${p.id}')">削除</button></td>
     </tr>`;
   }).join("");
 }
@@ -486,7 +486,7 @@ async function renderComparisonChart() {
   });
 
   const userLine = chart.addLineSeries({
-    color: "#3fb950", lineWidth: 2, title: "Mine",
+    color: "#3fb950", lineWidth: 2, title: "自分",
     priceFormat: pctFmt, lastValueVisible: true, priceLineVisible: false,
   });
   userLine.setData(userSeries);
@@ -494,7 +494,7 @@ async function renderComparisonChart() {
 
   if (spSeries) {
     const spLine = chart.addLineSeries({
-      color: "#58a6ff", lineWidth: 1, lineStyle: 2, title: "S&P 500",
+      color: "#58a6ff", lineWidth: 1, lineStyle: 2, title: "S&P500",
       priceFormat: pctFmt, lastValueVisible: true, priceLineVisible: false,
     });
     spLine.setData(spSeries);
@@ -511,7 +511,7 @@ async function renderComparisonChart() {
   const last = userSeries[userSeries.length - 1];
   const legendEl = document.getElementById("bench-legend-user");
   if (legendEl && last) {
-    legendEl.textContent = `Mine ${last.value >= 0 ? "+" : ""}${last.value.toFixed(2)}%`;
+    legendEl.textContent = `自分 ${last.value >= 0 ? "+" : ""}${last.value.toFixed(2)}%`;
   }
 
   chart.timeScale().fitContent();
@@ -536,9 +536,9 @@ function deadlineHtml(p) {
   const daysLeft = Math.round((new Date(dl) - new Date(today)) / 86400000);
   const [, mm, dd] = dl.split("-");
   const dateStr = `${mm}/${dd}`;
-  if (daysLeft < 0)  return `<span class="deadline-over">${dateStr} (overdue)</span>`;
-  if (daysLeft <= 7) return `<span class="deadline-near">${dateStr} (${daysLeft}d left)</span>`;
-  return `<span class="deadline-ok">${dateStr} (${daysLeft}d left)</span>`;
+  if (daysLeft < 0)  return `<span class="deadline-over">${dateStr} (期限超過)</span>`;
+  if (daysLeft <= 7) return `<span class="deadline-near">${dateStr} (残${daysLeft}日)</span>`;
+  return `<span class="deadline-ok">${dateStr} (残${daysLeft}日)</span>`;
 }
 
 // ── Stop Advice ────────────────────────────────────────────────────────────
@@ -599,7 +599,7 @@ function applyAllAdvice() {
 function toggleForm() {
   const wrap = document.getElementById("pos-form-wrap");
   const isHidden = wrap.classList.toggle("hidden");
-  document.getElementById("add-btn").textContent = isHidden ? "＋ Add Position" : "✕ Cancel";
+  document.getElementById("add-btn").textContent = isHidden ? "＋ ポジション追加" : "✕ キャンセル";
   if (!isHidden) document.getElementById("f-code").focus();
   if (isHidden) { formScanAtr = null; }
   document.getElementById("form-error").textContent = "";
@@ -610,7 +610,7 @@ function autoFill() {
   const stock = stockData[code];
   if (!stock) {
     document.getElementById("form-error").textContent =
-      `Ticker "${code}" not found in today's scan results`;
+      `ティッカー「${code}」は今日のスキャン結果に見つかりません`;
     return;
   }
   document.getElementById("form-error").textContent = "";
@@ -646,9 +646,9 @@ function submitAdd() {
   const stop   = parseFloat(document.getElementById("f-stop").value)   || null;
   const errEl  = document.getElementById("form-error");
 
-  if (!code)           { errEl.textContent = "Please enter a ticker symbol"; return; }
-  if (!shares || shares <= 0) { errEl.textContent = "Please enter share count"; return; }
-  if (!entry  || entry  <= 0) { errEl.textContent = "Please enter entry price"; return; }
+  if (!code)           { errEl.textContent = "ティッカーシンボルを入力してください"; return; }
+  if (!shares || shares <= 0) { errEl.textContent = "株数を入力してください"; return; }
+  if (!entry  || entry  <= 0) { errEl.textContent = "エントリー価格を入力してください"; return; }
 
   const stock = stockData[code];
   allPositions.push({
@@ -712,7 +712,7 @@ function confirmClose() {
 function deletePosition(id) {
   const p = allPositions.find(x => x.id === id);
   if (!p) return;
-  if (!confirm(`Delete ${p.code} ${p.name}?`)) return;
+  if (!confirm(`${p.code} ${p.name} を削除しますか？`)) return;
   allPositions = allPositions.filter(x => x.id !== id);
   savePositions();
   render();

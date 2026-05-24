@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guide | US Stock Technical Scanner</title>
+  <title>ガイド | 米国株テクニカルスキャナー</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/help.css" />
 </head>
@@ -11,8 +11,8 @@
 
 <header>
   <div class="help-header-inner">
-    <a href="index.html" class="back-link">&larr; Back to Scanner</a>
-    <h1>Guide</h1>
+    <a href="index.html" class="back-link">&larr; スキャナーに戻る</a>
+    <h1>ガイド</h1>
   </div>
 </header>
 
@@ -20,1003 +20,1003 @@
 
   <nav class="help-nav" id="help-nav">
     <ul>
-      <li class="nav-section">Introduction</li>
-      <li><a href="#overview">About This Tool</a></li>
-      <li><a href="#basic">Basic Usage</a></li>
-      <li class="nav-section">Filters</li>
-      <li><a href="#filters">Filter Details</a></li>
-      <li><a href="#presets">Presets</a></li>
-      <li class="nav-section">How It Works</li>
-      <li><a href="#scan-target">Scan Target &amp; Data</a></li>
-      <li><a href="#scoring">Scoring</a></li>
-      <li><a href="#score-vs-prob">Score vs Probability</a></li>
-      <li><a href="#patterns">Chart Patterns</a></li>
-      <li><a href="#target-calc">Target &amp; Stop Loss</a></li>
-      <li class="nav-section">Features</li>
-      <li><a href="#backtest">Backtest</a></li>
-      <li><a href="#favorites">Favorites</a></li>
-      <li class="nav-section">Entry</li>
-      <li><a href="#entry-guide">Entry Decision Guide</a></li>
-      <li><a href="#entry-gap">Gap-Up Entry Judgment</a></li>
-      <li><a href="#entry-checklist">Entry Checklist</a></li>
-      <li><a href="#entry-split">Scaling In</a></li>
-      <li class="nav-section">Other</li>
-      <li><a href="#disclaimer">Disclaimer</a></li>
+      <li class="nav-section">はじめに</li>
+      <li><a href="#overview">ツールについて</a></li>
+      <li><a href="#basic">基本的な使い方</a></li>
+      <li class="nav-section">フィルター</li>
+      <li><a href="#filters">フィルター詳細</a></li>
+      <li><a href="#presets">プリセット</a></li>
+      <li class="nav-section">仕組み</li>
+      <li><a href="#scan-target">スキャン対象・データ</a></li>
+      <li><a href="#scoring">スコアリング</a></li>
+      <li><a href="#score-vs-prob">スコアと確率の違い</a></li>
+      <li><a href="#patterns">チャートパターン</a></li>
+      <li><a href="#target-calc">目標・損切り計算</a></li>
+      <li class="nav-section">機能</li>
+      <li><a href="#backtest">バックテスト</a></li>
+      <li><a href="#favorites">お気に入り</a></li>
+      <li class="nav-section">エントリー</li>
+      <li><a href="#entry-guide">エントリー判断ガイド</a></li>
+      <li><a href="#entry-gap">ギャップアップ判断</a></li>
+      <li><a href="#entry-checklist">エントリーチェックリスト</a></li>
+      <li><a href="#entry-split">分割エントリー</a></li>
+      <li class="nav-section">その他</li>
+      <li><a href="#disclaimer">免責事項</a></li>
     </ul>
   </nav>
 
   <main class="help-content">
 
     <section class="help-section" id="overview">
-      <h2>About This Tool</h2>
-      <p>All S&amp;P 500 constituents (~503 stocks) are automatically scanned every trading day after market close (ET), and stocks with strong technical setups are displayed ranked by score.</p>
+      <h2>ツールについて</h2>
+      <p>S&amp;P 500全構成銘柄（約503銘柄）を毎取引日の米国市場クローズ後（ET）に自動スキャンし、テクニカル的に強いセットアップを持つ銘柄をスコア順に表示します。</p>
       <div class="info-box">
-        <p>This tool is for informational purposes only. Scores and probabilities are mechanical calculations and do not guarantee future price movements. All investment decisions are at your own risk.</p>
+        <p>本ツールは情報提供のみを目的としています。スコアと確率は機械的な計算であり、将来の価格変動を保証するものではありません。すべての投資判断はご自身のリスクで行ってください。</p>
       </div>
 
-      <h3>Key Features</h3>
+      <h3>主な機能</h3>
       <ul>
-        <li>30+ chart pattern detection (Inverse H&amp;S, Double Bottom, VCP, Perfect Order, etc.)</li>
-        <li>20+ technical indicators (RSI, MACD, ADX, Ichimoku, OBV, etc.)</li>
-        <li>Composite scoring across 5 categories (0&ndash;100 points)</li>
-        <li>Algorithmic calculation of win probability, target price, stop-loss, and RR ratio</li>
-        <li>Interactive TradingView-style candlestick charts</li>
-        <li>Automated backtest of historical signals (weekly update)</li>
-        <li>Favorites saved in browser localStorage</li>
+        <li>30種類以上のチャートパターン検出（逆H&amp;S、ダブルボトム、VCP、パーフェクトオーダーなど）</li>
+        <li>20種類以上のテクニカル指標（RSI、MACD、ADX、一目均衡表、OBVなど）</li>
+        <li>5カテゴリにわたる複合スコアリング（0〜100点）</li>
+        <li>勝率・目標価格・損切り・RR比率のアルゴリズム計算</li>
+        <li>インタラクティブなTradingView風ローソク足チャート</li>
+        <li>過去シグナルの自動バックテスト（毎週更新）</li>
+        <li>ブラウザlocalStorageへのお気に入り保存</li>
       </ul>
 
-      <h3>Data Flow</h3>
+      <h3>データフロー</h3>
       <div class="step-list">
-        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Price Fetch</strong><span>Historical OHLCV data for the past 400 trading days fetched via Yahoo Finance (yfinance). Batch download of 50 stocks at a time.</span></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Indicator Calculation</strong><span>SMA, EMA, RSI, MACD, ADX, ATR, OBV, Ichimoku, and 20+ other indicators computed with pandas.</span></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Pattern Detection</strong><span>scipy.signal and custom logic detect 30+ chart patterns, each assigned a confidence score (0&ndash;1.0).</span></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Scoring</strong><span>Trend, Pattern, Momentum, Volume, and RS evaluated across 5 categories on a 100-point scale.</span></div></div>
-        <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Publish</strong><span>Results written to results.json &rarr; committed to GitHub &rarr; auto-deployed to GitHub Pages &rarr; viewable in browser.</span></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>価格取得</strong><span>過去400取引日分のOHLCVデータをYahoo Finance（yfinance）経由で取得。50銘柄ずつ一括ダウンロード。</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>指標計算</strong><span>SMA、EMA、RSI、MACD、ADX、ATR、OBV、一目均衡表など20種類以上の指標をpandasで計算。</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>パターン検出</strong><span>scipy.signalとカスタムロジックで30種類以上のチャートパターンを検出し、各パターンに信頼度スコア（0〜1.0）を付与。</span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>スコアリング</strong><span>トレンド・パターン・モメンタム・出来高・RSの5カテゴリを100点満点で評価。</span></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><strong>公開</strong><span>結果をresults.jsonに書き込み &rarr; GitHubにコミット &rarr; GitHub Pagesに自動デプロイ &rarr; ブラウザで閲覧可能。</span></div></div>
       </div>
     </section>
 
     <section class="help-section" id="basic">
-      <h2>Basic Usage</h2>
+      <h2>基本的な使い方</h2>
 
-      <h3>Main Screen Layout</h3>
+      <h3>メイン画面レイアウト</h3>
       <table class="h-table">
-        <thead><tr><th>Area</th><th>Description</th></tr></thead>
+        <thead><tr><th>エリア</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td>Left Sidebar</td><td>Filter settings and scan stats (scanned count, signal count, showing count, favorites count)</td></tr>
-          <tr><td>Sort Bar</td><td>Sort by Score / Prob / RR / Price; toggle Favorites filter; open Backtest page</td></tr>
-          <tr><td>Results Table</td><td>Filtered stock list. Click a row to open the chart panel. &#9734; button saves to Favorites.</td></tr>
-          <tr><td>Chart Panel</td><td>Candlestick chart (120 trading days) + moving averages + target &amp; stop lines + signal details</td></tr>
+          <tr><td>左サイドバー</td><td>フィルター設定とスキャン統計（スキャン済み件数・シグナル数・表示中・お気に入り数）</td></tr>
+          <tr><td>ソートバー</td><td>スコア/確率/RR/価格でソート、お気に入りフィルター切替、バックテストページへのリンク</td></tr>
+          <tr><td>結果テーブル</td><td>フィルタリングされた銘柄リスト。行をクリックするとチャートパネルを表示。☆ボタンでお気に入り登録。</td></tr>
+          <tr><td>チャートパネル</td><td>ローソク足チャート（120取引日）＋移動平均＋目標・損切りライン＋シグナル詳細</td></tr>
         </tbody>
       </table>
 
-      <h3>Table Controls</h3>
+      <h3>テーブル操作</h3>
       <ul>
-        <li><strong>Row click</strong>: Opens the chart panel for that stock. Click another row to switch.</li>
-        <li><strong>&#9734; button</strong>: Toggle Favorites. Does not open the chart.</li>
-        <li><strong>Sort buttons</strong>: Click the same button twice to toggle ascending/descending.</li>
+        <li><strong>行クリック</strong>：その銘柄のチャートパネルを開く。別の行をクリックすると切り替わる。</li>
+        <li><strong>☆ ボタン</strong>：お気に入りのトグル。チャートは開かない。</li>
+        <li><strong>ソートボタン</strong>：同じボタンを2回クリックで昇順/降順を切り替え。</li>
       </ul>
 
-      <h3>Chart Elements</h3>
+      <h3>チャート要素</h3>
       <table class="h-table">
-        <thead><tr><th>Element</th><th>Meaning</th></tr></thead>
+        <thead><tr><th>要素</th><th>意味</th></tr></thead>
         <tbody>
-          <tr><td>Candlesticks</td><td>Past 120 trading days (shorter for recently listed stocks)</td></tr>
-          <tr><td>SMA5 (thin line)</td><td>5-day simple moving average &mdash; ultra-short-term trend</td></tr>
-          <tr><td>SMA25 (medium line)</td><td>25-day simple moving average &mdash; short-term trend baseline</td></tr>
-          <tr><td>SMA75 (thick line)</td><td>75-day simple moving average &mdash; medium-term trend</td></tr>
-          <tr><td>SMA200 (thickest line)</td><td>200-day simple moving average &mdash; long-term trend judgment</td></tr>
-          <tr><td class="good">Green horizontal line</td><td>Target price (algorithm-calculated)</td></tr>
-          <tr><td class="bad">Red horizontal line</td><td>Stop-loss price (ATR&times;2 based)</td></tr>
-          <tr><td>&#9650; marker</td><td>Signal detection point of the detected pattern</td></tr>
+          <tr><td>ローソク足</td><td>過去120取引日分（最近上場した銘柄はそれ以下）</td></tr>
+          <tr><td>SMA5（細線）</td><td>5日単純移動平均 — 超短期トレンド</td></tr>
+          <tr><td>SMA25（中線）</td><td>25日単純移動平均 — 短期トレンドの基準</td></tr>
+          <tr><td>SMA75（太線）</td><td>75日単純移動平均 — 中期トレンド</td></tr>
+          <tr><td>SMA200（最太線）</td><td>200日単純移動平均 — 長期トレンド判断</td></tr>
+          <tr><td class="good">緑の水平線</td><td>目標価格（アルゴリズム計算）</td></tr>
+          <tr><td class="bad">赤の水平線</td><td>損切り価格（ATR×2ベース）</td></tr>
+          <tr><td>▲ マーカー</td><td>検出パターンのシグナル検出ポイント</td></tr>
         </tbody>
       </table>
 
-      <h3>Signal Detail Panel</h3>
+      <h3>シグナル詳細パネル</h3>
       <table class="h-table">
-        <thead><tr><th>Item</th><th>Meaning / Target Range</th></tr></thead>
+        <thead><tr><th>項目</th><th>意味 / 目標レンジ</th></tr></thead>
         <tbody>
-          <tr><td>RSI</td><td>Relative Strength Index (14-day). 50&ndash;70 is healthy uptrend. Above 70 = overheated.</td></tr>
-          <tr><td>ADX</td><td>Trend strength. &ge; 25 = clear trend, &ge; 50 = strong trend.</td></tr>
-          <tr><td>Vol Ratio</td><td>Recent volume &divide; 20-day avg volume. &ge; 1.5&times; = notable activity.</td></tr>
-          <tr><td>Target</td><td>Target price from pattern, Fibonacci, or ATR calculation</td></tr>
-          <tr><td>Est. Period</td><td>Estimated time to reach target (e.g. 2&ndash;4 wks). Reference value only.</td></tr>
-          <tr><td>Stop Loss</td><td>Estimated stop-loss price. Use as position management baseline.</td></tr>
-          <tr><td>RR Ratio</td><td>Risk-reward ratio. 2:1 or higher is preferred.</td></tr>
-          <tr><td>RS Score</td><td>Relative strength score among all scanned stocks (0&ndash;99). Higher = outperforming market average.</td></tr>
+          <tr><td>RSI</td><td>相対力指数（14日間）。50〜70が健全な上昇トレンド。70超は過熱。</td></tr>
+          <tr><td>ADX</td><td>トレンド強度。≥25で明確なトレンド、≥50で強いトレンド。</td></tr>
+          <tr><td>出来高比</td><td>最近の出来高 ÷ 20日平均出来高。≥1.5倍で注目水準。</td></tr>
+          <tr><td>目標</td><td>パターン・フィボナッチ・ATRから計算した目標価格</td></tr>
+          <tr><td>予想期間</td><td>目標到達までの推定期間（例：2〜4週）。参考値のみ。</td></tr>
+          <tr><td>損切り</td><td>推定損切り価格。ポジション管理の基準として使用。</td></tr>
+          <tr><td>RR比率</td><td>リスクリワード比。2:1以上が望ましい。</td></tr>
+          <tr><td>RSスコア</td><td>スキャン全銘柄中の相対力スコア（0〜99）。高いほど市場平均を上回るパフォーマンス。</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="help-section" id="filters">
-      <h2>Filter Details</h2>
-      <p>Combine sidebar filters to display only matching stocks. Filters apply in real time.</p>
+      <h2>フィルター詳細</h2>
+      <p>サイドバーのフィルターを組み合わせて条件に合う銘柄だけを表示します。フィルターはリアルタイムで適用されます。</p>
 
       <table class="h-table">
-        <thead><tr><th>Filter</th><th>Description</th><th>Recommended</th></tr></thead>
+        <thead><tr><th>フィルター</th><th>説明</th><th>推奨値</th></tr></thead>
         <tbody>
           <tr>
-            <td>Search</td>
-            <td>Filter by ticker (e.g. AAPL) or company name. Partial match, case-insensitive.</td>
+            <td>検索</td>
+            <td>ティッカー（例：AAPL）や会社名で絞り込み。部分一致、大文字小文字を区別しない。</td>
             <td>&mdash;</td>
           </tr>
           <tr>
-            <td>Pattern</td>
-            <td>Show only stocks with a specific chart pattern. &ldquo;All&rdquo; includes all patterns.</td>
-            <td>Strategy-dependent</td>
+            <td>パターン</td>
+            <td>特定のチャートパターンを持つ銘柄のみ表示。「すべて」で全パターンを含む。</td>
+            <td>戦略による</td>
           </tr>
           <tr>
-            <td>Probability (&ge;)</td>
-            <td>Lower bound on the algorithm&rsquo;s estimated win probability. Combines score, pattern confidence, and RS.</td>
+            <td>確率 (&ge;)</td>
+            <td>アルゴリズムの推定勝利確率の下限。スコア・パターン信頼度・RSを組み合わせて計算。</td>
             <td>&ge; 60%</td>
           </tr>
           <tr>
-            <td>Score (&ge;)</td>
-            <td>Lower bound on the total score (0&ndash;100). Higher = more technical indicators aligned favorably.</td>
+            <td>スコア (&ge;)</td>
+            <td>合計スコア（0〜100）の下限。高いほど多くのテクニカル指標が有利に揃っている。</td>
             <td>&ge; 50</td>
           </tr>
           <tr>
-            <td>RR Ratio (&ge;)</td>
-            <td>Lower bound on the risk-reward ratio. &ge; 1.5 recommended. &ge; 2.0 is an especially good setup.</td>
+            <td>RR比率 (&ge;)</td>
+            <td>リスクリワード比の下限。≥1.5を推奨。≥2.0は特に良好なセットアップ。</td>
             <td>&ge; 1.5</td>
           </tr>
           <tr>
-            <td>Sector</td>
-            <td>Filter by GICS sector (from S&amp;P 500 constituent data). Useful for sector rotation analysis.</td>
+            <td>セクター</td>
+            <td>GICSセクター（S&amp;P 500構成銘柄データ）で絞り込み。セクターローテーション分析に有用。</td>
             <td>&mdash;</td>
           </tr>
         </tbody>
       </table>
 
       <div class="tip-box">
-        <p>&#128161; Score &ge; 70 + Prob &ge; 60% + RR &ge; 1.8 is the filter used in the backtest. At this setting you&rsquo;ll typically see 0&ndash;3 stocks per day.</p>
+        <p>&#128161; スコア&ge;70 + 確率&ge;60% + RR&ge;1.8 がバックテストで使用しているフィルターです。この設定では通常1日あたり0〜3銘柄が表示されます。</p>
       </div>
     </section>
 
     <section class="help-section" id="presets">
-      <h2>Presets</h2>
-      <p>Apply common filter combinations with one click.</p>
+      <h2>プリセット</h2>
+      <p>よく使うフィルターの組み合わせをワンクリックで適用できます。</p>
 
       <table class="h-table">
-        <thead><tr><th>Preset</th><th>Target Pattern</th><th>Use Case</th><th>Trading Style</th></tr></thead>
+        <thead><tr><th>プリセット</th><th>対象パターン</th><th>用途</th><th>トレードスタイル</th></tr></thead>
         <tbody>
           <tr>
-            <td>Breakout Play</td>
-            <td>Resistance Breakout</td>
-            <td>New-high / resistance-break stocks with strong buying pressure.</td>
-            <td>Trend-following</td>
+            <td>ブレイクアウト</td>
+            <td>レジスタンスブレイクアウト</td>
+            <td>強い買い圧力を伴う新高値・抵抗線ブレイク銘柄。</td>
+            <td>トレンドフォロー</td>
           </tr>
           <tr>
-            <td>Bottom Reversal</td>
-            <td>Inverse H&amp;S</td>
-            <td>Patterns indicating end of downtrend. Target reversal from the bottom.</td>
-            <td>Contrarian / pullback-buy</td>
+            <td>底値反転</td>
+            <td>逆H&amp;S</td>
+            <td>下落トレンドの終焉を示すパターン。底からの反転を狙う。</td>
+            <td>逆張り / 押し目買い</td>
           </tr>
           <tr>
-            <td>Momentum Continuation</td>
-            <td>Perfect Order</td>
-            <td>All moving averages in full bullish alignment &mdash; the strongest trend state.</td>
-            <td>Trend-following / momentum</td>
+            <td>モメンタム継続</td>
+            <td>パーフェクトオーダー</td>
+            <td>移動平均が完全な強気整列 — 最も強いトレンド状態。</td>
+            <td>トレンドフォロー / モメンタム</td>
           </tr>
           <tr>
-            <td>MA Squeeze Watchlist</td>
-            <td>MA Compression</td>
-            <td>Multiple MAs converging &mdash; energy building before breakout.</td>
-            <td>Pre-entry observation</td>
+            <td>MAスクイーズ監視</td>
+            <td>MA圧縮</td>
+            <td>複数MAが収束中 — ブレイクアウト前のエネルギー蓄積段階。</td>
+            <td>エントリー前の観察</td>
           </tr>
           <tr>
-            <td>Ichimoku Bullish</td>
-            <td>Ichimoku Cloud Break</td>
-            <td>Cloud breakout + conversion line bullish alignment.</td>
-            <td>Swing / medium-term trend</td>
+            <td>一目均衡表強気</td>
+            <td>一目均衡表クラウドブレイク</td>
+            <td>クラウドブレイクアウト＋転換線が強気整列。</td>
+            <td>スイング / 中期トレンド</td>
           </tr>
         </tbody>
       </table>
     </section>
 
     <section class="help-section" id="scan-target">
-      <h2>Scan Target &amp; Data</h2>
+      <h2>スキャン対象・データ</h2>
 
-      <h3>Universe</h3>
+      <h3>ユニバース</h3>
       <table class="h-table">
-        <thead><tr><th>Item</th><th>Details</th></tr></thead>
+        <thead><tr><th>項目</th><th>詳細</th></tr></thead>
         <tbody>
-          <tr><td>Market</td><td>S&amp;P 500 (NYSE / NASDAQ)</td></tr>
-          <tr><td>Stock count</td><td>~503 stocks (from Wikipedia S&amp;P 500 constituent list)</td></tr>
-          <tr><td>Ticker filter</td><td>Common equity only; ETF and non-equity products excluded</td></tr>
-          <tr><td>Excluded</td><td>ETFs, REITs, and non-stock instruments</td></tr>
+          <tr><td>市場</td><td>S&amp;P 500（NYSE / NASDAQ）</td></tr>
+          <tr><td>銘柄数</td><td>約503銘柄（WikipediaのS&amp;P 500構成銘柄リストから取得）</td></tr>
+          <tr><td>ティッカーフィルター</td><td>普通株のみ。ETFや非株式商品は除外。</td></tr>
+          <tr><td>除外対象</td><td>ETF、REIT、非株式商品</td></tr>
         </tbody>
       </table>
 
-      <h3>Data Sources</h3>
+      <h3>データソース</h3>
       <table class="h-table">
-        <thead><tr><th>Source</th><th>Role</th><th>Period</th></tr></thead>
+        <thead><tr><th>ソース</th><th>役割</th><th>期間</th></tr></thead>
         <tbody>
-          <tr><td>Yahoo Finance (yfinance)</td><td>Primary OHLCV source. Batch download of 50 stocks at a time.</td><td>Past 400 trading days</td></tr>
-          <tr><td>Wikipedia S&amp;P 500 list</td><td>Stock universe (tickers + GICS sectors). Fetched with each scan run.</td><td>Updated each run</td></tr>
+          <tr><td>Yahoo Finance（yfinance）</td><td>主要OHLCVソース。50銘柄ずつ一括ダウンロード。</td><td>過去400取引日</td></tr>
+          <tr><td>Wikipedia S&amp;P 500リスト</td><td>銘柄ユニバース（ティッカー＋GICSセクター）。スキャン実行ごとに取得。</td><td>実行ごとに更新</td></tr>
         </tbody>
       </table>
 
-      <h3>Update Schedule</h3>
+      <h3>更新スケジュール</h3>
       <table class="h-table">
-        <thead><tr><th>Timing</th><th>Content</th></tr></thead>
+        <thead><tr><th>タイミング</th><th>内容</th></tr></thead>
         <tbody>
-          <tr><td>Daily after 4 PM ET</td><td>Scan runs after US market close. Holidays and market closures are skipped.</td></tr>
-          <tr><td>Every Monday 9 AM ET</td><td>Backtest results updated (historical signal win/loss re-tallied).</td></tr>
+          <tr><td>毎日 ET 午後4時以降</td><td>米国市場クローズ後にスキャン実行。祝日・市場閉鎖日はスキップ。</td></tr>
+          <tr><td>毎週月曜 ET 午前9時</td><td>バックテスト結果を更新（過去シグナルの勝敗を再集計）。</td></tr>
         </tbody>
       </table>
 
-      <h3>Execution Environment</h3>
+      <h3>実行環境</h3>
       <ul>
-        <li>4 parallel GitHub Actions VMs (Ubuntu) launch concurrently</li>
-        <li>Each VM processes ~125 stocks (1/4 of the S&amp;P 500)</li>
-        <li>Results merged across all VMs and written to results.json</li>
-        <li>results.json committed to GitHub &rarr; GitHub Pages auto-deploys</li>
+        <li>4台のGitHub Actions VM（Ubuntu）が同時並行で起動</li>
+        <li>各VMがS&amp;P 500の約125銘柄（全体の1/4）を処理</li>
+        <li>全VMの結果をマージしてresults.jsonに書き込み</li>
+        <li>results.jsonをGitHubにコミット → GitHub Pagesが自動デプロイ</li>
       </ul>
 
       <div class="warn-box">
-        <p>&#9888;&#65039; Yahoo Finance data is via an unofficial API. Server-side changes or rate limits may cause some stocks to fail to fetch. Stocks with fetch failures are not shown in scan results.</p>
+        <p>&#9888;&#65039; Yahoo Financeのデータは非公式APIを使用しています。サーバー側の変更やレート制限により、一部銘柄の取得に失敗する場合があります。取得失敗した銘柄はスキャン結果に表示されません。</p>
       </div>
     </section>
 
     <section class="help-section" id="scoring">
-      <h2>Scoring Details</h2>
-      <p>Five categories are combined for a 100-point total. Higher score = more technical indicators simultaneously favorable.</p>
+      <h2>スコアリング詳細</h2>
+      <p>5カテゴリを合計して100点満点を算出します。スコアが高いほど、多くのテクニカル指標が同時に有利に働いています。</p>
 
       <div class="score-breakdown">
         <div class="sb-row">
-          <span class="sb-label">Pattern</span>
-          <span class="sb-pts">35 pts</span>
+          <span class="sb-label">パターン</span>
+          <span class="sb-pts">35点</span>
           <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:35%;background:var(--orange)"></div></div>
         </div>
         <div class="sb-row">
-          <span class="sb-label">Trend</span>
-          <span class="sb-pts">25 pts</span>
+          <span class="sb-label">トレンド</span>
+          <span class="sb-pts">25点</span>
           <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:25%;background:var(--accent)"></div></div>
         </div>
         <div class="sb-row">
-          <span class="sb-label">Momentum</span>
-          <span class="sb-pts">20 pts</span>
+          <span class="sb-label">モメンタム</span>
+          <span class="sb-pts">20点</span>
           <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:20%;background:var(--green)"></div></div>
         </div>
         <div class="sb-row">
-          <span class="sb-label">Volume</span>
-          <span class="sb-pts">15 pts</span>
+          <span class="sb-label">出来高</span>
+          <span class="sb-pts">15点</span>
           <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:15%;background:var(--yellow)"></div></div>
         </div>
         <div class="sb-row">
-          <span class="sb-label">RS Score</span>
-          <span class="sb-pts">5 pts</span>
+          <span class="sb-label">RSスコア</span>
+          <span class="sb-pts">5点</span>
           <div class="sb-bar-bg"><div class="sb-bar-fill" style="width:5%;background:#d2a8ff"></div></div>
         </div>
       </div>
 
-      <h3>&#9312; Pattern Score (max 35 pts)</h3>
-      <p>Each detected pattern is scored as <strong>confidence (0&ndash;1.0) &times; pattern weight (max 1.0)</strong>, normalized to 35 points. The highest-scoring pattern is used. Additional patterns are halved (prevents stacking of weak signals).</p>
+      <h3>&#9312; パターンスコア（最大35点）</h3>
+      <p>検出された各パターンを<strong>信頼度（0〜1.0）× パターン重み（最大1.0）</strong>でスコア化し、35点に正規化します。最高スコアのパターンを使用。追加パターンは半減（弱いシグナルの積み重ねを防止）。</p>
       <table class="h-table">
-        <thead><tr><th>Pattern</th><th>Weight</th><th>Characteristics</th></tr></thead>
+        <thead><tr><th>パターン</th><th>重み</th><th>特徴</th></tr></thead>
         <tbody>
-          <tr><td>Inverse H&amp;S</td><td class="good">0.95</td><td>One of the most reliable reversal patterns</td></tr>
-          <tr><td>Double Bottom</td><td class="good">0.90</td><td>Clear support confirmation at the bottom</td></tr>
-          <tr><td>Cup with Handle</td><td class="good">0.85</td><td>Growth stock continuation signal</td></tr>
-          <tr><td>Resistance Breakout</td><td class="good">0.85</td><td>Volume-confirmed breakout</td></tr>
-          <tr><td>Wyckoff Spring</td><td class="mid">0.80</td><td>Institutional accumulation complete signal</td></tr>
-          <tr><td>Perfect Order</td><td class="mid">0.80</td><td>Strongest trend state confirmed</td></tr>
-          <tr><td>VCP</td><td class="mid">0.75</td><td>On the verge of explosion after volatility contraction</td></tr>
-          <tr><td>Bull Flag</td><td class="mid">0.75</td><td>Continuation after brief consolidation</td></tr>
-          <tr><td>Falling Wedge</td><td class="mid">0.75</td><td>Reversal breakout after compression</td></tr>
-          <tr><td>Symmetric Triangle, SR Flip, Donchian Break</td><td>0.60</td><td>Direction confirmation required</td></tr>
-          <tr><td>Channel Pullback</td><td>0.60</td><td>Pullback-buy within ongoing channel</td></tr>
-          <tr><td>Golden Cross (various)</td><td>0.55&ndash;0.70</td><td>Weight varies by timeframe</td></tr>
+          <tr><td>逆H&amp;S</td><td class="good">0.95</td><td>最も信頼性の高い反転パターンの一つ</td></tr>
+          <tr><td>ダブルボトム</td><td class="good">0.90</td><td>底値での明確なサポート確認</td></tr>
+          <tr><td>カップウィズハンドル</td><td class="good">0.85</td><td>成長株の継続シグナル</td></tr>
+          <tr><td>レジスタンスブレイクアウト</td><td class="good">0.85</td><td>出来高を伴うブレイクアウト</td></tr>
+          <tr><td>ワイコフスプリング</td><td class="mid">0.80</td><td>機関投資家の蓄積完了シグナル</td></tr>
+          <tr><td>パーフェクトオーダー</td><td class="mid">0.80</td><td>最強のトレンド状態を確認</td></tr>
+          <tr><td>VCP</td><td class="mid">0.75</td><td>ボラティリティ収縮後の爆発寸前</td></tr>
+          <tr><td>ブルフラッグ</td><td class="mid">0.75</td><td>短期調整後の継続</td></tr>
+          <tr><td>フォーリングウェッジ</td><td class="mid">0.75</td><td>収縮後の反転ブレイクアウト</td></tr>
+          <tr><td>シンメトリカルトライアングル、SRフリップ、ドンチャンブレイク</td><td>0.60</td><td>方向確認が必要</td></tr>
+          <tr><td>チャネルプルバック</td><td>0.60</td><td>継続中のチャネル内での押し目買い</td></tr>
+          <tr><td>ゴールデンクロス（各種）</td><td>0.55〜0.70</td><td>時間軸によって重みが異なる</td></tr>
         </tbody>
       </table>
 
-      <h3>&#9313; Trend Score (max 25 pts)</h3>
+      <h3>&#9313; トレンドスコア（最大25点）</h3>
       <table class="h-table">
-        <thead><tr><th>Evaluation</th><th>Scoring Condition</th></tr></thead>
+        <thead><tr><th>評価項目</th><th>採点条件</th></tr></thead>
         <tbody>
-          <tr><td>SMA alignment</td><td>SMA5 &gt; SMA25 &gt; SMA75 &gt; SMA200 full bullish order earns max points</td></tr>
-          <tr><td>SMA slope</td><td>Bonus for each SMA pointing upward</td></tr>
-          <tr><td>ADX strength</td><td>Bonus at &ge; 25, additional bonus at &ge; 50</td></tr>
-          <tr><td>Ichimoku</td><td>Bonus when price is above the cloud</td></tr>
-          <tr><td>52-week high proximity</td><td>Bonus when price is &ge; 90% of 52-week high</td></tr>
+          <tr><td>SMA整列</td><td>SMA5 &gt; SMA25 &gt; SMA75 &gt; SMA200の完全な強気整列で最高点</td></tr>
+          <tr><td>SMAの傾き</td><td>各SMAが上向きで加点</td></tr>
+          <tr><td>ADX強度</td><td>≥25で加点、≥50でさらに加点</td></tr>
+          <tr><td>一目均衡表</td><td>価格が雲の上にあれば加点</td></tr>
+          <tr><td>52週高値近接</td><td>価格が52週高値の≥90%であれば加点</td></tr>
         </tbody>
       </table>
 
-      <h3>&#9314; Momentum Score (max 20 pts)</h3>
+      <h3>&#9314; モメンタムスコア（最大20点）</h3>
       <table class="h-table">
-        <thead><tr><th>Indicator</th><th>Evaluation</th></tr></thead>
+        <thead><tr><th>指標</th><th>評価</th></tr></thead>
         <tbody>
-          <tr><td>RSI (14-day)</td><td>50&ndash;70 is ideal. Below 50 = deduction. Above 70 = overheated, no bonus.</td></tr>
-          <tr><td>MACD</td><td>Bonus when MACD line is above signal line. Extra bonus when histogram is expanding.</td></tr>
-          <tr><td>ROC (20-day rate of change)</td><td>Bonus for positive 20-day price change. Larger change = higher score.</td></tr>
+          <tr><td>RSI（14日間）</td><td>50〜70が理想。50未満は減点。70超は過熱でボーナスなし。</td></tr>
+          <tr><td>MACD</td><td>MACDラインがシグナル上にあれば加点。ヒストグラム拡大でさらに加点。</td></tr>
+          <tr><td>ROC（20日間変化率）</td><td>20日間の価格変化がプラスで加点。変化が大きいほど高スコア。</td></tr>
         </tbody>
       </table>
 
-      <h3>&#9315; Volume Score (max 15 pts)</h3>
+      <h3>&#9315; 出来高スコア（最大15点）</h3>
       <table class="h-table">
-        <thead><tr><th>Indicator</th><th>Evaluation</th></tr></thead>
+        <thead><tr><th>指標</th><th>評価</th></tr></thead>
         <tbody>
-          <tr><td>Recent volume ratio</td><td>Recent volume &divide; 20-day avg. Bonus at &ge; 1.5&times;, max bonus at &ge; 3.0&times;.</td></tr>
-          <tr><td>OBV trend</td><td>Bonus when cumulative volume (OBV) is rising. Evaluated by OBV slope and position relative to its moving average.</td></tr>
+          <tr><td>直近出来高比率</td><td>直近出来高 ÷ 20日平均。≥1.5倍で加点、≥3.0倍で最大加点。</td></tr>
+          <tr><td>OBVトレンド</td><td>累積出来高（OBV）が上昇中で加点。OBVの傾きと移動平均との位置関係で評価。</td></tr>
         </tbody>
       </table>
 
-      <h3>&#9316; RS Score (max 5 pts)</h3>
-      <p>The 12-month price change of all stocks scanned that day is ranked. Top 20% earns max (5 pts); bottom 40% earns 0 pts.</p>
+      <h3>&#9316; RSスコア（最大5点）</h3>
+      <p>当日スキャンした全銘柄の12ヶ月間の価格変化率をランキング。上位20%が最大（5点）、下位40%が0点。</p>
 
       <div class="info-box">
-        <p>The score is not an absolute indicator. High-score stocks can still decline, and low-score stocks can rise. Always combine with other information and use your own judgment.</p>
+        <p>スコアは絶対的な指標ではありません。高スコアでも下落する銘柄はあり、低スコアでも上昇することがあります。必ず他の情報と組み合わせ、ご自身の判断で活用してください。</p>
       </div>
 
-      <h3>Win Probability Calculation</h3>
-      <p>A heuristic estimate combining score, pattern confidence, and RS rank with custom weights. It is derived from statistical analysis of past backtests &mdash; use it as a reference, not a guarantee.</p>
-      <div class="formula">probability &asymp; (score &times; 0.5 + pattern_confidence &times; 0.3 + rs_rank &times; 0.2) &times; adjustment_factor</div>
+      <h3>勝利確率の計算</h3>
+      <p>スコア・パターン信頼度・RSランクを独自の重みで組み合わせたヒューリスティックな推定値です。過去のバックテストの統計分析から導き出されていますが、参考値として利用してください。保証はありません。</p>
+      <div class="formula">確率 &asymp; (スコア &times; 0.5 + パターン信頼度 &times; 0.3 + RSランク &times; 0.2) &times; 調整係数</div>
     </section>
 
     <section class="help-section" id="score-vs-prob">
-      <h2>Score vs Probability</h2>
-      <p>Score and probability are both important but measure different things. Use each appropriately.</p>
+      <h2>スコアと確率の違い</h2>
+      <p>スコアと確率はどちらも重要ですが、異なるものを測定しています。それぞれを適切に使い分けてください。</p>
 
       <table class="h-table">
-        <thead><tr><th>Metric</th><th>What It Measures</th><th>Best Used When</th></tr></thead>
+        <thead><tr><th>指標</th><th>何を測定するか</th><th>最適な用途</th></tr></thead>
         <tbody>
           <tr>
-            <td><strong>Score (0&ndash;100)</strong></td>
-            <td>Overall technical environment quality. 5-axis evaluation: Trend, Pattern, Momentum, Volume, RS.</td>
-            <td>Checking if the stock is technically in good shape right now</td>
+            <td><strong>スコア（0〜100）</strong></td>
+            <td>全体的なテクニカル環境の質。5軸評価：トレンド・パターン・モメンタム・出来高・RS。</td>
+            <td>今現在、その銘柄がテクニカル的に良い状態かどうかの確認</td>
           </tr>
           <tr>
-            <td><strong>Probability (0&ndash;100%)</strong></td>
-            <td>Estimated win probability blending historical pattern win rates with score.</td>
-            <td>Assessing whether the expected value of the entry is sufficient</td>
+            <td><strong>確率（0〜100%）</strong></td>
+            <td>過去のパターン勝率とスコアを組み合わせた推定勝率。</td>
+            <td>エントリーの期待値が十分かどうかの評価</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Recommended Priority Order</h3>
+      <h3>推奨優先順位</h3>
       <div class="step-list">
-        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>RR ratio first</strong><span>Even the best signal can have negative expected value if RR is below 1.5. Aim for RR &ge; 2.0.</span></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Score &ge; 50 as baseline</strong><span>Higher score = more indicators aligned simultaneously. Score &ge; 50 tends to show statistically meaningful edge.</span></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Probability &ge; 60% for confirmation</strong><span>Probability depends heavily on pattern type and strength. Signals &ge; 60% tend toward higher backtested win rates.</span></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>RR比率を最優先</strong><span>RR1.5未満では、どんな優れたシグナルでも期待値がマイナスになる可能性がある。RR≥2.0を目指す。</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>スコア≥50を基準に</strong><span>高スコア = 多くの指標が同時に揃っている。スコア≥50は統計的に意味のあるエッジが見られる傾向。</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>確率≥60%で確認</strong><span>確率はパターンの種類と強度に大きく依存する。≥60%のシグナルはバックテストでの勝率が高い傾向。</span></div></div>
       </div>
 
       <div class="tip-box">
-        <p>&#128161; <strong>When in doubt, prioritize score.</strong> Probability is heavily influenced by score, so high score usually means high probability too. Score &ge; 60, Prob &ge; 60%, RR &ge; 2.0 &mdash; the ideal &ldquo;triple confluence&rdquo; setup.</p>
+        <p>&#128161; <strong>迷ったらスコアを優先。</strong>確率はスコアの影響を強く受けるため、高スコアなら通常確率も高い。スコア≥60、確率≥60%、RR≥2.0 — これが理想の「三重確認」セットアップ。</p>
       </div>
     </section>
 
     <section class="help-section" id="patterns">
-      <h2>Chart Pattern Reference</h2>
-      <p>Currently detects 31+ patterns. Multiple pattern confluence increases reliability.</p>
+      <h2>チャートパターン一覧</h2>
+      <p>現在31種類以上のパターンを検出します。複数パターンの重複検出は信頼性を高めます。</p>
 
-      <h3>Reversal Patterns</h3>
+      <h3>反転パターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Inverse H&amp;S</div>
-          <div class="pattern-card-tag tag-reversal">Reversal</div>
-          <p>One of the most reliable reversal patterns. Three lows (left shoulder, head, right shoulder). Confirmed entry on neckline breakout with rising volume. Target = head-to-neckline distance projected upward.</p>
+          <div class="pattern-card-name">逆ヘッド&amp;ショルダー</div>
+          <div class="pattern-card-tag tag-reversal">反転</div>
+          <p>最も信頼性の高い反転パターンの一つ。3つの安値（左肩・頭・右肩）を形成。出来高を伴うネックラインブレイクで確認。目標値＝頭からネックラインまでの距離を上に加算。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Double Bottom</div>
-          <div class="pattern-card-tag tag-reversal">Reversal</div>
-          <p>After testing nearly the same low twice, price breaks above the intermediate high (neckline). Reliability increases when the second bottom bounces to the same level as the first.</p>
+          <div class="pattern-card-name">ダブルボトム</div>
+          <div class="pattern-card-tag tag-reversal">反転</div>
+          <p>ほぼ同じ安値を2回つけた後、直近高値（ネックライン）を上抜け。2つ目の底が1つ目と同じ水準で反発するほど信頼性が高い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Triple Bottom</div>
-          <div class="pattern-card-tag tag-reversal">Reversal</div>
-          <p>Extension of Double Bottom. Three tests of the same support level before a breakout. Takes longer to form &mdash; more reliable but rarer than Double Bottom.</p>
+          <div class="pattern-card-name">トリプルボトム</div>
+          <div class="pattern-card-tag tag-reversal">反転</div>
+          <p>ダブルボトムの発展形。同じサポートレベルを3回テストした後にブレイクアウト。形成に時間がかかるが、ダブルボトムより信頼性が高く出現頻度は低い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Falling Wedge</div>
-          <div class="pattern-card-tag tag-reversal">Reversal</div>
-          <p>A converging range where both highs and lows decline. A strong reversal signal in downtrends. Ideal when volume increases on the upper trendline breakout. Opposite of a rising wedge &mdash; this is a bullish pattern.</p>
+          <div class="pattern-card-name">フォーリングウェッジ</div>
+          <div class="pattern-card-tag tag-reversal">反転</div>
+          <p>高値と安値が共に下落する収束レンジ。下降トレンドの強力な反転シグナル。上側のトレンドラインブレイクで出来高が増加するのが理想。上昇ウェッジの逆で、これは強気パターン。</p>
         </div>
       </div>
 
-      <h3>Continuation Patterns</h3>
+      <h3>継続パターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Cup with Handle</div>
-          <div class="pattern-card-tag tag-cont">Continuation</div>
-          <p>A rounded base (cup) followed by a small consolidation (handle) before the breakout. Forms during uptrends and is considered evidence of institutional accumulation. Volume contraction in the handle is ideal.</p>
+          <div class="pattern-card-name">カップウィズハンドル</div>
+          <div class="pattern-card-tag tag-cont">継続</div>
+          <p>丸みを帯びたベース（カップ）の後に小さな調整（ハンドル）を経てブレイクアウト。上昇トレンド中に形成され、機関投資家の蓄積の証拠とされる。ハンドルでの出来高収縮が理想。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Bull Flag</div>
-          <div class="pattern-card-tag tag-cont">Continuation</div>
-          <p>A tight downward drift (flag) after a sharp surge (pole), followed by an upside breakout. Volume contracts during the flag and surges on the break. Target = the pole&rsquo;s length projected from the breakout.</p>
+          <div class="pattern-card-name">ブルフラッグ</div>
+          <div class="pattern-card-tag tag-cont">継続</div>
+          <p>急騰（ポール）後の小幅な下落調整（フラッグ）を経て上抜け。フラッグ中に出来高が収縮し、ブレイク時に急増するのが理想。目標＝ポールの長さをブレイク点から上に加算。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">VCP (Volatility Contraction)</div>
-          <div class="pattern-card-tag tag-cont">Continuation</div>
-          <p>A series of progressively smaller price contractions (e.g. 15%&rarr;10%&rarr;7%&rarr;4%). Volatility contraction signals energy buildup. Mark Minervini&rsquo;s growth-stock technique.</p>
+          <div class="pattern-card-name">VCP（ボラティリティ収縮）</div>
+          <div class="pattern-card-tag tag-cont">継続</div>
+          <p>一連の収縮が段階的に小さくなるパターン（例：15%→10%→7%→4%）。ボラティリティ収縮がエネルギー蓄積を示す。マーク・ミネルヴィーニの成長株技法。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">50MA Pullback</div>
-          <div class="pattern-card-tag tag-cont">Continuation</div>
-          <p>A pullback to the 50-day moving average during an uptrend, followed by a bounce. A healthy consolidation in an uptrend that often provides the entry point for the next leg higher.</p>
+          <div class="pattern-card-name">50MAプルバック</div>
+          <div class="pattern-card-tag tag-cont">継続</div>
+          <p>上昇トレンド中に50日移動平均まで引き下げた後の反発。上昇トレンド内の健全な調整で、次の上昇のエントリーポイントになることが多い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Channel Pullback</div>
-          <div class="pattern-card-tag tag-cont">Continuation</div>
-          <p>A pullback to the lower trendline (support) of an ascending channel, followed by a bounce. More reliable when the channel is well-defined. Ideal entry: volume contracts at the lower touch and surges on the bounce.</p>
+          <div class="pattern-card-name">チャネルプルバック</div>
+          <div class="pattern-card-tag tag-cont">継続</div>
+          <p>上昇チャネルの下側トレンドライン（サポート）まで押した後の反発。チャネルが明確に定義されているほど信頼性が高い。下値接触時に出来高が収縮し、反発時に急増するのが理想。</p>
         </div>
       </div>
 
-      <h3>Breakout Patterns</h3>
+      <h3>ブレイクアウトパターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Resistance Breakout</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>Price breaks above a resistance level that has been tested multiple times, accompanied by rising volume. The more tests, the stronger the breakout tends to be.</p>
+          <div class="pattern-card-name">レジスタンスブレイクアウト</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>複数回テストされたレジスタンスレベルを出来高増加を伴って上抜け。テスト回数が多いほどブレイクアウトが強くなる傾向。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">New 52-Week High</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>Price makes a new 52-week high. A strong momentum signal breaking through long-term resistance. At all-time highs there is no overhead resistance, so further gains are expected.</p>
+          <div class="pattern-card-name">52週新高値</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>52週高値を更新。長期レジスタンスを突破した強いモメンタムシグナル。史上最高値付近では頭上に抵抗がなく、さらなる上昇が期待される。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">BB Squeeze (Bollinger)</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>A breakout following Bollinger Band contraction (squeeze). An upside break from band-width below the 20th percentile signals impending volatility expansion.</p>
+          <div class="pattern-card-name">BBスクイーズ（ボリンジャー）</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>ボリンジャーバンドの収縮（スクイーズ）後のブレイクアウト。バンド幅が20パーセンタイル以下からの上方ブレイクは、ボラティリティ拡大の前兆。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Ascending Triangle</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>Price is capped by a horizontal resistance while lows rise. Gradually increasing buying pressure eventually breaks above the resistance.</p>
+          <div class="pattern-card-name">アセンディングトライアングル</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>水平なレジスタンスに上値を抑えられながら安値が上昇。買い圧力が段階的に高まり、最終的にレジスタンスを突破。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Symmetric Triangle</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>A converging triangle where highs decline and lows rise symmetrically. Direction is uncertain &mdash; wait to confirm the breakout. An upside break is a bullish signal.</p>
+          <div class="pattern-card-name">シンメトリカルトライアングル</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>高値が切り下がり安値が切り上がる対称的な三角収束。方向性は不確実 — ブレイクアウトの確認を待つこと。上方ブレイクは強気シグナル。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Donchian Break</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>Price breaks above the N-day high (upper Donchian channel). Popularized by the Turtle Traders. A simple, mechanically detectable price-range breakout.</p>
+          <div class="pattern-card-name">ドンチャンブレイク</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>N日間の高値（ドンチャンチャネル上限）を上抜け。タートルトレーダーで有名。シンプルに機械的に検出できる価格レンジブレイクアウト。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">SR Flip</div>
-          <div class="pattern-card-tag tag-breakout">Breakout</div>
-          <p>After breaking above a prior resistance, that price zone flips to support. A bounce from the new support confirms a reliable continuation signal.</p>
+          <div class="pattern-card-name">SRフリップ</div>
+          <div class="pattern-card-tag tag-breakout">ブレイクアウト</div>
+          <p>以前のレジスタンスを上抜けした後、その価格帯がサポートに転換。新サポートからの反発で信頼性の高い継続シグナルが確認される。</p>
         </div>
       </div>
 
-      <h3>Moving Average Patterns</h3>
+      <h3>移動平均パターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Golden Cross (Short-term)</div>
-          <div class="pattern-card-tag tag-ma">Moving Avg</div>
-          <p>SMA5 crosses above SMA25. Short-term trend reversal signal. Highly sensitive but prone to false signals &mdash; use in combination with other indicators.</p>
+          <div class="pattern-card-name">ゴールデンクロス（短期）</div>
+          <div class="pattern-card-tag tag-ma">移動平均</div>
+          <p>SMA5がSMA25を上抜け。短期トレンド転換シグナル。感度が高いが偽シグナルになりやすい — 他の指標と組み合わせて使用すること。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Golden Cross (Medium-term)</div>
-          <div class="pattern-card-tag tag-ma">Moving Avg</div>
-          <p>SMA25 crosses above SMA75. Medium-term trend reversal signal. Lags the short-term GC but is more reliable.</p>
+          <div class="pattern-card-name">ゴールデンクロス（中期）</div>
+          <div class="pattern-card-tag tag-ma">移動平均</div>
+          <p>SMA25がSMA75を上抜け。中期トレンド転換シグナル。短期GCより遅れるが信頼性が高い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Golden Cross (Long-term)</div>
-          <div class="pattern-card-tag tag-ma">Moving Avg</div>
-          <p>SMA75 crosses above SMA200. Signals a long-term bear-to-bull transition. Low frequency but high significance.</p>
+          <div class="pattern-card-name">ゴールデンクロス（長期）</div>
+          <div class="pattern-card-tag tag-ma">移動平均</div>
+          <p>SMA75がSMA200を上抜け。長期的な弱気から強気への転換を示す。出現頻度は低いが重要度は高い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Perfect Order</div>
-          <div class="pattern-card-tag tag-ma">Moving Avg</div>
-          <p>SMA5 &gt; SMA25 &gt; SMA75 &gt; SMA200 with all MAs pointing upward. The strongest uptrend signal. Tends to generate high scores &mdash; beware of entering near a top.</p>
+          <div class="pattern-card-name">パーフェクトオーダー</div>
+          <div class="pattern-card-tag tag-ma">移動平均</div>
+          <p>SMA5 &gt; SMA25 &gt; SMA75 &gt; SMA200 で全MAが上向き。最強の上昇トレンドシグナル。高スコアが出やすいが天井付近でのエントリーに注意。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">MA Compression</div>
-          <div class="pattern-card-tag tag-ma">Moving Avg</div>
-          <p>Multiple moving averages converging toward a single point. Evidence of energy buildup &mdash; a pre-breakout setup. Direction must be confirmed.</p>
+          <div class="pattern-card-name">MA圧縮</div>
+          <div class="pattern-card-tag tag-ma">移動平均</div>
+          <p>複数の移動平均が一点に向かって収束。エネルギー蓄積の証拠 — ブレイクアウト前の準備段階。方向性の確認が必要。</p>
         </div>
       </div>
 
-      <h3>Ichimoku Patterns</h3>
+      <h3>一目均衡表パターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Cloud Break (Kumo Break)</div>
-          <div class="pattern-card-tag tag-ichimoku">Ichimoku</div>
-          <p>Price breaks above the Ichimoku cloud (resistance zone). Thinner clouds are easier to break; after the break, the cloud becomes support. Widely watched by institutional traders.</p>
+          <div class="pattern-card-name">クラウドブレイク（雲抜け）</div>
+          <div class="pattern-card-tag tag-ichimoku">一目均衡表</div>
+          <p>価格が一目均衡表の雲（レジスタンスゾーン）を上抜け。薄い雲ほど突破しやすく、突破後は雲がサポートに転換。機関投資家にも広く注目されるシグナル。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Ichimoku Bullish Triple</div>
-          <div class="pattern-card-tag tag-ichimoku">Ichimoku</div>
-          <p>All three conditions true simultaneously: &#9312; Price above cloud &#9313; Tenkan &gt; Kijun &#9314; Chikou above past price. The strongest Ichimoku bullish signal. Rare because all conditions must align.</p>
+          <div class="pattern-card-name">一目均衡表強気トリプル</div>
+          <div class="pattern-card-tag tag-ichimoku">一目均衡表</div>
+          <p>3条件が同時成立：&#9312;価格が雲の上 &#9313;転換線 &gt; 基準線 &#9314;遅行スパンが過去価格を上回る。最強の一目均衡表強気シグナル。全条件の同時成立はまれ。</p>
         </div>
       </div>
 
-      <h3>Divergence Patterns</h3>
+      <h3>ダイバージェンスパターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">RSI Divergence</div>
-          <div class="pattern-card-tag tag-divergence">Divergence</div>
-          <p>&ldquo;Bullish divergence&rdquo; where price makes lower lows but RSI makes higher lows. Signals weakening selling pressure &mdash; often precedes a bottom reversal.</p>
+          <div class="pattern-card-name">RSIダイバージェンス</div>
+          <div class="pattern-card-tag tag-divergence">ダイバージェンス</div>
+          <p>価格が安値を更新する一方でRSIが高い安値をつける「強気ダイバージェンス」。売り圧力の弱まりを示し、底打ち反転の前兆になることが多い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">MACD Divergence</div>
-          <div class="pattern-card-tag tag-divergence">Divergence</div>
-          <p>Price and MACD histogram diverge in direction &mdash; a sign of potential trend reversal. More reliable when occurring simultaneously with RSI divergence.</p>
+          <div class="pattern-card-name">MACDダイバージェンス</div>
+          <div class="pattern-card-tag tag-divergence">ダイバージェンス</div>
+          <p>価格とMACDヒストグラムの動きが乖離 — トレンド転換の可能性を示す。RSIダイバージェンスと同時に発生すると信頼性が高まる。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">RSI Hidden Divergence</div>
-          <div class="pattern-card-tag tag-divergence">Divergence</div>
-          <p>&ldquo;Hidden divergence&rdquo; where price makes higher highs but RSI makes lower highs. Unlike regular divergence, this signals trend continuation. Suggests re-acceleration after a pullback.</p>
+          <div class="pattern-card-name">RSI隠れダイバージェンス</div>
+          <div class="pattern-card-tag tag-divergence">ダイバージェンス</div>
+          <p>価格が高値を更新する一方でRSIが低い高値をつける「隠れダイバージェンス」。通常のダイバージェンスと違い、トレンド継続を示す。押し目後の再加速を示唆。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">OBV Divergence</div>
-          <div class="pattern-card-tag tag-divergence">Divergence</div>
-          <p>Price falling or flat while OBV (cumulative volume) rises. Evidence of quiet institutional accumulation. OBV improvement often leads price recovery.</p>
+          <div class="pattern-card-name">OBVダイバージェンス</div>
+          <div class="pattern-card-tag tag-divergence">ダイバージェンス</div>
+          <p>価格が下落または横ばいの一方でOBV（累積出来高）が上昇。機関投資家の静かな蓄積の証拠。OBVの改善は価格回復に先行することが多い。</p>
         </div>
       </div>
 
-      <h3>Candlestick Patterns</h3>
+      <h3>ローソク足パターン</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Hammer</div>
-          <div class="pattern-card-tag tag-candle">Candlestick</div>
-          <p>A candle with a long lower shadow and short body. At the end of a downtrend, it&rsquo;s a strong bullish reversal signal. Detected when lower shadow is 2&times; or more the body length.</p>
+          <div class="pattern-card-name">ハンマー</div>
+          <div class="pattern-card-tag tag-candle">ローソク足</div>
+          <p>長い下ヒゲと短いボディを持つローソク足。下降トレンドの末尾では強い強気反転シグナル。下ヒゲがボディの2倍以上で検出。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Bullish Engulfing</div>
-          <div class="pattern-card-tag tag-candle">Candlestick</div>
-          <p>A large bullish candle completely engulfs the previous bearish candle. Strong evidence of buying pressure. More reliable with rising volume.</p>
+          <div class="pattern-card-name">陽の包み足</div>
+          <div class="pattern-card-tag tag-candle">ローソク足</div>
+          <p>大きな陽線が前日の陰線を完全に包み込む。買い圧力の強さの証拠。出来高増加を伴うほど信頼性が高い。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Morning Star</div>
-          <div class="pattern-card-tag tag-candle">Candlestick</div>
-          <p>Three-candle pattern: bearish candle &rarr; small gap-down candle (or doji) &rarr; large bullish candle. A strong reversal signal from downtrend to uptrend.</p>
+          <div class="pattern-card-name">モーニングスター</div>
+          <div class="pattern-card-tag tag-candle">ローソク足</div>
+          <p>3本のローソク足パターン：陰線 → 小さいギャップダウン（またはドージ）→ 大きな陽線。下降トレンドから上昇トレンドへの強い反転シグナル。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Three White Soldiers</div>
-          <div class="pattern-card-tag tag-candle">Candlestick</div>
-          <p>Three consecutive bullish candles, each opening above the prior close. Signals sustained buying pressure. Appearing after a sharp rally may indicate overheating.</p>
+          <div class="pattern-card-name">三白兵</div>
+          <div class="pattern-card-tag tag-candle">ローソク足</div>
+          <p>3本の連続する陽線で、各ローソクが前日の終値より高く始まる。継続的な買い圧力を示す。急騰後に出現すると過熱の可能性あり。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Piercing Line</div>
-          <div class="pattern-card-tag tag-candle">Candlestick</div>
-          <p>After a large bearish candle, price gaps down but recovers above the midpoint of the prior candle. A two-candle bottom-reversal signal showing selling pressure dissipating rapidly.</p>
+          <div class="pattern-card-name">切り込み線</div>
+          <div class="pattern-card-tag tag-candle">ローソク足</div>
+          <p>大きな陰線の後、ギャップダウンして始まるが前日陰線の中値を上回って回復。売り圧力が急速に消えていく2本の底値反転シグナル。</p>
         </div>
         <div class="pattern-card">
-          <div class="pattern-card-name">Three Gap Reversal</div>
-          <div class="pattern-card-tag tag-candle">Candlestick</div>
-          <p>A reversal signal after three consecutive downside gaps. Known in classic trading lore as a bottom signal following panic-driven selling.</p>
+          <div class="pattern-card-name">三空叩き込み</div>
+          <div class="pattern-card-tag tag-candle">ローソク足</div>
+          <p>3つの連続するギャップダウンの後の反転シグナル。パニック売りによる急落後の底打ちシグナルとして古典的なトレード書籍で知られる。</p>
         </div>
       </div>
 
-      <h3>Wyckoff Accumulation</h3>
+      <h3>ワイコフ蓄積</h3>
       <div class="pattern-grid">
         <div class="pattern-card">
-          <div class="pattern-card-name">Wyckoff Spring</div>
-          <div class="pattern-card-tag tag-wyckoff">Wyckoff</div>
-          <p>Detects the Wyckoff accumulation phase: Selling Climax &rarr; volume dry-up (Spring) &rarr; Sign of Strength. A breakout after institutional accumulation at the bottom. One of the most reliable long-term signals.</p>
+          <div class="pattern-card-name">ワイコフスプリング</div>
+          <div class="pattern-card-tag tag-wyckoff">ワイコフ</div>
+          <p>ワイコフの蓄積フェーズを検出：売りクライマックス → 出来高枯渇（スプリング）→ 強さの兆候（SOS）。底での機関投資家の蓄積完了後のブレイクアウト。最も信頼性の高い長期シグナルの一つ。</p>
         </div>
       </div>
     </section>
 
     <section class="help-section" id="target-calc">
-      <h2>Target &amp; Stop Loss</h2>
+      <h2>目標・損切り計算</h2>
 
-      <h3>Target Price Calculation (priority order)</h3>
-      <p>Candidates are evaluated in priority order; the first candidate exceeding the current price by +2% (minimum margin) is adopted.</p>
+      <h3>目標価格の計算（優先順位順）</h3>
+      <p>候補を優先順位順に評価し、現在価格より+2%以上（最低マージン）を超える最初の候補を採用します。</p>
       <table class="h-table">
-        <thead><tr><th>Priority</th><th>Method</th><th>Formula</th></tr></thead>
+        <thead><tr><th>優先順位</th><th>手法</th><th>計算式</th></tr></thead>
         <tbody>
-          <tr><td>1st</td><td>Pattern target</td><td>Pattern height added to breakout point (e.g. Double Bottom depth &divide; neckline &times; upward direction)</td></tr>
-          <tr><td>2nd</td><td>Fibonacci 127%</td><td>Recent swing range &times; 1.272 added to the low</td></tr>
-          <tr><td>3rd</td><td>Fibonacci 162%</td><td>Recent swing range &times; 1.618 added to the low</td></tr>
-          <tr><td>4th (fallback)</td><td>ATR &times; 3</td><td>Current price + ATR(14d) &times; 3 (always above current price)</td></tr>
+          <tr><td>1位</td><td>パターン目標</td><td>ブレイクアウト点にパターンの高さを加算（例：ダブルボトムの深さ ÷ ネックライン × 上方向）</td></tr>
+          <tr><td>2位</td><td>フィボナッチ 127%</td><td>直近スウィングレンジ × 1.272 を安値に加算</td></tr>
+          <tr><td>3位</td><td>フィボナッチ 162%</td><td>直近スウィングレンジ × 1.618 を安値に加算</td></tr>
+          <tr><td>4位（フォールバック）</td><td>ATR × 3</td><td>現在価格 + ATR(14日) × 3（常に現在価格を上回る）</td></tr>
         </tbody>
       </table>
 
       <div class="info-box">
-        <p>When a past pattern target is below the current price (stock already surged past target), the system automatically falls back to Fibonacci or ATR multiples.</p>
+        <p>過去のパターン目標が現在価格より低い場合（株価がすでに目標を超えて急騰）、システムは自動的にフィボナッチまたはATR倍数にフォールバックします。</p>
       </div>
 
-      <h3>Stop-Loss Price</h3>
-      <div class="formula">Stop Loss = Current Price &minus; ATR(14d) &times; 2</div>
-      <p>Capped so that stop-loss is always at least &minus;1% below current price (upper bound: current price &times; 0.99).</p>
+      <h3>損切り価格</h3>
+      <div class="formula">損切り = 現在価格 &minus; ATR(14日) &times; 2</div>
+      <p>損切りが現在価格より-1%未満にならないよう上限を設定（上限：現在価格 × 0.99）。</p>
 
-      <h3>RR Ratio (Risk-Reward)</h3>
-      <div class="formula">RR = (Target &minus; Current Price) &divide; (Current Price &minus; Stop Loss)</div>
+      <h3>RR比率（リスクリワード）</h3>
+      <div class="formula">RR = (目標 &minus; 現在価格) &divide; (現在価格 &minus; 損切り)</div>
       <table class="h-table">
-        <thead><tr><th>RR Ratio</th><th>Rating</th><th>Display</th></tr></thead>
+        <thead><tr><th>RR比率</th><th>評価</th><th>表示</th></tr></thead>
         <tbody>
-          <tr><td>&ge; 2.0</td><td class="good">Good</td><td class="good">Green</td></tr>
-          <tr><td>1.5 &ndash; 2.0</td><td class="mid">Acceptable</td><td class="mid">Yellow</td></tr>
-          <tr><td>&lt; 1.5</td><td class="bad">Caution</td><td style="color:var(--text-muted)">Gray</td></tr>
+          <tr><td>&ge; 2.0</td><td class="good">良好</td><td class="good">緑</td></tr>
+          <tr><td>1.5 &ndash; 2.0</td><td class="mid">許容範囲</td><td class="mid">黄</td></tr>
+          <tr><td>&lt; 1.5</td><td class="bad">注意</td><td style="color:var(--text-muted)">グレー</td></tr>
         </tbody>
       </table>
 
-      <h3>Estimated Period (weeks_min &ndash; weeks_max)</h3>
-      <p>Reference values based on typical historical achievement times per pattern. Actual market conditions can vary widely.</p>
+      <h3>予想期間（weeks_min〜weeks_max）</h3>
+      <p>パターンごとの過去の典型的な達成時間に基づく参考値です。実際の市場状況によって大きく異なる場合があります。</p>
       <table class="h-table">
-        <thead><tr><th>Pattern</th><th>Typical Period</th></tr></thead>
+        <thead><tr><th>パターン</th><th>典型的な期間</th></tr></thead>
         <tbody>
-          <tr><td>Bull Flag, BB Squeeze</td><td>1&ndash;3 weeks</td></tr>
-          <tr><td>Resistance Breakout, Golden Cross (short)</td><td>2&ndash;4 weeks</td></tr>
-          <tr><td>Golden Cross (medium), Double Bottom</td><td>4&ndash;8 weeks</td></tr>
-          <tr><td>Inverse H&amp;S, Perfect Order, Wyckoff</td><td>4&ndash;12 weeks</td></tr>
-          <tr><td>Cup with Handle</td><td>4&ndash;10 weeks</td></tr>
-          <tr><td>Golden Cross (long-term)</td><td>8&ndash;16 weeks</td></tr>
+          <tr><td>ブルフラッグ、BBスクイーズ</td><td>1〜3週間</td></tr>
+          <tr><td>レジスタンスブレイクアウト、ゴールデンクロス（短期）</td><td>2〜4週間</td></tr>
+          <tr><td>ゴールデンクロス（中期）、ダブルボトム</td><td>4〜8週間</td></tr>
+          <tr><td>逆H&S、パーフェクトオーダー、ワイコフ</td><td>4〜12週間</td></tr>
+          <tr><td>カップウィズハンドル</td><td>4〜10週間</td></tr>
+          <tr><td>ゴールデンクロス（長期）</td><td>8〜16週間</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="help-section" id="backtest">
-      <h2>Backtest</h2>
-      <p>Historical signals are evaluated against actual price data to verify this tool&rsquo;s signal accuracy. Auto-updated every Monday 9 AM ET.</p>
+      <h2>バックテスト</h2>
+      <p>過去のシグナルを実際の価格データに対して評価し、本ツールのシグナル精度を検証します。毎週月曜 ET 午前9時に自動更新。</p>
 
-      <h3>Backtest Filters</h3>
+      <h3>バックテストフィルター</h3>
       <table class="h-table">
-        <thead><tr><th>Condition</th><th>Value</th><th>Reason</th></tr></thead>
+        <thead><tr><th>条件</th><th>値</th><th>理由</th></tr></thead>
         <tbody>
-          <tr><td>Score</td><td class="good">&ge; 70</td><td>Only high-quality signals</td></tr>
-          <tr><td>Probability</td><td class="good">&ge; 60%</td><td>Only setups the algorithm judges favorably</td></tr>
-          <tr><td>RR ratio</td><td class="good">&ge; 1.8</td><td>Only setups with positive expected value</td></tr>
-          <tr><td>Cooldown</td><td>10 days same stock</td><td>Avoids consecutive entries on the same stock</td></tr>
-          <tr><td>Daily cap</td><td>Max 3 signals</td><td>Limits concentration risk</td></tr>
+          <tr><td>スコア</td><td class="good">&ge; 70</td><td>高品質なシグナルのみ</td></tr>
+          <tr><td>確率</td><td class="good">&ge; 60%</td><td>アルゴリズムが有利と判断するセットアップのみ</td></tr>
+          <tr><td>RR比率</td><td class="good">&ge; 1.8</td><td>正の期待値を持つセットアップのみ</td></tr>
+          <tr><td>クールダウン</td><td>同一銘柄10日間</td><td>同一銘柄への連続エントリーを避ける</td></tr>
+          <tr><td>1日の上限</td><td>最大3シグナル</td><td>集中リスクを制限</td></tr>
         </tbody>
       </table>
 
-      <h3>Win/Loss Rules</h3>
+      <h3>勝敗ルール</h3>
       <table class="h-table">
-        <thead><tr><th>Result</th><th>Condition</th></tr></thead>
+        <thead><tr><th>結果</th><th>条件</th></tr></thead>
         <tbody>
-          <tr><td class="good">&#10003; Target Hit (win)</td><td>High touches the target price within the allowed period.</td></tr>
-          <tr><td class="bad">&#10007; Stopped Out (loss)</td><td>Low touches the stop-loss price.</td></tr>
-          <tr><td class="mid">&#8987; Expired</td><td>Neither hit within weeks_max &rarr; exit at period-end close.</td></tr>
-          <tr><td style="color:var(--text-muted)">&#128200; Open</td><td>Result not yet determined. Not included in statistics.</td></tr>
+          <tr><td class="good">&#10003; 目標達成（勝ち）</td><td>許容期間内に高値が目標価格に到達。</td></tr>
+          <tr><td class="bad">&#10007; ストップアウト（負け）</td><td>安値が損切り価格に到達。</td></tr>
+          <tr><td class="mid">&#8987; 期限切れ</td><td>weeks_max以内にどちらも到達せず → 期間末の終値で決済。</td></tr>
+          <tr><td style="color:var(--text-muted)">&#128200; 進行中</td><td>まだ結果未確定。統計に含まれない。</td></tr>
         </tbody>
       </table>
 
-      <h3>Statistics Shown</h3>
+      <h3>表示される統計</h3>
       <table class="h-table">
-        <thead><tr><th>Metric</th><th>Calculation</th><th>Target</th></tr></thead>
+        <thead><tr><th>指標</th><th>計算式</th><th>目標</th></tr></thead>
         <tbody>
-          <tr><td>Win Rate</td><td>Wins &divide; completed trades (excluding open)</td><td>&ge; 60%</td></tr>
-          <tr><td>Avg Return</td><td>Average of actual returns (%)</td><td>Positive</td></tr>
-          <tr><td>Profit Factor</td><td>Total profit &divide; total loss</td><td>&ge; 1.5</td></tr>
-          <tr><td>Expected Value</td><td>Win rate &times; avg win + loss rate &times; avg loss</td><td>Positive</td></tr>
-          <tr><td>$10,000 Simulation</td><td>Capital curve using fixed 1% risk per signal</td><td>Reference</td></tr>
+          <tr><td>勝率</td><td>勝ち ÷ 完了トレード数（進行中を除く）</td><td>&ge; 60%</td></tr>
+          <tr><td>平均リターン</td><td>実際のリターン（%）の平均</td><td>プラス</td></tr>
+          <tr><td>プロフィットファクター</td><td>総利益 ÷ 総損失</td><td>&ge; 1.5</td></tr>
+          <tr><td>期待値</td><td>勝率 × 平均利益 + 負率 × 平均損失</td><td>プラス</td></tr>
+          <tr><td>$10,000シミュレーション</td><td>固定1%リスクで資本曲線を計算</td><td>参考値</td></tr>
         </tbody>
       </table>
 
-      <h3>Backtest Limitations</h3>
+      <h3>バックテストの限界</h3>
       <ul>
-        <li><strong>Data accumulation needed</strong>: Only signals since scanner launch are evaluated. 100+ trades needed for statistical significance (1&ndash;3 months).</li>
-        <li><strong>Slippage &amp; liquidity not modeled</strong>: Real fills may differ from theoretical prices.</li>
-        <li><strong>Taxes &amp; commissions not included</strong>: Actual returns will be lower.</li>
-        <li><strong>No simultaneous entry optimization</strong>: All signals evaluated independently.</li>
+        <li><strong>データ蓄積が必要</strong>：スキャナー開始以降のシグナルのみを評価。統計的有意性には100件以上のトレードが必要（1〜3ヶ月）。</li>
+        <li><strong>スリッページ・流動性は未考慮</strong>：実際の約定価格は理論価格と異なる場合がある。</li>
+        <li><strong>税金・手数料は含まれない</strong>：実際のリターンはより低くなる。</li>
+        <li><strong>同時エントリーの最適化なし</strong>：全シグナルを独立して評価。</li>
       </ul>
 
       <div class="warn-box">
-        <p>&#9888;&#65039; Good past backtest results do not guarantee future performance. Market regime changes can cause the same signals to produce very different outcomes.</p>
+        <p>&#9888;&#65039; 過去の良好なバックテスト結果は将来のパフォーマンスを保証しません。市場レジームの変化により、同じシグナルが全く異なる結果をもたらすことがあります。</p>
       </div>
     </section>
 
     <section class="help-section" id="favorites">
-      <h2>Favorites</h2>
-      <p>Save stocks of interest for quick access anytime.</p>
+      <h2>お気に入り</h2>
+      <p>注目銘柄を保存していつでも素早くアクセスできます。</p>
 
-      <h3>How to Use</h3>
+      <h3>使い方</h3>
       <ol>
-        <li>Click the <strong>&#9734; button</strong> in the first column of the results table to save (changes to &#11088;)</li>
-        <li>Click <strong>&#11088; Favorites (N)</strong> in the sort bar to show only saved stocks</li>
-        <li>Click again to return to normal view</li>
-        <li>Other filters (pattern, score, etc.) remain active in Favorites mode</li>
+        <li>結果テーブルの1列目にある<strong>☆ ボタン</strong>をクリックして保存（⭐ に変わる）</li>
+        <li>ソートバーの<strong>⭐ お気に入り（N件）</strong>をクリックして保存済み銘柄のみ表示</li>
+        <li>もう一度クリックして通常表示に戻る</li>
+        <li>お気に入りモードでも他のフィルター（パターン・スコアなど）は有効なまま</li>
       </ol>
 
-      <h3>Storage</h3>
+      <h3>保存方法</h3>
       <ul>
-        <li>Saved in browser <strong>localStorage</strong>. Persists across page reloads.</li>
-        <li>Cleared when browser cache / history is deleted.</li>
-        <li>Not shared across browsers or devices (never sent to any server).</li>
+        <li>ブラウザの<strong>localStorage</strong>に保存。ページを再読み込みしても維持される。</li>
+        <li>ブラウザのキャッシュ・履歴を削除すると消去される。</li>
+        <li>ブラウザやデバイスをまたいで共有されない（サーバーに送信されることはない）。</li>
       </ul>
 
       <div class="info-box">
-        <p>Favorited stocks persist to the next scan. However, if a stock has no signal in the new scan results, it will not be shown even in Favorites mode.</p>
+        <p>お気に入り銘柄は次回のスキャンにも引き継がれます。ただし、新しいスキャン結果にシグナルがない銘柄はお気に入りモードでも表示されません。</p>
       </div>
     </section>
 
     <section class="help-section" id="entry-guide">
-      <h2>Entry Decision Guide</h2>
-      <p>The scan runs on the prior day&rsquo;s closing prices. Between reviewing results in the evening and entering the next morning, prices will have moved. <strong>Do not use scan results directly &mdash; reassess at the open.</strong></p>
+      <h2>エントリー判断ガイド</h2>
+      <p>スキャンは前日の終値で実行されます。夜に結果を確認してから翌朝エントリーするまでに価格は動いています。<strong>スキャン結果をそのまま使わず、寄り付きで再評価してください。</strong></p>
 
-      <h3>After-Market to Open Flow</h3>
+      <h3>引け後から寄り付きまでのフロー</h3>
       <div class="step-list">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-body">
-            <strong>After Market (4 PM ET onwards): Review scan results</strong>
-            <span>Check score, pattern, RR ratio. Narrow your watch list and set tentative limit prices based on current closing prices.</span>
+            <strong>引け後（ET 午後4時以降）：スキャン結果を確認</strong>
+            <span>スコア・パターン・RR比率を確認。ウォッチリストを絞り込み、現在の終値を基準に仮のエントリー価格を設定。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-body">
-            <strong>Pre-Market (9:15&ndash;9:29 AM ET): Check pre-market prices</strong>
-            <span>Use your brokerage app to check pre-market quotes. If gap-up exceeds 2%, recalculate RR before the open.</span>
+            <strong>プレマーケット（ET 9:15〜9:29）：プレマーケット価格を確認</strong>
+            <span>証券会社のアプリでプレマーケット気配値を確認。ギャップアップが2%超なら寄り付き前にRRを再計算。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-body">
-            <strong>Market Open (9:30 AM ET): Final decision at the open</strong>
-            <span>Enter the actual open price in the order memo&rsquo;s &ldquo;Entry Price&rdquo; field and recheck RR. RR &ge; 1.5 &rarr; enter. RR &lt; 1.5 &rarr; skip.</span>
+            <strong>市場オープン（ET 9:30）：寄り付きで最終判断</strong>
+            <span>注文メモの「エントリー価格」フィールドに実際の寄り値を入力し、RRを再確認。RR≥1.5 → エントリー。RR&lt;1.5 → スキップ。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-body">
-            <strong>Post-Entry: Register in Position Manager</strong>
-            <span>Enter your actual fill price and share count. Target, stop-loss, and ATR will be auto-filled.</span>
+            <strong>エントリー後：ポジション管理に登録</strong>
+            <span>実際の約定価格と株数を入力。目標・損切り・ATRが自動入力される。</span>
           </div>
         </div>
       </div>
     </section>
 
     <section class="help-section" id="entry-gap">
-      <h2>Gap-Up Entry Judgment</h2>
-      <p>Stocks in strong uptrends or with positive catalysts may open above the prior close (gap up). A gap-up itself can signal strength, but <strong>always recheck the RR ratio</strong>.</p>
+      <h2>ギャップアップ時のエントリー判断</h2>
+      <p>強い上昇トレンドやポジティブなカタリストがある銘柄は、前日終値より高く寄り付く（ギャップアップ）ことがあります。ギャップアップ自体が強さを示すこともありますが、<strong>必ずRR比率を再計算してください。</strong></p>
 
-      <h3>RR Recalculation</h3>
-      <p>Target and stop-loss prices are based on technical levels (resistance, ATR, etc.) and do not change with the entry price. Only the RR ratio changes.</p>
+      <h3>RR再計算</h3>
+      <p>目標価格と損切り価格はテクニカルレベル（レジスタンス、ATRなど）に基づいており、エントリー価格が変わっても変動しません。変わるのはRR比率だけです。</p>
 
       <div class="info-box">
-        <strong>Example: RR Deterioration from Gap-Up</strong>
+        <strong>例：ギャップアップによるRR悪化</strong>
         <table class="h-table" style="margin-top:10px">
-          <thead><tr><th></th><th>At Scan Close</th><th>After Gap-Up</th></tr></thead>
+          <thead><tr><th></th><th>スキャン終値時</th><th>ギャップアップ後</th></tr></thead>
           <tbody>
-            <tr><td>Entry Price</td><td>$100.00</td><td class="bad">$106.00 (+6%)</td></tr>
-            <tr><td>Target</td><td>$133.00</td><td>$133.00 (unchanged)</td></tr>
-            <tr><td>Stop Loss</td><td>$90.00</td><td>$90.00 (unchanged)</td></tr>
-            <tr><td>RR Ratio</td><td class="good">3.3:1</td><td class="bad">1.7:1</td></tr>
+            <tr><td>エントリー価格</td><td>$100.00</td><td class="bad">$106.00 (+6%)</td></tr>
+            <tr><td>目標</td><td>$133.00</td><td>$133.00（変わらず）</td></tr>
+            <tr><td>損切り</td><td>$90.00</td><td>$90.00（変わらず）</td></tr>
+            <tr><td>RR比率</td><td class="good">3.3:1</td><td class="bad">1.7:1</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:8px">Enter the open price in the order memo&rsquo;s &ldquo;Entry Price&rdquo; field to automatically see updated RR and entry eligibility.</p>
+        <p style="margin-top:8px">注文メモの「エントリー価格」フィールドに寄り値を入力すると、更新されたRRとエントリー可否が自動的に表示されます。</p>
       </div>
 
-      <h3>Gap Size vs Action</h3>
+      <h3>ギャップサイズ別の対応</h3>
       <table class="h-table">
-        <thead><tr><th>Gap vs Prior Close</th><th>Action</th><th>Reason</th></tr></thead>
+        <thead><tr><th>前日終値比ギャップ</th><th>対応</th><th>理由</th></tr></thead>
         <tbody>
           <tr>
-            <td>+1&ndash;2%</td>
-            <td class="good">Within expectation. Verify RR then enter.</td>
-            <td>Minor gap with small RR impact.</td>
+            <td>+1〜2%</td>
+            <td class="good">想定内。RR確認後エントリー。</td>
+            <td>RRへの影響が軽微。</td>
           </tr>
           <tr>
-            <td>+2&ndash;5%</td>
-            <td>Recalculate RR. Enter if &ge; 1.5.</td>
-            <td>Visible RR deterioration &mdash; confirmation required.</td>
+            <td>+2〜5%</td>
+            <td>RRを再計算。≥1.5ならエントリー。</td>
+            <td>RRが目に見えて悪化 — 確認必須。</td>
           </tr>
           <tr>
-            <td>+5%+</td>
-            <td class="bad">Generally skip. Wait for a pullback.</td>
-            <td>RR almost certainly fails. High risk of buying the top.</td>
+            <td>+5%以上</td>
+            <td class="bad">基本的にスキップ。押し目を待つ。</td>
+            <td>RRはほぼ確実に不合格。天井掴みのリスク大。</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>The &ldquo;Wait for Pullback&rdquo; Option</h3>
-      <p>Gap-up stocks sometimes pull back to the prior day&rsquo;s high around 10&ndash;11 AM ET. For breakout patterns where the broken level becomes new support (Resistance Breakout, SR Flip), this retest can offer a <strong>better entry price than the open</strong>.</p>
+      <h3>「押し目待ち」という選択肢</h3>
+      <p>ギャップアップ銘柄は ET 10〜11時頃に前日高値付近まで押し目を入れることがあります。ブレイクアウト後にそのレベルが新たなサポートになるパターン（レジスタンスブレイクアウト、SRフリップ）では、このリテストが<strong>寄り付きより有利なエントリー価格</strong>を提供することがあります。</p>
       <div class="info-box">
-        <strong>When pullback-waiting works</strong><br>
-        Patterns where the broken price level becomes new support: Resistance Breakout, New 52W High, SR Flip. The breakout level retested is the second entry point.
+        <strong>押し目待ちが有効なケース</strong><br>
+        ブレイクした価格帯が新たなサポートになるパターン：レジスタンスブレイクアウト、52週新高値、SRフリップ。ブレイクレベルの再テストが第2のエントリーポイント。
       </div>
       <div class="warn-box">
-        <strong>When pullback-waiting is risky</strong><br>
-        If volume is thin on the breakout, the &ldquo;pullback&rdquo; may become a full reversal (false break). Only use this approach for breakouts with volume ratio &ge; 1.5&times;.
+        <strong>押し目待ちがリスクになるケース</strong><br>
+        ブレイクアウトの出来高が薄い場合、「押し目」が完全な反転（ダマシ）になりうる。出来高比≥1.5倍のブレイクアウトにのみこのアプローチを使用すること。
       </div>
     </section>
 
     <section class="help-section" id="entry-checklist">
-      <h2>Entry Checklist</h2>
-      <p>Confirm these items before every entry. More checkmarks = higher confidence.</p>
+      <h2>エントリーチェックリスト</h2>
+      <p>エントリー前に以下の項目を確認してください。チェックが多いほど確信度が高い。</p>
 
-      <h3>After Market (Scan Review)</h3>
+      <h3>引け後（スキャン確認）</h3>
       <table class="h-table">
-        <thead><tr><th>Check Item</th><th>Target</th></tr></thead>
+        <thead><tr><th>確認項目</th><th>目標</th></tr></thead>
         <tbody>
-          <tr><td>Is the score sufficient?</td><td>&ge; 60 recommended (minimum &ge; 50)</td></tr>
-          <tr><td>Is the RR ratio sufficient?</td><td>&ge; 2.0 recommended (minimum &ge; 1.5)</td></tr>
-          <tr><td>Is the probability sufficient?</td><td>&ge; 60%</td></tr>
-          <tr><td>Is RSI in a healthy range?</td><td>50&ndash;70 (above 75 = elevated top risk)</td></tr>
-          <tr><td>Does ADX confirm a trend?</td><td>&ge; 25</td></tr>
-          <tr><td>Is volume elevated?</td><td>Vol ratio &ge; 1.5&times;</td></tr>
-          <tr><td>Is RS score strong?</td><td>&ge; 60 (outperforming market average)</td></tr>
-          <tr><td>Is there an upcoming earnings?</td><td>&#128197; badge = handle with care</td></tr>
-          <tr><td>Is there a &#9733; Recommended badge?</td><td>Score, Prob, and RR all meet baseline criteria</td></tr>
+          <tr><td>スコアは十分か？</td><td>≥60推奨（最低≥50）</td></tr>
+          <tr><td>RR比率は十分か？</td><td>≥2.0推奨（最低≥1.5）</td></tr>
+          <tr><td>確率は十分か？</td><td>≥60%</td></tr>
+          <tr><td>RSIは健全な範囲か？</td><td>50〜70（75超は天井リスク大）</td></tr>
+          <tr><td>ADXはトレンドを確認しているか？</td><td>≥25</td></tr>
+          <tr><td>出来高は増加しているか？</td><td>出来高比≥1.5倍</td></tr>
+          <tr><td>RSスコアは強いか？</td><td>≥60（市場平均を上回る）</td></tr>
+          <tr><td>直近に決算発表があるか？</td><td>📅バッジ = 慎重に</td></tr>
+          <tr><td>★ おすすめバッジがあるか？</td><td>スコア・確率・RRすべてが基準を満たす</td></tr>
         </tbody>
       </table>
 
-      <h3>Pre-Market / At Open</h3>
+      <h3>プレマーケット / 寄り付き</h3>
       <table class="h-table">
-        <thead><tr><th>Check Item</th><th>Action</th></tr></thead>
+        <thead><tr><th>確認項目</th><th>対応</th></tr></thead>
         <tbody>
-          <tr><td>Checked pre-market price</td><td>9:15&ndash;9:29 AM ET in brokerage app</td></tr>
-          <tr><td>Recalculated RR for gap-up</td><td>Enter open price in order memo field</td></tr>
-          <tr><td>RR is still &ge; 1.5</td><td>Order memo shows &ldquo;&#10003; Entry OK&rdquo;</td></tr>
-          <tr><td>Stop order set in brokerage</td><td>Submit stop order simultaneously with entry</td></tr>
-          <tr><td>Position size within risk budget</td><td>Avoid concentrating in a single stock</td></tr>
+          <tr><td>プレマーケット価格を確認した</td><td>ET 9:15〜9:29に証券会社アプリで確認</td></tr>
+          <tr><td>ギャップアップに対してRRを再計算した</td><td>注文メモの価格フィールドに寄り値を入力</td></tr>
+          <tr><td>RRがまだ≥1.5か</td><td>注文メモに「✓ エントリーOK」と表示</td></tr>
+          <tr><td>証券会社でストップ注文を設定した</td><td>エントリーと同時にストップ注文を発注</td></tr>
+          <tr><td>ポジションサイズはリスク予算内か</td><td>1銘柄への集中を避ける</td></tr>
         </tbody>
       </table>
 
-      <h3>Post-Entry (Position Management)</h3>
+      <h3>エントリー後（ポジション管理）</h3>
       <table class="h-table">
-        <thead><tr><th>Timing</th><th>Action</th></tr></thead>
+        <thead><tr><th>タイミング</th><th>対応</th></tr></thead>
         <tbody>
-          <tr><td>Immediately after entry</td><td>Register actual fill price and shares in Position Manager</td></tr>
-          <tr><td>Daily (after scan update)</td><td>Raise stop-loss if Stop Advice shows an update</td></tr>
-          <tr><td>Past the trade deadline</td><td>Review position regardless of price (avoid time-based losses)</td></tr>
-          <tr><td>Near target price</td><td>Consider partial or full profit-taking. Don&rsquo;t be greedy.</td></tr>
+          <tr><td>エントリー直後</td><td>実際の約定価格と株数をポジション管理に登録</td></tr>
+          <tr><td>毎日（スキャン更新後）</td><td>ストップアドバイスで更新がある場合は損切りを引き上げ</td></tr>
+          <tr><td>取引期限を過ぎたら</td><td>価格に関わらずポジションを見直す（時間的な損失を避ける）</td></tr>
+          <tr><td>目標価格に近づいたら</td><td>一部または全部利確を検討。欲張らないこと。</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="help-section" id="entry-split">
-      <h2>Scaling In</h2>
-      <p>Instead of entering your full position at once, build it in multiple tranches. Effective when confidence, liquidity, or market conditions are not 100% ideal.</p>
+      <h2>分割エントリー</h2>
+      <p>一度に全数量を買わず、複数回に分けてポジションを構築します。確信度・流動性・市場環境が100%理想的でない場合に有効です。</p>
 
       <div class="info-box info-box-blue" style="margin-bottom:16px">
-        <strong>Core idea:</strong> &ldquo;Limit damage if wrong.&rdquo; Enter half first, observe the market&rsquo;s reaction, then add the rest. If wrong, only the first tranche takes the loss.
+        <strong>基本的な考え方：</strong>「間違った場合のダメージを最小化する。」まず半分だけ買い、市場の反応を観察してから残りを買う。間違っていれば1回目の分だけが損失となる。
       </div>
 
       <table class="h-table">
-        <thead><tr><th>Case</th><th>Reason</th><th>Split Ratio</th></tr></thead>
+        <thead><tr><th>ケース</th><th>理由</th><th>分割比率</th></tr></thead>
         <tbody>
           <tr>
-            <td>&#128167; Low liquidity<br><small>Daily volume &lt; $500K</small></td>
-            <td>Large orders move the price against you (slippage).</td>
-            <td>Time-slice (morning / afternoon) or spread over multiple days</td>
+            <td>&#128167; 流動性低下<br><small>日次出来高 &lt; $50万</small></td>
+            <td>大口注文が価格を動かしてしまう（スリッページ）。</td>
+            <td>時間分散（午前/午後）または複数日に分けて</td>
           </tr>
           <tr>
-            <td>Pattern still forming</td>
-            <td>Breakout not yet confirmed &mdash; higher false-break risk.</td>
-            <td>50% now &rarr; 50% after breakout confirmed</td>
+            <td>パターン形成中</td>
+            <td>ブレイクアウト未確認 — ダマシのリスクが高い。</td>
+            <td>50%今 → 50%ブレイクアウト確認後</td>
           </tr>
           <tr>
-            <td>Medium signal strength<br><small>Score 60&ndash;70</small></td>
-            <td>Not fully confident. Enter small to observe before adding.</td>
-            <td>50% &rarr; 50% after uptrend confirmed</td>
+            <td>シグナル強度が中程度<br><small>スコア 60〜70</small></td>
+            <td>完全には確信が持てない。小量から試してみる。</td>
+            <td>50% → 上昇トレンド確認後50%</td>
           </tr>
           <tr>
-            <td>Unstable market<br><small>S&amp;P 500 near 200-day MA or bear mode</small></td>
-            <td>Individual stocks can be dragged down with the market.</td>
-            <td>30&ndash;50% &rarr; add after market stabilizes</td>
+            <td>不安定な市場<br><small>S&P 500が200日MAに近いまたは弱気相場</small></td>
+            <td>個別株が市場全体に引きずられる。</td>
+            <td>30〜50% → 市場安定後に追加</td>
           </tr>
           <tr>
-            <td>High volatility<br><small>Large ATR, wide BB</small></td>
-            <td>Wide stop needed &rarr; reduce share count to keep risk fixed.</td>
-            <td>Recalculate with 1% risk rule, then enter in 1&ndash;2 tranches</td>
+            <td>高ボラティリティ<br><small>ATRが大きい、BBが広い</small></td>
+            <td>広いストップが必要 → リスク固定で株数を減らす。</td>
+            <td>1%リスクルールで再計算後、1〜2回で</td>
           </tr>
           <tr>
-            <td>&#128197; Earnings within 3 days</td>
-            <td>Avoid earnings gamble &mdash; wait for post-earnings reaction.</td>
-            <td>30% now &rarr; 70% after earnings pass (or skip)</td>
+            <td>&#128197; 3日以内に決算発表</td>
+            <td>決算ギャンブルを避ける — 決算通過後の反応を待つ。</td>
+            <td>30%今 → 70%決算後（または全スキップ）</td>
           </tr>
           <tr>
-            <td>Building a large position</td>
-            <td>Institutional-style accumulation over time.</td>
-            <td>3&ndash;5 tranches, add while price trend is up</td>
+            <td>大きなポジションを構築</td>
+            <td>機関投資家スタイルで時間をかけて蓄積。</td>
+            <td>3〜5回に分けて、価格トレンドが上昇中に追加</td>
           </tr>
           <tr>
-            <td>Pre-breakout advance entry<br><small>Near resistance / handle bottom</small></td>
-            <td>Favorable price with higher risk &mdash; minimize first tranche.</td>
-            <td>30&ndash;50% now &rarr; 50&ndash;70% after breakout</td>
+            <td>ブレイクアウト前の先行エントリー<br><small>レジスタンス付近 / ハンドル底値付近</small></td>
+            <td>有利な価格だがリスクも高い — 1回目を小さく。</td>
+            <td>30〜50%今 → 50〜70%ブレイクアウト後</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Split Timing by Pattern</h3>
+      <h3>パターン別の分割タイミング</h3>
       <table class="h-table">
-        <thead><tr><th>Pattern</th><th>Tranche 1 Timing</th><th>Tranche 2 Timing</th><th>Ratio</th></tr></thead>
+        <thead><tr><th>パターン</th><th>1回目タイミング</th><th>2回目タイミング</th><th>比率</th></tr></thead>
         <tbody>
           <tr>
-            <td>Resistance Breakout<br>New 52W High</td>
-            <td>Breakout confirmed (close above resistance)</td>
-            <td>First pullback (broken resistance holds as support)</td>
+            <td>レジスタンスブレイクアウト<br>52週新高値</td>
+            <td>ブレイクアウト確認（レジスタンス上引け）</td>
+            <td>最初の押し目（旧レジスタンスがサポートを維持）</td>
             <td>60 / 40</td>
           </tr>
           <tr>
-            <td>VCP<br>Cup with Handle</td>
-            <td>Near pivot (handle bottom) or at scan signal</td>
-            <td>Breakout day (volume surge confirmed)</td>
+            <td>VCP<br>カップウィズハンドル</td>
+            <td>ピボット付近（ハンドル底）またはスキャンシグナル時</td>
+            <td>ブレイクアウト日（出来高急増確認）</td>
             <td>50 / 50</td>
           </tr>
           <tr>
-            <td>Inverse H&amp;S<br>Double Bottom</td>
-            <td>Near right shoulder / right bottom</td>
-            <td>After neckline breakout confirmed</td>
+            <td>逆H&S<br>ダブルボトム</td>
+            <td>右肩/右底付近</td>
+            <td>ネックラインブレイクアウト確認後</td>
             <td>50 / 50</td>
           </tr>
           <tr>
-            <td>Wyckoff Spring</td>
-            <td>Spring confirmed (false breakdown &rarr; strong reversal)</td>
-            <td>Sign of Strength (SOS) with volume</td>
+            <td>ワイコフスプリング</td>
+            <td>スプリング確認（ダマシ安値 → 力強い反転）</td>
+            <td>強さの兆候（SOS）を出来高で確認</td>
             <td>40 / 60</td>
           </tr>
           <tr>
-            <td>MA Compression</td>
-            <td>When breakout direction is decided</td>
-            <td>1&ndash;2 days later if momentum continues</td>
+            <td>MA圧縮</td>
+            <td>ブレイクアウト方向が決まった時</td>
+            <td>1〜2日後にモメンタムが継続していれば</td>
             <td>60 / 40</td>
           </tr>
           <tr>
-            <td>Low-liquidity stocks</td>
-            <td>Small tranche during liquid morning hours</td>
-            <td>Rest spread over the same day afternoon or next day</td>
+            <td>流動性の低い銘柄</td>
+            <td>流動性の高い午前中に小量</td>
+            <td>同日午後または翌日以降に残りを分散</td>
             <td>33 / 33 / 33</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Scaling-In Pitfalls</h3>
+      <h3>分割エントリーの落とし穴</h3>
       <div class="help-grid" style="margin-top:12px">
         <div class="help-card help-card-warn">
-          <h4>&#9888; What NOT to Do</h4>
+          <h4>&#9888; やってはいけないこと</h4>
           <ul>
-            <li><strong>Add when price drops (averaging down)</strong> &mdash; Scaling in means adding after confirmation of upward movement, not adding into losses.</li>
-            <li><strong>Keep the same stop-loss when adding shares</strong> &mdash; More shares = more risk. Recalculate stop and share count before adding.</li>
-            <li><strong>Exceed your risk budget because tranche 1 is profitable</strong> &mdash; Total risk (loss if stop is hit) must stay within 1&ndash;2% of capital.</li>
+            <li><strong>価格が下がったら追加する（ナンピン）</strong> — 分割エントリーは上昇の確認後に追加することであり、損失に追加することではない。</li>
+            <li><strong>株数が増えても同じ損切りを維持する</strong> — 株数増 = リスク増。追加前にストップと株数を再計算する。</li>
+            <li><strong>1回目が利益だからといってリスク予算を超える</strong> — 合計リスク（ストップに達した時の損失）は常に資本の1〜2%以内に収めること。</li>
           </ul>
         </div>
 
         <div class="help-card help-card-ok">
-          <h4>&#10003; When Full-Size Entry Is Appropriate</h4>
+          <h4>&#10003; 全量エントリーが適切なケース</h4>
           <ul>
-            <li>Score <strong>&ge; 80</strong>, Probability <strong>&ge; 65%</strong> &mdash; strong signal</li>
-            <li>Sufficient liquidity (daily volume <strong>&ge; $1M/day</strong>)</li>
-            <li>Breakout <strong>clearly confirmed</strong> with volume surge (&ge; 2&times;)</li>
-            <li>RR ratio <strong>&ge; 2.0</strong></li>
-            <li>Market environment is bullish</li>
+            <li>スコア<strong>≥80</strong>、確率<strong>≥65%</strong> — 強いシグナル</li>
+            <li>十分な流動性（日次出来高<strong>≥$100万/日</strong>）</li>
+            <li>出来高急増（≥2倍）を伴う<strong>明確に確認済み</strong>のブレイクアウト</li>
+            <li>RR比率<strong>≥2.0</strong></li>
+            <li>マーケット環境が強気</li>
           </ul>
           <p style="margin-top:8px;font-size:12px;color:var(--text-muted)">
-            If a &#9733; Recommended badge appears (Score &ge; 60, Prob &ge; 60%, RR &ge; 2.0) and no &#128167; liquidity warning is shown, a full-size entry may be appropriate.
+            ★おすすめバッジ（スコア≥60、確率≥60%、RR≥2.0）が表示され、💧流動性警告がなければ全量エントリーが適切かもしれない。
           </p>
         </div>
       </div>
 
       <div class="info-box" style="margin-top:16px">
-        <p><strong>Risk Management Principle:</strong> Whether scaling in or entering full-size, <em>total risk per trade must stay within 1&ndash;2% of capital</em>. Scaling in is not about distributing the stop-loss &mdash; it&rsquo;s about incrementally building risk as confidence grows. Set your stop-loss and share count from tranche 1, and manage subsequent tranches within the same risk envelope.</p>
+        <p><strong>リスク管理の原則：</strong>分割エントリーでも全量エントリーでも、<em>1トレードあたりの合計リスクは資本の1〜2%以内に収めること</em>。分割エントリーは損切りを分散させるのではなく、確信度が高まるにつれてリスクを段階的に積み上げることを意味します。1回目から損切りと株数を設定し、追加分も同じリスクエンベロープ内で管理する。</p>
       </div>
     </section>
 
     <section class="help-section" id="disclaimer">
-      <h2>Disclaimer</h2>
+      <h2>免責事項</h2>
 
       <div class="disclaimer-big">
-        <h3>&#9888;&#65039; Not Investment Advice</h3>
-        <p>This tool is for informational purposes only and does not recommend or advise the purchase or sale of any specific security. Even high-score, high-probability stocks can result in losses. All investment decisions are at your own risk.</p>
+        <h3>&#9888;&#65039; 投資アドバイスではありません</h3>
+        <p>本ツールは情報提供のみを目的としており、特定の有価証券の売買を推奨・助言するものではありません。高スコア・高確率の銘柄でも損失が生じる可能性があります。すべての投資判断はご自身のリスクで行ってください。</p>
       </div>
 
-      <h3>Data Accuracy</h3>
+      <h3>データの精度</h3>
       <ul>
-        <li>Price data is obtained via Yahoo Finance (unofficial API). Accuracy and completeness are not guaranteed.</li>
-        <li>Some stocks may fail to fetch and will not appear in scan results.</li>
-        <li>Scans run daily after 4 PM ET but may be delayed by GitHub Actions issues.</li>
-        <li>Market holidays and closures are skipped.</li>
+        <li>価格データはYahoo Finance（非公式API）経由で取得しています。精度と完全性は保証されません。</li>
+        <li>一部銘柄はデータ取得に失敗し、スキャン結果に表示されない場合があります。</li>
+        <li>スキャンはET 午後4時以降に毎日実行されますが、GitHub Actionsの問題で遅延する場合があります。</li>
+        <li>市場の祝日・閉鎖日はスキップされます。</li>
       </ul>
 
-      <h3>Algorithm Limitations</h3>
+      <h3>アルゴリズムの限界</h3>
       <ul>
-        <li>Scores and probabilities are mechanical calculations. Fundamentals (earnings, news, guidance) are not considered.</li>
-        <li>Pattern detection uses statistical algorithms &mdash; false signals (fakeouts) can and do occur.</li>
-        <li>Backtest results are historical reference values and do not guarantee future performance.</li>
-        <li>Extreme market events (circuit breakers, flash crashes) may not be handled correctly.</li>
+        <li>スコアと確率は機械的な計算です。ファンダメンタルズ（決算・ニュース・業績見通し）は考慮されていません。</li>
+        <li>パターン検出は統計的アルゴリズムを使用しており、誤シグナル（ダマシ）は発生します。</li>
+        <li>バックテスト結果は過去の参考値であり、将来のパフォーマンスを保証しません。</li>
+        <li>極端な市場イベント（サーキットブレーカー、フラッシュクラッシュ）は正しく処理されない場合があります。</li>
       </ul>
 
-      <h3>Risk Disclosure</h3>
+      <h3>リスク開示</h3>
       <ul>
-        <li>Stock investing involves the risk of losing principal. Only invest money you can afford to lose.</li>
-        <li>Do not base investment decisions solely on this tool&rsquo;s output.</li>
-        <li>The developers of this tool accept no liability for any losses incurred.</li>
+        <li>株式投資には元本損失のリスクがあります。失っても構わない資金のみで投資してください。</li>
+        <li>本ツールの出力のみに基づいて投資判断を行わないでください。</li>
+        <li>本ツールの開発者は、発生した損失に対して一切の責任を負いません。</li>
       </ul>
 
-      <h3>Usage Notes</h3>
+      <h3>利用上の注意</h3>
       <ul>
-        <li>This tool is open-source (<a href="https://github.com/tororo-jp/kabu-chart-usa" style="color:#79c0ff" target="_blank">GitHub</a>). Feel free to modify and self-host.</li>
-        <li>Data source: Yahoo Finance / Wikipedia (S&amp;P 500 constituent list)</li>
-        <li>Coverage: S&amp;P 500 constituents, updated daily after US market close (ET)</li>
+        <li>本ツールはオープンソースです（<a href="https://github.com/tororo-jp/kabu-chart-usa" style="color:#79c0ff" target="_blank">GitHub</a>）。自由に改変・自己ホストしてご利用いただけます。</li>
+        <li>データソース：Yahoo Finance / Wikipedia（S&amp;P 500構成銘柄リスト）</li>
+        <li>対象：S&amp;P 500構成銘柄、米国市場クローズ後（ET）毎日更新</li>
       </ul>
     </section>
 
@@ -1024,8 +1024,8 @@
 </div>
 
 <footer class="site-footer">
-  This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
-  Data: Yahoo Finance &nbsp;|&nbsp; S&amp;P 500 constituents, updated daily after market close (ET)
+  本ツールは情報提供のみを目的としており、投資アドバイスを構成するものではありません。すべての投資判断はご自身のリスクで行ってください。
+  データ：Yahoo Finance &nbsp;|&nbsp; S&amp;P 500構成銘柄、米国市場クローズ後（ET）毎日更新
 </footer>
 
 <script>

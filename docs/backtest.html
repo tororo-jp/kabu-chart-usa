@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Backtest | US Stock Technical Scanner</title>
+  <title>バックテスト | 米国株テクニカルスキャナー</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
     .bt-page {
@@ -312,8 +312,8 @@
 <header>
   <div class="header-inner">
     <div style="display:flex;align-items:center;gap:20px;">
-      <a href="index.html" class="back-link">&larr; Back to Scanner</a>
-      <h1>&#128202; Backtest Results</h1>
+      <a href="index.html" class="back-link">&larr; スキャナーに戻る</a>
+      <h1>&#128202; バックテスト結果</h1>
     </div>
     <span id="bt-updated" class="last-update"></span>
   </div>
@@ -321,9 +321,9 @@
 
 <div class="bt-page" id="bt-page">
 
-  <!-- Filter bar -->
+  <!-- フィルターバー -->
   <div class="bt-filter-bar">
-    <span class="bt-filter-label">Backtest Filters:</span>
+    <span class="bt-filter-label">バックテストフィルター：</span>
     <span id="bt-filter-score" class="bt-filter-chip">-</span>
     <span id="bt-filter-prob"  class="bt-filter-chip">-</span>
     <span id="bt-filter-rr"   class="bt-filter-chip">-</span>
@@ -331,10 +331,10 @@
     <span id="bt-filter-cooldown" class="bt-filter-chip">-</span>
   </div>
 
-  <!-- Collapsible guide -->
+  <!-- 折りたたみガイド -->
   <div class="bt-guide">
     <div class="bt-guide-toggle" onclick="toggleGuide()">
-      <span class="bt-guide-title">&#128214; Backtest Methodology &amp; How to Read the Results</span>
+      <span class="bt-guide-title">&#128214; バックテスト手法と結果の読み方</span>
       <span class="bt-guide-arrow" id="guide-arrow">&#9660;</span>
     </div>
     <div class="bt-guide-body" id="guide-body">
@@ -342,124 +342,124 @@
       <div class="bt-guide-grid">
 
         <div class="bt-guide-card">
-          <h4>&#128302; What Are We Testing?</h4>
-          <p>Every signal detected by the daily scanner is simulated using a simple rule: <strong>buy at the next open, sell when the target or stop-loss is hit.</strong></p>
+          <h4>&#128302; 何をテストしているのか？</h4>
+          <p>日次スキャナーが検出した全シグナルを、シンプルなルールでシミュレーションします：<strong>翌日始値で買い、目標価格か損切りに達したら売り。</strong></p>
           <ul>
-            <li>All signals from past scan archives are loaded</li>
-            <li>Filtered to match real entry criteria (see below)</li>
-            <li>Win/loss determined against actual OHLCV data from Yahoo Finance</li>
+            <li>過去のスキャンアーカイブから全シグナルを読み込み</li>
+            <li>実際のエントリー基準（下記参照）でフィルタリング</li>
+            <li>Yahoo FinanceのOHLCVデータで勝敗を判定</li>
           </ul>
         </div>
 
         <div class="bt-guide-card">
-          <h4>&#127919; Entry Selection Logic (Filters)</h4>
-          <p>Rather than testing every signal, entries are filtered to match realistic trading criteria.</p>
+          <h4>&#127919; エントリー選択ロジック（フィルター）</h4>
+          <p>全シグナルをテストするのではなく、現実的なトレード基準でフィルタリングします。</p>
           <ul>
-            <li><strong>Score &ge; 60</strong>: Only stocks with solid technical backing</li>
-            <li><strong>Prob &ge; 55%</strong>: Model judges the setup as favorable</li>
-            <li><strong>RR &ge; 1.5</strong>: Expected reward at least 1.5&times; the risk</li>
-            <li><strong>Max 5/day</strong>: Limits daily concentration risk</li>
-            <li><strong>Cooldown 5 days</strong>: Skips repeat signals on the same stock</li>
+            <li><strong>スコア &ge; 60</strong>：しっかりしたテクニカル裏付けのある銘柄のみ</li>
+            <li><strong>確率 &ge; 55%</strong>：モデルがセットアップを有利と判断</li>
+            <li><strong>RR &ge; 1.5</strong>：リスクの1.5倍以上の期待リターン</li>
+            <li><strong>最大5件/日</strong>：1日の集中リスクを制限</li>
+            <li><strong>クールダウン5日</strong>：同一銘柄の連続シグナルをスキップ</li>
           </ul>
-          <p style="margin-top:8px">On each day, the top 5 signals by score are selected.</p>
+          <p style="margin-top:8px">各日でスコア上位5シグナルを選択します。</p>
         </div>
 
         <div class="bt-guide-card">
-          <h4>&#9878;&#65039; Win/Loss Rules</h4>
-          <p>After entry, the outcome is determined by <strong>whichever price is reached first</strong>:</p>
+          <h4>&#9878;&#65039; 勝敗ルール</h4>
+          <p>エントリー後、<strong>どちらの価格に先に到達したか</strong>で結果が決まります：</p>
           <ul>
-            <li>&#10003; <strong>Target Hit</strong>: High touches the target price first</li>
-            <li>&#10007; <strong>Stopped Out</strong>: Low touches the stop-loss first</li>
-            <li>&#8987; <strong>Expired</strong>: Neither hit within weeks_max &rarr; exit at period-end close</li>
-            <li>&#128200; <strong>Open</strong>: Result not yet determined</li>
+            <li>&#10003; <strong>目標達成</strong>：高値が目標価格に先に到達</li>
+            <li>&#10007; <strong>ストップアウト</strong>：安値が損切り価格に到達</li>
+            <li>&#8987; <strong>期限切れ</strong>：weeks_max以内にどちらも到達せず &rarr; 期間末の終値で決済</li>
+            <li>&#128200; <strong>進行中</strong>：まだ結果未確定</li>
           </ul>
-          <p style="margin-top:8px">"Expired" trades are close to a loss but may finish slightly positive.</p>
+          <p style="margin-top:8px">「期限切れ」は損失に近いですが、わずかにプラスで終わることもあります。</p>
         </div>
 
         <div class="bt-guide-card">
-          <h4>&#128176; Capital Simulation</h4>
-          <p><strong>$10,000 starting capital, fixed 1% risk per trade.</strong></p>
+          <h4>&#128176; 資本シミュレーション</h4>
+          <p><strong>スタート$10,000、固定リスク1%/トレード。</strong></p>
           <ul>
-            <li>Risk amount = Capital &times; 1%</li>
-            <li>Shares = Risk amount &divide; (Entry &minus; Stop price)</li>
-            <li>Example: Capital $10,000, stop width $2.00 &rarr; buy 50 shares</li>
+            <li>リスク額 = 資本 &times; 1%</li>
+            <li>株数 = リスク額 &divide; (エントリー &minus; 損切り価格)</li>
+            <li>例：資本$10,000、損切り幅$2.00 &rarr; 50株購入</li>
           </ul>
-          <p style="margin-top:8px">Slippage, commissions, and taxes are <strong>not included</strong>. Actual performance may be 1&ndash;2% worse.</p>
+          <p style="margin-top:8px">スリッページ、手数料、税金は<strong>含まれません</strong>。実際のパフォーマンスは1&ndash;2%悪くなる場合があります。</p>
         </div>
 
       </div>
 
-      <h4 style="font-size:13px;font-weight:700;margin:0 0 10px;color:var(--text)">&#128202; Reading the Metrics</h4>
+      <h4 style="font-size:13px;font-weight:700;margin:0 0 10px;color:var(--text)">&#128202; 指標の読み方</h4>
       <div class="bt-guide-metrics">
 
         <div class="bt-metric-row">
-          <span class="bt-metric-name">Win Rate</span>
-          <span class="bt-metric-desc">Percentage of completed trades that hit the target.</span>
-          <span class="bt-metric-bench">Target: &ge; 55% stable, &ge; 60% excellent</span>
+          <span class="bt-metric-name">勝率</span>
+          <span class="bt-metric-desc">完了したトレードのうち目標達成した割合。</span>
+          <span class="bt-metric-bench">目標：&ge; 55%が安定、&ge; 60%が優秀</span>
         </div>
 
         <div class="bt-metric-row">
-          <span class="bt-metric-name">Profit Factor (PF)</span>
-          <span class="bt-metric-desc">Total profit &divide; total loss. PF &le; 1.0 means long-term losses. High RR ratio allows PF &gt; 1 even with lower win rate.</span>
-          <span class="bt-metric-bench">Target: &ge; 1.5, &ge; 2.0 excellent</span>
+          <span class="bt-metric-name">プロフィットファクター（PF）</span>
+          <span class="bt-metric-desc">総利益 &divide; 総損失。PF &le; 1.0は長期的に損失。RR比率が高ければ勝率が低くてもPF &gt; 1になれる。</span>
+          <span class="bt-metric-bench">目標：&ge; 1.5、&ge; 2.0が優秀</span>
         </div>
 
         <div class="bt-metric-row">
-          <span class="bt-metric-name">Expected Value (EV)</span>
-          <span class="bt-metric-desc">Average expected return per trade (%).<br>= Win rate &times; avg win + loss rate &times; avg loss</span>
-          <span class="bt-metric-bench">Target: &ge; 0% (positive edge)</span>
+          <span class="bt-metric-name">期待値（EV）</span>
+          <span class="bt-metric-desc">1トレードあたりの平均期待リターン（%）。<br>= 勝率 &times; 平均利益 + 負率 &times; 平均損失</span>
+          <span class="bt-metric-bench">目標：&ge; 0%（正のエッジ）</span>
         </div>
 
         <div class="bt-metric-row">
-          <span class="bt-metric-name">Sharpe Ratio (annualized)</span>
-          <span class="bt-metric-desc">Return &divide; risk (std dev), annualized. Higher = better return per unit of volatility.</span>
-          <span class="bt-metric-bench">Target: &ge; 1.0 good, &ge; 1.5 excellent</span>
+          <span class="bt-metric-name">シャープレシオ（年率）</span>
+          <span class="bt-metric-desc">リターン &divide; リスク（標準偏差）、年率換算。高いほど同じリスクで高いリターン。</span>
+          <span class="bt-metric-bench">目標：&ge; 1.0良好、&ge; 1.5優秀</span>
         </div>
 
         <div class="bt-metric-row">
-          <span class="bt-metric-name">Max Drawdown (MDD)</span>
-          <span class="bt-metric-desc">Largest peak-to-trough decline in capital (%). High MDD makes it psychologically hard to stay in.</span>
-          <span class="bt-metric-bench">Target: keep under 20%</span>
+          <span class="bt-metric-name">最大ドローダウン（MDD）</span>
+          <span class="bt-metric-desc">資本のピーク時からの最大下落率（%）。MDDが高いほど精神的に継続が難しくなる。</span>
+          <span class="bt-metric-bench">目標：20%以内に抑える</span>
         </div>
 
         <div class="bt-metric-row">
-          <span class="bt-metric-name">Expired</span>
-          <span class="bt-metric-desc">Trades that reached weeks_max without hitting target or stop. Too many may indicate targets are set too far.</span>
-          <span class="bt-metric-bench">Ideal: &le; 20% of all trades</span>
+          <span class="bt-metric-name">期限切れ</span>
+          <span class="bt-metric-desc">weeks_max以内に目標も損切りも到達しなかったトレード。多すぎる場合は目標が遠すぎる可能性あり。</span>
+          <span class="bt-metric-bench">理想：全トレードの &le; 20%</span>
         </div>
 
       </div>
 
-      <h4 style="font-size:13px;font-weight:700;margin:20px 0 10px;color:var(--text)">&#128290; Scoring System (100-point scale)</h4>
+      <h4 style="font-size:13px;font-weight:700;margin:20px 0 10px;color:var(--text)">&#128290; スコアリングシステム（100点満点）</h4>
       <div class="bt-guide-card" style="margin-bottom:16px">
         <table class="bt-score-table">
           <thead>
-            <tr><th>Component</th><th>Max</th><th>Scoring Criteria</th></tr>
+            <tr><th>構成要素</th><th>最大</th><th>採点基準</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td>Trend</td><td>25 pts</td>
-              <td>Perfect Order(+10), above 200MA(+5), MA compression(+7), Ichimoku bullish(+3)</td>
+              <td>トレンド</td><td>25点</td>
+              <td>パーフェクトオーダー(+10)、200MA上(+5)、MA圧縮(+7)、一目均衡表強気(+3)</td>
             </tr>
             <tr>
-              <td>Pattern</td><td>35 pts</td>
-              <td>Pattern weight &times; confidence. 2nd+ patterns are halved. Only confidence &ge; 0.4 counted.</td>
+              <td>パターン</td><td>35点</td>
+              <td>パターン重み &times; 信頼度。2番目以降は半減。信頼度 &ge; 0.4のみカウント。</td>
             </tr>
             <tr>
-              <td>Momentum</td><td>20 pts</td>
-              <td>RSI 50&ndash;75(+8), 75&ndash;80(+5), MACD golden cross within 5d(+7), divergence(+2&times;count)</td>
+              <td>モメンタム</td><td>20点</td>
+              <td>RSI 50&ndash;75(+8)、75&ndash;80(+5)、MACD5日以内ゴールデンクロス(+7)、ダイバージェンス(+2&times;回数)</td>
             </tr>
             <tr>
-              <td>Volume Surge</td><td>10 pts</td>
-              <td>Daily volume vs 20-day avg. &ge;3.0&times;(+7), &ge;2.0&times;(+5), &ge;1.5&times;(+3), OBV rising(+3)</td>
+              <td>出来高急増</td><td>10点</td>
+              <td>20日平均対比の日次出来高。&ge;3.0倍(+7)、&ge;2.0倍(+5)、&ge;1.5倍(+3)、OBV上昇(+3)</td>
             </tr>
             <tr>
-              <td>Liquidity</td><td>5 pts</td>
-              <td>20-day avg daily $ volume. &ge;$5M(+5), &ge;$1M(+4), &ge;$500K(+3), &ge;$200K(+1)</td>
+              <td>流動性</td><td>5点</td>
+              <td>20日平均日次ドル出来高。&ge;$5M(+5)、&ge;$1M(+4)、&ge;$500K(+3)、&ge;$200K(+1)</td>
             </tr>
             <tr>
-              <td>RS Score</td><td>5 pts</td>
-              <td>RS &ge;80(+5), &ge;65(+4), &ge;50(+2), below(0). Relative strength vs all scanned stocks.</td>
+              <td>RSスコア</td><td>5点</td>
+              <td>RS &ge;80(+5)、&ge;65(+4)、&ge;50(+2)、それ以下(0)。スキャン全銘柄対比の相対力。</td>
             </tr>
           </tbody>
         </table>
@@ -467,123 +467,123 @@
 
       <div class="bt-guide-grid" style="margin-bottom:16px">
         <div class="bt-guide-card">
-          <h4>&#128208; Probability Calculation</h4>
-          <p>Win probability is a blend of two components:</p>
+          <h4>&#128208; 確率計算</h4>
+          <p>勝利確率は2つの要素のブレンドです：</p>
           <ul>
-            <li><strong>Score-based probability (60% weight)</strong>: 0.30 + (score/100) &times; 0.50. Score 60 &rarr; 60%, Score 80 &rarr; 70%.</li>
-            <li><strong>Pattern win rate (40% weight)</strong>: Theoretical win rate per pattern, weighted by (pattern weight &times; confidence). High-precision patterns like VCP/CwH are weighted more heavily.</li>
+            <li><strong>スコアベース確率（重み60%）</strong>：0.30 + (スコア/100) &times; 0.50。スコア60 &rarr; 60%、スコア80 &rarr; 70%。</li>
+            <li><strong>パターン勝率（重み40%）</strong>：パターンごとの理論勝率を（パターン重み &times; 信頼度）で加重。VCP/CwHなど高精度パターンはより重く扱われる。</li>
           </ul>
-          <p style="margin-top:8px">RS is already included in the score, so it is not double-counted in the probability (only a tiny bonus for RS &ge; 90).</p>
+          <p style="margin-top:8px">RSはスコアに既に含まれているため確率では二重カウントされません（RS &ge; 90の場合のみ微小ボーナスあり）。</p>
         </div>
 
         <div class="bt-guide-card">
-          <h4>&#128260; Using Score Component Analysis</h4>
-          <p>Compare which score components differ between winning and losing trades.</p>
+          <h4>&#128260; スコア構成要素分析の活用</h4>
+          <p>勝ちトレードと負けトレードで、どのスコア構成要素が異なるかを比較します。</p>
           <ul>
-            <li>Positive diff &rarr; component correlates with wins</li>
-            <li>Near zero &rarr; component may have weak predictive power</li>
-            <li>Negative diff &rarr; component may be counterproductive</li>
+            <li>正の差分 &rarr; 構成要素が勝ちと相関</li>
+            <li>ゼロに近い &rarr; 予測力が弱い可能性</li>
+            <li>負の差分 &rarr; 逆効果の可能性</li>
           </ul>
-          <p style="margin-top:8px">As data accumulates, increase weights for high-diff components and reduce weights for low-diff ones to improve the model.</p>
+          <p style="margin-top:8px">データが蓄積されたら、差分が大きい構成要素の重みを増やし、小さいものを減らしてモデルを改善。</p>
         </div>
 
         <div class="bt-guide-card">
-          <h4>&#128207; Reading Probability Calibration</h4>
-          <p>Compares the scanner's predicted probability against actual win rate.</p>
+          <h4>&#128207; 確率キャリブレーションの読み方</h4>
+          <p>スキャナーの予測確率と実際の勝率を比較します。</p>
           <ul>
-            <li><strong>Deviation &asymp; 0</strong>: Model is well calibrated</li>
-            <li><strong>Actual &gt; Predicted (positive gap)</strong>: Underestimating. Consider raising probability thresholds.</li>
-            <li><strong>Actual &lt; Predicted (negative gap)</strong>: Overestimating. Tighten the threshold.</li>
+            <li><strong>偏差 &asymp; 0</strong>：モデルが適切にキャリブレーション</li>
+            <li><strong>実際 &gt; 予測（正のギャップ）</strong>：過小評価。確率閾値を上げることを検討。</li>
+            <li><strong>実際 &lt; 予測（負のギャップ）</strong>：過大評価。閾値を厳しくする。</li>
           </ul>
-          <p style="margin-top:8px">At least 20&ndash;30 trades per bucket are needed for statistically valid conclusions.</p>
+          <p style="margin-top:8px">統計的に有効な結論には各バンドで最低20&ndash;30件のトレードが必要です。</p>
         </div>
 
         <div class="bt-guide-card">
-          <h4>&#8987; Model Improvement Cycle</h4>
-          <p>Once backtest data accumulates, improve the model with these steps:</p>
+          <h4>&#8987; モデル改善サイクル</h4>
+          <p>バックテストデータが蓄積されたら、以下の手順でモデルを改善：</p>
           <ul>
-            <li>&#9312; <strong>Score component analysis</strong>: identify high-diff components</li>
-            <li>&#9313; <strong>By-pattern breakdown</strong>: find patterns where actual win rate diverges from theoretical</li>
-            <li>&#9314; <strong>Calibration</strong>: assess overall over/under-estimation</li>
-            <li>&#9315; Update weights in <code>scorer.py</code> and <code>PATTERN_WIN_RATES</code></li>
-            <li>&#9316; Re-scan &rarr; accumulate data &rarr; repeat</li>
+            <li>&#9312; <strong>スコア構成要素分析</strong>：差分が大きい要素を特定</li>
+            <li>&#9313; <strong>パターン別内訳</strong>：実際の勝率が理論値と乖離するパターンを探す</li>
+            <li>&#9314; <strong>キャリブレーション</strong>：全体的な過大/過小評価を評価</li>
+            <li>&#9315; <code>scorer.py</code>と<code>PATTERN_WIN_RATES</code>の重みを更新</li>
+            <li>&#9316; 再スキャン &rarr; データ蓄積 &rarr; 繰り返し</li>
           </ul>
-          <p style="margin-top:8px">Rough timeline: 3 months for calibration baseline, 6 months for meaningful improvement decisions.</p>
+          <p style="margin-top:8px">目安：キャリブレーションのベースラインに3ヶ月、意味のある改善判断に6ヶ月。</p>
         </div>
 
       </div>
 
       <div class="bt-guide-caution">
-        <strong>&#9888;&#65039; Backtest Limitations &amp; Caveats</strong><br>
-        &#9312; <strong>Slippage not included</strong>: Gap-up/down at the open shifts actual entry price. Real returns may be 1&ndash;3% worse.<br>
-        &#9313; <strong>Commissions &amp; taxes excluded</strong>: US long-term gains are taxed at 0/15/20%; short-term at ordinary income rates.<br>
-        &#9314; <strong>Curve-fitting risk</strong>: Parameters optimized on historical data may not hold in the future.<br>
-        &#9315; <strong>Liquidity risk</strong>: Thinly traded stocks may not fill at the theoretical price.<br>
-        &#9316; <strong>Market regime dependence</strong>: Pattern effectiveness changes significantly between bull and bear markets. Use the market-environment filter.
+        <strong>&#9888;&#65039; バックテストの限界と注意事項</strong><br>
+        &#9312; <strong>スリッページ未考慮</strong>：始値でのギャップアップ/ダウンが実際のエントリー価格をずらす。実際のリターンは1&ndash;3%悪い可能性あり。<br>
+        &#9313; <strong>手数料・税金を除外</strong>：米国長期キャピタルゲインは0/15/20%、短期は通常所得税率で課税。<br>
+        &#9314; <strong>過学習リスク</strong>：過去データに最適化されたパラメーターは将来に通用しない可能性がある。<br>
+        &#9315; <strong>流動性リスク</strong>：薄い板の銘柄では理論価格で約定しない場合がある。<br>
+        &#9316; <strong>マーケットレジーム依存</strong>：強気・弱気相場でパターンの有効性が大きく変わる。マーケット環境フィルターを活用すること。
       </div>
 
     </div>
   </div>
 
-  <!-- Summary cards -->
+  <!-- サマリーカード -->
   <div id="bt-summary-cards" class="bt-cards"></div>
 
-  <!-- Capital curve -->
+  <!-- 資本曲線 -->
   <div class="capital-chart-wrap" id="capital-chart-wrap" style="display:none">
     <div class="pos-table-head" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;">
-      <span class="bt-section-title" style="margin:0">Capital Curve ($10,000 Start, 1% Fixed Risk)</span>
+      <span class="bt-section-title" style="margin:0">資本曲線（スタート$10,000、固定リスク1%）</span>
       <span id="capital-chart-sub" style="font-size:11px;color:var(--text-muted)"></span>
     </div>
     <div class="capital-chart-container" id="capital-chart-container"></div>
   </div>
 
-  <!-- Score component analysis -->
+  <!-- スコア構成要素分析 -->
   <div class="bt-section">
-    <div class="bt-section-title">Score Component Analysis &mdash; Win / Loss Comparison</div>
+    <div class="bt-section-title">スコア構成要素分析 &mdash; 勝ち / 負け比較</div>
     <div id="bt-breakdown"></div>
   </div>
 
-  <!-- Probability calibration -->
+  <!-- 確率キャリブレーション -->
   <div class="bt-section">
-    <div class="bt-section-title">Probability Calibration &mdash; Predicted vs Actual Win Rate</div>
+    <div class="bt-section-title">確率キャリブレーション &mdash; 予測vs実際の勝率</div>
     <div id="bt-calibration"></div>
   </div>
 
-  <!-- Pattern + score tables -->
+  <!-- パターン・スコアテーブル -->
   <div class="bt-tables-row">
     <div class="bt-section">
-      <div class="bt-section-title">By Pattern</div>
+      <div class="bt-section-title">パターン別</div>
       <table class="bt-table">
-        <thead><tr><th>Pattern</th><th>Count</th><th>Win Rate</th><th>Avg Return</th></tr></thead>
+        <thead><tr><th>パターン</th><th>回数</th><th>勝率</th><th>平均リターン</th></tr></thead>
         <tbody id="bt-pattern-body"></tbody>
       </table>
     </div>
     <div class="bt-section">
-      <div class="bt-section-title">By Score Range</div>
+      <div class="bt-section-title">スコア範囲別</div>
       <table class="bt-table">
-        <thead><tr><th>Score</th><th>Count</th><th>Win Rate</th><th>Avg Return</th></tr></thead>
+        <thead><tr><th>スコア</th><th>回数</th><th>勝率</th><th>平均リターン</th></tr></thead>
         <tbody id="bt-score-body"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- Signal list -->
+  <!-- シグナルリスト -->
   <div class="bt-section">
-    <div class="bt-section-title">Signal List (newest first)</div>
+    <div class="bt-section-title">シグナルリスト（新しい順）</div>
     <div class="bt-signals-scroll">
       <table class="bt-signals-tbl">
         <thead>
           <tr>
-            <th>Detected</th>
-            <th>Ticker</th>
-            <th>Company</th>
-            <th>Score / Breakdown</th>
-            <th>Pattern</th>
-            <th>Entry</th>
-            <th>Target</th>
-            <th>Result</th>
-            <th>Return</th>
-            <th>Holding Days</th>
+            <th>検出日</th>
+            <th>ティッカー</th>
+            <th>会社名</th>
+            <th>スコア / 内訳</th>
+            <th>パターン</th>
+            <th>エントリー</th>
+            <th>目標</th>
+            <th>結果</th>
+            <th>リターン</th>
+            <th>保有日数</th>
           </tr>
         </thead>
         <tbody id="bt-signals-body"></tbody>
@@ -592,15 +592,15 @@
   </div>
 
   <p class="bt-disclaimer">
-    * Backtest results are based on historical data and do not guarantee future performance.
-    Slippage, commissions, and taxes are not included.
+    ※ バックテスト結果は過去データに基づくものであり、将来のパフォーマンスを保証するものではありません。
+    スリッページ、手数料、税金は含まれていません。
   </p>
 
 </div>
 
 <footer class="site-footer">
-  This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
-  Data: Yahoo Finance &nbsp;|&nbsp; S&amp;P 500 constituents, updated daily after market close (ET)
+  本ツールは情報提供のみを目的としており、投資アドバイスを構成するものではありません。すべての投資判断はご自身のリスクで行ってください。
+  データ：Yahoo Finance &nbsp;|&nbsp; S&amp;P 500構成銘柄、米国市場クローズ後（ET）毎日更新
 </footer>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Position Manager | US Stock Technical Scanner</title>
+  <title>ポジション管理 | 米国株テクニカルスキャナー</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
     .pos-page {
@@ -387,11 +387,11 @@
 <header>
   <div class="header-inner">
     <div style="display:flex;align-items:center;gap:20px;">
-      <a href="index.html" class="back-link">&larr; Back to Scanner</a>
-      <h1>&#128203; Position Manager</h1>
+      <a href="index.html" class="back-link">&larr; スキャナーに戻る</a>
+      <h1>&#128203; ポジション管理</h1>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <a href="positions-help.html" class="help-btn" rel="noopener">&#10067; Guide</a>
+      <a href="positions-help.html" class="help-btn" rel="noopener">&#10067; ガイド</a>
       <span id="pos-scan-time" class="last-update"></span>
     </div>
   </div>
@@ -399,72 +399,72 @@
 
 <div class="pos-page">
 
-  <!-- Summary cards -->
+  <!-- サマリーカード -->
   <div class="pos-summary" id="pos-summary">
     <div class="pos-summary-card">
-      <div class="sc-label">Open Positions</div>
+      <div class="sc-label">オープンポジション</div>
       <div class="sc-value" id="sum-count">0</div>
-      <div class="sc-sub">positions</div>
+      <div class="sc-sub">ポジション</div>
     </div>
     <div class="pos-summary-card">
-      <div class="sc-label">Total P&amp;L</div>
+      <div class="sc-label">合計損益</div>
       <div class="sc-value" id="sum-pnl">-</div>
       <div class="sc-sub" id="sum-pnl-pct"></div>
     </div>
     <div class="pos-summary-card">
-      <div class="sc-label">Total Cost</div>
+      <div class="sc-label">合計コスト</div>
       <div class="sc-value" id="sum-cost">-</div>
       <div class="sc-sub">USD</div>
     </div>
     <div class="pos-summary-card" id="sum-upgrades-card" style="display:none;">
-      <div class="sc-label">Stop Updates</div>
+      <div class="sc-label">ストップ更新</div>
       <div class="sc-value" id="sum-upgrades" style="color:var(--yellow)">0</div>
-      <div class="sc-sub">positions</div>
+      <div class="sc-sub">ポジション</div>
     </div>
   </div>
 
-  <!-- Monthly performance gauge -->
+  <!-- 月次パフォーマンスゲージ -->
   <div class="monthly-perf-wrap" id="monthly-perf-wrap" style="display:none">
     <div class="monthly-perf-head">
-      <span class="monthly-perf-title">This Month's Return</span>
+      <span class="monthly-perf-title">今月のリターン</span>
       <span class="monthly-perf-pct" id="monthly-perf-pct">-</span>
       <span class="monthly-perf-badge" id="monthly-perf-badge"></span>
       <span style="margin-left:auto;font-size:11px;color:var(--text-muted)" id="monthly-perf-sub"></span>
     </div>
     <div class="gauge-track">
       <div class="gauge-fill" id="gauge-fill" style="width:0%"></div>
-      <!-- Required 7% marker: 7/15*100 = 46.67% -->
+      <!-- 必要7%マーカー：7/15*100 = 46.67% -->
       <div class="gauge-marker" style="left:46.67%">
         <div class="gauge-marker-tick"></div>
-        <div class="gauge-marker-lbl">Required<br>7%</div>
+        <div class="gauge-marker-lbl">必要<br>7%</div>
       </div>
-      <!-- Goal 10% marker: 10/15*100 = 66.67% -->
+      <!-- 目標10%マーカー：10/15*100 = 66.67% -->
       <div class="gauge-marker" style="left:66.67%">
         <div class="gauge-marker-tick"></div>
-        <div class="gauge-marker-lbl">Goal<br>10%</div>
+        <div class="gauge-marker-lbl">目標<br>10%</div>
       </div>
     </div>
     <div class="gauge-axis"><span>0%</span><span>15%+</span></div>
   </div>
 
-  <!-- P&L chart (daily) -->
+  <!-- 損益チャート（日次） -->
   <div class="pnl-chart-wrap" id="pnl-chart-wrap" style="display:none">
     <div class="pos-table-head">
-      <span class="pos-table-head-title">P&amp;L History (Daily)</span>
+      <span class="pos-table-head-title">損益履歴（日次）</span>
       <div style="display:flex;align-items:center;gap:10px;">
-        <button class="tax-btn" id="tax-btn" onclick="toggleTax()">Pre-Tax</button>
-        <span style="font-size:11px;color:var(--text-muted)">Open this page each day to record your P&amp;L</span>
+        <button class="tax-btn" id="tax-btn" onclick="toggleTax()">税引前</button>
+        <span style="font-size:11px;color:var(--text-muted)">毎日このページを開いて損益を記録してください</span>
       </div>
     </div>
     <div class="pnl-chart-container" id="pnl-chart-container"></div>
   </div>
 
-  <!-- Benchmark comparison chart -->
+  <!-- ベンチマーク比較チャート -->
   <div class="pnl-chart-wrap" id="bench-chart-wrap" style="display:none">
     <div class="pos-table-head">
-      <span class="pos-table-head-title">Market Comparison (Cumulative Return %)</span>
+      <span class="pos-table-head-title">マーケット比較（累積リターン%）</span>
       <div class="bench-legend">
-        <span class="bench-legend-item bench-color-user" id="bench-legend-user">Mine</span>
+        <span class="bench-legend-item bench-color-user" id="bench-legend-user">自分</span>
         <span class="bench-legend-item bench-color-nk">&mdash;&mdash; S&amp;P 500</span>
         <span class="bench-legend-item bench-color-tp">&mdash;&mdash; NASDAQ</span>
       </div>
@@ -472,58 +472,58 @@
     <div class="pnl-chart-container" id="bench-chart-container"></div>
   </div>
 
-  <!-- Add position button / hint -->
+  <!-- ポジション追加ボタン -->
   <div style="display:flex;align-items:center;gap:12px;">
-    <button class="pos-add-btn" id="add-btn" onclick="toggleForm()">&#65291; Add Position</button>
-    <span class="pos-form-hint">Enter a ticker to auto-fill from today's scan results</span>
+    <button class="pos-add-btn" id="add-btn" onclick="toggleForm()">&#65291; ポジション追加</button>
+    <span class="pos-form-hint">ティッカーを入力して今日のスキャン結果から自動入力</span>
   </div>
 
   <div class="pos-form-wrap hidden" id="pos-form-wrap">
-    <div class="pos-form-title">Add New Position</div>
+    <div class="pos-form-title">新規ポジション追加</div>
     <div class="pos-form-grid">
       <div class="pos-form-field">
-        <label>Ticker <span style="color:var(--red)">*</span></label>
-        <input type="text" id="f-code" placeholder="e.g. AAPL" maxlength="10" />
-        <button class="btn-autofill" onclick="autoFill()">Auto-fill from Scan</button>
+        <label>ティッカー <span style="color:var(--red)">*</span></label>
+        <input type="text" id="f-code" placeholder="例：AAPL" maxlength="10" />
+        <button class="btn-autofill" onclick="autoFill()">スキャンから自動入力</button>
       </div>
       <div class="pos-form-field">
-        <label>Company</label>
-        <input type="text" id="f-name" placeholder="Auto-fill or enter manually" />
+        <label>会社名</label>
+        <input type="text" id="f-name" placeholder="自動入力または手動入力" />
       </div>
       <div class="pos-form-field">
-        <label>Shares <span style="color:var(--red)">*</span></label>
+        <label>株数 <span style="color:var(--red)">*</span></label>
         <input type="number" id="f-shares" placeholder="100" min="1" />
       </div>
       <div class="pos-form-field">
-        <label>Entry Price ($) <span style="color:var(--red)">*</span></label>
-        <input type="number" id="f-entry" placeholder="e.g. 150.00" min="0.01" step="0.01" oninput="recalcTargets()" />
+        <label>エントリー価格（$）<span style="color:var(--red)">*</span></label>
+        <input type="number" id="f-entry" placeholder="例：150.00" min="0.01" step="0.01" oninput="recalcTargets()" />
       </div>
       <div class="pos-form-field">
-        <label>Entry Date</label>
+        <label>エントリー日</label>
         <input type="date" id="f-date" />
       </div>
       <div class="pos-form-field">
-        <label>Target Price ($)</label>
-        <input type="number" id="f-target" placeholder="Auto-fill or enter manually" min="0.01" step="0.01" />
+        <label>目標価格（$）</label>
+        <input type="number" id="f-target" placeholder="自動入力または手動入力" min="0.01" step="0.01" />
       </div>
       <div class="pos-form-field">
-        <label>Stop Loss ($)</label>
-        <input type="number" id="f-stop" placeholder="Auto-fill or enter manually" min="0.01" step="0.01" />
+        <label>損切り価格（$）</label>
+        <input type="number" id="f-stop" placeholder="自動入力または手動入力" min="0.01" step="0.01" />
       </div>
     </div>
     <div class="pos-form-actions">
-      <button class="btn-primary" onclick="submitAdd()">Add</button>
-      <button class="btn-cancel" onclick="toggleForm()">Cancel</button>
+      <button class="btn-primary" onclick="submitAdd()">追加</button>
+      <button class="btn-cancel" onclick="toggleForm()">キャンセル</button>
       <span class="pos-form-hint" id="form-error" style="color:var(--red)"></span>
     </div>
   </div>
 
-  <!-- Open positions table -->
+  <!-- オープンポジションテーブル -->
   <div class="pos-table-wrap">
     <div class="pos-table-head">
       <div style="display:flex;align-items:center;gap:12px;">
-        <span class="pos-table-head-title">Open</span>
-        <button id="bulk-advice-btn" class="bulk-advice-btn" onclick="applyAllAdvice()" style="display:none;">&uarr; Apply All</button>
+        <span class="pos-table-head-title">オープン</span>
+        <button id="bulk-advice-btn" class="bulk-advice-btn" onclick="applyAllAdvice()" style="display:none;">&uarr; 一括適用</button>
       </div>
       <span id="pos-scan-label" class="pos-scan-time"></span>
     </div>
@@ -531,19 +531,19 @@
       <table class="pos-table">
         <thead>
           <tr>
-            <th>Ticker <span class="col-tip" data-tip="Stock ticker. Click to open the scanner chart. 'Off-scan' means not in today's scan results.">?</span></th>
-            <th>Company</th>
-            <th class="num">Shares <span class="col-tip" data-tip="Number of shares held.">?</span></th>
-            <th class="num">Entry Price <span class="col-tip" data-tip="Average purchase price ($). Used as basis for P&amp;L and stop calculations.">?</span></th>
-            <th class="num">Current Price <span class="col-tip" data-tip="Closing price at today's scan time ($). Not real-time. Scan updates daily after market close (ET).">?</span></th>
-            <th class="num">P&amp;L <span class="col-tip" data-tip="(Current &minus; Entry) &times; Shares. Bottom row shows % change. Updates only when scan data refreshes.">?</span></th>
-            <th>Progress (Stop&rarr;Target) <span class="col-tip" data-tip="Progress bar with stop = 0% and target = 100%. Vertical line marks entry price. Further right = closer to target.">?</span></th>
-            <th class="num">To Target <span class="col-tip" data-tip="Remaining upside to target (%). Shown in green bold when &lt; 3% (near target).">?</span></th>
-            <th class="num">To Stop <span class="col-tip" data-tip="Remaining downside to stop (%). Shown in red bold when &lt; 3% (danger zone). Raise your stop to give more breathing room.">?</span></th>
-            <th>Stop Advice <span class="col-tip" data-tip="ATR-based staged stop-raise recommendation. Stages: &amp;#9312;Initial (entry&minus;ATR&times;2) &rarr;&amp;#9313;Breakeven (entry) &rarr;&amp;#9314;Lock Profit (entry+ATR) &rarr;&amp;#9315;Trailing (price&minus;ATR&times;1.5). Press '&uarr; Apply' to update.">?</span></th>
-            <th class="num">Score <span class="col-tip" data-tip="Today's scan total score (0&ndash;100). Sum of Trend, Pattern, Momentum, Volume, and RS. 'Off-scan' means score &lt; 30, not included in scan results.">?</span></th>
-            <th>Entry Date <span class="col-tip" data-tip="Date the position was entered. Used to calculate the trade deadline.">?</span></th>
-            <th>Deadline <span class="col-tip" data-tip="Entry date + pattern holding period (weeks_max &times; 7 days). E.g. Inverse H&amp;S 12 wks, Hammer 3 wks. Past deadline with no target &rarr; review your strategy. Consider exiting even if stop not hit.">?</span></th>
+            <th>ティッカー <span class="col-tip" data-tip="銘柄のティッカー。クリックするとスキャナーのチャートを開く。「–」は今日のスキャン結果にない銘柄。">?</span></th>
+            <th>会社名</th>
+            <th class="num">株数 <span class="col-tip" data-tip="保有株数。">?</span></th>
+            <th class="num">エントリー価格 <span class="col-tip" data-tip="平均取得価格（$）。損益とストップ計算の基準。">?</span></th>
+            <th class="num">現在価格 <span class="col-tip" data-tip="今日のスキャン時の終値（$）。リアルタイムではありません。スキャンは米国市場クローズ後（ET）に毎日更新。">?</span></th>
+            <th class="num">損益 <span class="col-tip" data-tip="（現在価格 − エントリー）× 株数。下段に%変動を表示。スキャンデータ更新時のみ更新。">?</span></th>
+            <th>進捗（損切り→目標）<span class="col-tip" data-tip="損切り=0%、目標=100%として現在価格の進捗をバーで表示。縦線はエントリー価格の位置。右に近いほど目標に近い。">?</span></th>
+            <th class="num">目標まで <span class="col-tip" data-tip="目標価格までの残り上昇余地（%）。3%以内になると緑太字で表示。">?</span></th>
+            <th class="num">損切りまで <span class="col-tip" data-tip="損切り価格までの残り下落余地（%）。3%以内になると赤太字で表示。損切りに近い場合はブローカーの注文を確認。">?</span></th>
+            <th>ストップアドバイス <span class="col-tip" data-tip="ATRベースの段階的ストップ引き上げ推奨。ステージ：&#9312;初期（エントリー−ATR×2）→&#9313;ブレイクイーブン（エントリー）→&#9314;利益確定（エントリー+ATR）→&#9315;トレーリング（価格−ATR×1.5）。「↑ 適用」で更新。">?</span></th>
+            <th class="num">スコア <span class="col-tip" data-tip="今日のスキャン合計スコア（0–100）。トレンド・パターン・モメンタム・出来高・RSの合計。スコア30未満はスキャン結果に含まれず「–」表示。">?</span></th>
+            <th>エントリー日 <span class="col-tip" data-tip="ポジションを保有した日付。取引期限の計算に使用。">?</span></th>
+            <th>期限 <span class="col-tip" data-tip="エントリー日 + パターンの保有期間（weeks_max × 7日）。例：逆H&S 12週、ハンマー 3週。期限超過で目標未達の場合は戦略を再評価。ストップが未到達でも早期撤退を検討。">?</span></th>
             <th></th>
           </tr>
         </thead>
@@ -552,19 +552,19 @@
     </div>
   </div>
 
-  <!-- Closed trades -->
+  <!-- クローズ済み取引 -->
   <div id="history-section" style="display:none">
     <div class="pos-table-wrap">
       <div class="pos-table-head">
-        <span class="pos-table-head-title">Closed Trades</span>
+        <span class="pos-table-head-title">クローズ済み取引</span>
       </div>
       <div class="pos-scroll">
         <table class="pos-table">
           <thead>
             <tr>
-              <th>Ticker</th><th>Company</th><th class="num">Shares</th>
-              <th class="num">Entry</th><th class="num">Exit</th>
-              <th class="num">P&amp;L</th><th>Entry Date</th><th>Exit Date</th><th></th>
+              <th>ティッカー</th><th>会社名</th><th class="num">株数</th>
+              <th class="num">エントリー</th><th class="num">決済</th>
+              <th class="num">損益</th><th>エントリー日</th><th>決済日</th><th></th>
             </tr>
           </thead>
           <tbody id="history-body"></tbody>
@@ -573,21 +573,21 @@
     </div>
   </div>
 
-  <!-- Close modal -->
+  <!-- 決済モーダル -->
   <div id="close-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;">
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;min-width:280px;max-width:360px;">
-      <div style="font-size:15px;font-weight:600;margin-bottom:16px;">Record Close</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:16px;">決済の記録</div>
       <div class="pos-form-field" style="margin-bottom:12px;">
-        <label>Exit Price ($)</label>
+        <label>決済価格（$）</label>
         <input type="number" id="close-price" min="0.01" step="0.01" />
       </div>
       <div class="pos-form-field" style="margin-bottom:16px;">
-        <label>Exit Date</label>
+        <label>決済日</label>
         <input type="date" id="close-date" />
       </div>
       <div style="display:flex;gap:8px;">
-        <button class="btn-primary" onclick="confirmClose()">Save</button>
-        <button class="btn-cancel" onclick="hideCloseModal()">Cancel</button>
+        <button class="btn-primary" onclick="confirmClose()">保存</button>
+        <button class="btn-cancel" onclick="hideCloseModal()">キャンセル</button>
       </div>
     </div>
   </div>
@@ -597,8 +597,8 @@
 <div id="col-tip-popup" class="col-tip-popup"></div>
 
 <footer class="site-footer">
-  Position data is stored in browser localStorage. Cleared when cache is cleared.
-  &nbsp;|&nbsp; All investment decisions are at your own risk.
+  ポジションデータはブラウザのlocalStorageに保存されます。キャッシュクリア時に削除されます。
+  &nbsp;|&nbsp; すべての投資判断はご自身のリスクで行ってください。
 </footer>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
