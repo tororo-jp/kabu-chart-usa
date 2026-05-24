@@ -18,8 +18,8 @@ async function loadBacktest() {
   } catch (e) {
     document.getElementById("bt-page").innerHTML =
       `<div class="bt-empty-page">
-        No backtest data available.<br>
-        Data will appear automatically once signals accumulate (updated weekly after US market close).<br>
+        バックテストデータがありません。<br>
+        シグナルが蓄積されると自動的に表示されます（米国市場クローズ後、毎週更新）。<br>
         <small style="font-size:12px">${escBt(e.message)}</small>
       </div>`;
   }
@@ -30,13 +30,13 @@ function render(d) {
   const f = d.filter  || {};
 
   document.getElementById("bt-updated").textContent =
-    d.generated_at ? `Updated: ${d.generated_at}` : "";
+    d.generated_at ? `更新日：${d.generated_at}` : "";
 
-  document.getElementById("bt-filter-score").textContent    = `Score ≥ ${f.score_min ?? "-"}`;
-  document.getElementById("bt-filter-prob").textContent     = `Prob ≥ ${f.prob_min != null ? Math.round(f.prob_min * 100) + "%" : "-"}`;
+  document.getElementById("bt-filter-score").textContent    = `スコア ≥ ${f.score_min ?? "-"}`;
+  document.getElementById("bt-filter-prob").textContent     = `確率 ≥ ${f.prob_min != null ? Math.round(f.prob_min * 100) + "%" : "-"}`;
   document.getElementById("bt-filter-rr").textContent       = `RR ≥ ${f.rr_min ?? "-"}`;
-  document.getElementById("bt-filter-limit").textContent    = `Max ${f.max_per_day ?? "-"}/day`;
-  document.getElementById("bt-filter-cooldown").textContent = `Cooldown ${f.cooldown_days ?? "-"}d`;
+  document.getElementById("bt-filter-limit").textContent    = `最大 ${f.max_per_day ?? "-"}件/日`;
+  document.getElementById("bt-filter-cooldown").textContent = `クールダウン ${f.cooldown_days ?? "-"}日`;
 
   const wr      = s.win_rate;
   const wrPct   = wr != null ? Math.round(wr * 100) : "-";
@@ -48,41 +48,41 @@ function render(d) {
 
   document.getElementById("bt-summary-cards").innerHTML = `
     <div class="bt-card">
-      <div class="bt-card-label">Signals</div>
+      <div class="bt-card-label">シグナル</div>
       <div class="bt-card-value">${s.total_signals ?? "-"}</div>
-      <div class="bt-card-sub">Closed ${s.completed ?? 0} / Open ${s.open ?? 0}</div>
+      <div class="bt-card-sub">完了 ${s.completed ?? 0} / 進行中 ${s.open ?? 0}</div>
     </div>
     <div class="bt-card">
-      <div class="bt-card-label">Win Rate</div>
+      <div class="bt-card-label">勝率</div>
       <div class="bt-card-value ${wrClass}">${wrPct}%</div>
-      <div class="bt-card-sub">W ${s.wins ?? 0} / L ${s.losses ?? 0} / Exp ${s.expired ?? 0}</div>
+      <div class="bt-card-sub">勝 ${s.wins ?? 0} / 負 ${s.losses ?? 0} / 期切 ${s.expired ?? 0}</div>
     </div>
     <div class="bt-card">
-      <div class="bt-card-label">Avg Return</div>
+      <div class="bt-card-label">平均リターン</div>
       <div class="bt-card-value ${(s.avg_return_all ?? 0) >= 0 ? "bt-good" : "bt-bad"}">
         ${s.avg_return_all != null ? ((s.avg_return_all >= 0 ? "+" : "") + s.avg_return_all + "%") : "-"}
       </div>
       <div class="bt-card-sub">
-        W ${s.avg_return_win  != null ? "+" + s.avg_return_win  + "%" : "-"} /
-        L ${s.avg_return_loss != null ?       s.avg_return_loss + "%" : "-"}
+        勝 ${s.avg_return_win  != null ? "+" + s.avg_return_win  + "%" : "-"} /
+        負 ${s.avg_return_loss != null ?       s.avg_return_loss + "%" : "-"}
       </div>
     </div>
     <div class="bt-card">
-      <div class="bt-card-label">Profit Factor</div>
+      <div class="bt-card-label">プロフィットファクター</div>
       <div class="bt-card-value ${s.profit_factor >= 1.5 ? "bt-good" : s.profit_factor >= 1.0 ? "bt-mid" : "bt-bad"}">
         ${s.profit_factor ?? "-"}
       </div>
-      <div class="bt-card-sub">Expectancy ${s.expected_value != null ? ((s.expected_value >= 0 ? "+" : "") + s.expected_value + "%") : "-"}</div>
+      <div class="bt-card-sub">期待値 ${s.expected_value != null ? ((s.expected_value >= 0 ? "+" : "") + s.expected_value + "%") : "-"}</div>
     </div>
     <div class="bt-card">
-      <div class="bt-card-label">Sharpe Ratio (ann.)</div>
+      <div class="bt-card-label">シャープレシオ（年率）</div>
       <div class="bt-card-value ${sharpe != null ? sharpeCls : ""}">
         ${sharpe != null ? sharpe.toFixed(2) : "-"}
       </div>
-      <div class="bt-card-sub">Max DD ${dd != null ? "-" + dd + "%" : "-"}</div>
+      <div class="bt-card-sub">最大DD ${dd != null ? "-" + dd + "%" : "-"}</div>
     </div>
     <div class="bt-card bt-card-capital">
-      <div class="bt-card-label">$10,000 Simulation</div>
+      <div class="bt-card-label">$10,000 シミュレーション</div>
       <div class="bt-card-value ${(s.capital_return ?? 0) >= 0 ? "bt-good" : "bt-bad"}">
         $${s.capital_end != null ? Number(s.capital_end).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "-"}
       </div>
@@ -103,7 +103,7 @@ function render(d) {
         <td class="${wr >= 60 ? "bt-good" : wr >= 50 ? "bt-mid" : "bt-bad'}">${wr}%</td>
         <td class="${p.avg_return >= 0 ? "bt-good" : "bt-bad'}">${p.avg_return >= 0 ? "+" : ""}${p.avg_return}%</td>
       </tr>`;
-    }).join("") || '<tr><td colspan="4" class="bt-empty-cell">No data</td></tr>';
+    }).join("") || '<tr><td colspan="4" class="bt-empty-cell">データなし</td></tr>';
 
   document.getElementById("bt-score-body").innerHTML =
     (s.by_score || []).map(sc => {
@@ -114,7 +114,7 @@ function render(d) {
         <td class="${wr >= 60 ? "bt-good" : wr >= 50 ? "bt-mid" : "bt-bad'}">${wr}%</td>
         <td class="${sc.avg_return >= 0 ? "bt-good" : "bt-bad'}">${sc.avg_return >= 0 ? "+" : ""}${sc.avg_return}%</td>
       </tr>`;
-    }).join("") || '<tr><td colspan="4" class="bt-empty-cell">No data</td></tr>';
+    }).join("") || '<tr><td colspan="4" class="bt-empty-cell">データなし</td></tr>';
 
   renderSignals(d.signals || []);
 }
@@ -123,7 +123,7 @@ function renderBreakdown(win, loss) {
   const el = document.getElementById("bt-breakdown");
   const hasData = win && Object.values(win).some(v => v !== null);
   if (!hasData) {
-    el.innerHTML = '<p style="color:var(--text-muted);font-size:13px">Score component comparison will appear once sufficient signals accumulate.</p>';
+    el.innerHTML = '<p style="color:var(--text-muted);font-size:13px">シグナルが十分蓄積されるとスコア構成要素の比較が表示されます。</p>';
     return;
   }
 
@@ -168,23 +168,23 @@ function renderBreakdown(win, loss) {
     <table class="breakdown-table">
       <thead>
         <tr>
-          <th>Component</th>
-          <th>Max</th>
-          <th>✅ Wins (avg)</th>
-          <th>❌ Losses (avg)</th>
-          <th>Diff</th>
+          <th>構成要素</th>
+          <th>最大</th>
+          <th>✅ 勝ち（平均）</th>
+          <th>❌ 負け（平均）</th>
+          <th>差分</th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
-    <p class="bd-note">Components with a larger positive diff are more predictive of winning trades. Use this to tune scorer.py weights as data accumulates.</p>
+    <p class="bd-note">差分が大きい構成要素ほど、勝ちトレードとの相関が高いです。データが蓄積されたら、これを参考にscorer.pyの重みを調整してください。</p>
   `;
 }
 
 function renderCalibration(calibration) {
   const el = document.getElementById("bt-calibration");
   if (!calibration.length) {
-    el.innerHTML = '<p style="color:var(--text-muted);font-size:13px">Probability model calibration will appear once sufficient signals accumulate.</p>';
+    el.innerHTML = '<p style="color:var(--text-muted);font-size:13px">シグナルが十分蓄積されると確率モデルのキャリブレーションが表示されます。</p>';
     return;
   }
 
@@ -217,17 +217,17 @@ function renderCalibration(calibration) {
     <table class="calib-table">
       <thead>
         <tr>
-          <th>Predicted Band</th>
-          <th>Center</th>
-          <th>Actual Win Rate</th>
-          <th>Count</th>
-          <th>Error (pred−actual)</th>
+          <th>予測バンド</th>
+          <th>中心値</th>
+          <th>実際の勝率</th>
+          <th>回数</th>
+          <th>誤差（予測−実際）</th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
     <p class="calib-note">
-      Near-zero error means the model is well-calibrated. Positive bias (actual &gt; predicted) suggests room to raise probability weights; negative bias suggests over-estimation.
+      誤差がゼロに近いほどモデルが適切にキャリブレーションされています。正の偏差（実際&gt;予測）は確率の重みを上げる余地あり、負の偏差は過大評価を示します。
     </p>
   `;
 }
@@ -288,7 +288,7 @@ function renderCapitalCurve(curve) {
 }
 
 function renderSignals(signals) {
-  const outcomeLabel = { win: "✅ Target Hit", loss: "❌ Stopped Out", expired: "⏱ Expired", open: "📈 Open" };
+  const outcomeLabel = { win: "✅ 目標達成", loss: "❌ ストップアウト", expired: "⏱ 期限切れ", open: "📈 進行中" };
   const outcomeClass = { win: "bt-good", loss: "bt-bad", expired: "bt-mid", open: "" };
 
   const rows = signals.slice().reverse().map(r => {
@@ -318,7 +318,7 @@ function renderSignals(signals) {
   }).join("");
 
   document.getElementById("bt-signals-body").innerHTML =
-    rows || '<tr><td colspan="10" class="bt-empty-cell">No data</td></tr>';
+    rows || '<tr><td colspan="10" class="bt-empty-cell">データなし</td></tr>';
 }
 
 document.addEventListener("DOMContentLoaded", loadBacktest);

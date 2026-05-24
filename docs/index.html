@@ -1,100 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>US Stock Technical Scanner</title>
+  <title>米国株テクニカルスキャナー</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header>
     <div class="header-inner">
-      <h1>&#127482;&#127480; US Stock Technical Scanner</h1>
+      <h1>&#127482;&#127480; 米国株テクニカルスキャナー</h1>
       <div class="header-right">
-        <span id="last-update" class="last-update">Loading...</span>
-        <a href="positions.html" class="help-btn" rel="noopener">&#128203; Positions</a>
-        <a href="help.html" class="help-btn" target="_blank" rel="noopener">Guide</a>
+        <span id="last-update" class="last-update">読み込み中...</span>
+        <a href="positions.html" class="help-btn" rel="noopener">&#128203; ポジション</a>
+        <a href="help.html" class="help-btn" target="_blank" rel="noopener">ガイド</a>
       </div>
     </div>
   </header>
 
   <div class="main-layout">
-    <!-- Sidebar filters -->
+    <!-- サイドバーフィルター -->
     <aside class="sidebar">
       <section class="filter-section">
-        <h2>Filters</h2>
+        <h2>フィルター</h2>
 
-        <label>Search
-          <input type="search" id="filter-search" placeholder="Ticker / Company" autocomplete="off" />
+        <label>検索
+          <input type="search" id="filter-search" placeholder="ティッカー / 会社名" autocomplete="off" />
         </label>
 
-        <label>Pattern
+        <label>パターン
           <select id="filter-pattern">
-            <option value="">All</option>
-            <optgroup label="&#9472;&#9472; Reversal">
-              <option value="inverse_head_shoulders">Inverse H&amp;S</option>
-              <option value="double_bottom">Double Bottom</option>
-              <option value="triple_bottom">Triple Bottom</option>
-              <option value="falling_wedge">Falling Wedge</option>
+            <option value="">すべて</option>
+            <optgroup label="&#9472;&#9472; 反転">
+              <option value="inverse_head_shoulders">逆ヘッド&amp;ショルダー</option>
+              <option value="double_bottom">ダブルボトム</option>
+              <option value="triple_bottom">トリプルボトム</option>
+              <option value="falling_wedge">フォーリングウェッジ</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Continuation">
-              <option value="cup_with_handle">Cup w/ Handle</option>
-              <option value="bull_flag">Bull Flag</option>
+            <optgroup label="&#9472;&#9472; 継続">
+              <option value="cup_with_handle">カップウィズハンドル</option>
+              <option value="bull_flag">ブルフラッグ</option>
               <option value="vcp">VCP</option>
-              <option value="channel_pullback">Channel Pullback</option>
-              <option value="ma_pullback">50MA Pullback</option>
+              <option value="channel_pullback">チャネルプルバック</option>
+              <option value="ma_pullback">50MAプルバック</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Breakout">
-              <option value="resistance_breakout">Resistance Breakout</option>
-              <option value="new_52w_high">New 52W High</option>
-              <option value="donchian_break">Donchian Break</option>
-              <option value="sr_flip">SR Flip</option>
-              <option value="bb_squeeze">BB Squeeze</option>
+            <optgroup label="&#9472;&#9472; ブレイクアウト">
+              <option value="resistance_breakout">レジスタンスブレイクアウト</option>
+              <option value="new_52w_high">52週新高値</option>
+              <option value="donchian_break">ドンチャンブレイク</option>
+              <option value="sr_flip">SRフリップ</option>
+              <option value="bb_squeeze">BBスクイーズ</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Triangle">
-              <option value="ascending_triangle">Ascending Triangle</option>
-              <option value="symmetric_triangle">Symmetric Triangle</option>
+            <optgroup label="&#9472;&#9472; トライアングル">
+              <option value="ascending_triangle">アセンディングトライアングル</option>
+              <option value="symmetric_triangle">シンメトリカルトライアングル</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Moving Average">
-              <option value="perfect_order">Perfect Order</option>
-              <option value="golden_cross">Golden Cross</option>
-              <option value="ma_compression">MA Compression</option>
+            <optgroup label="&#9472;&#9472; 移動平均">
+              <option value="perfect_order">パーフェクトオーダー</option>
+              <option value="golden_cross">ゴールデンクロス</option>
+              <option value="ma_compression">MA圧縮</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Ichimoku">
-              <option value="ichimoku_cloud_break">Ichimoku Cloud Break</option>
+            <optgroup label="&#9472;&#9472; 一目均衡表">
+              <option value="ichimoku_cloud_break">一目均衡表クラウドブレイク</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Divergence">
-              <option value="rsi_divergence">RSI Divergence</option>
-              <option value="rsi_hidden_divergence">RSI Hidden Divergence</option>
-              <option value="macd_divergence">MACD Divergence</option>
-              <option value="obv_divergence">OBV Divergence</option>
+            <optgroup label="&#9472;&#9472; ダイバージェンス">
+              <option value="rsi_divergence">RSIダイバージェンス</option>
+              <option value="rsi_hidden_divergence">RSI隠れダイバージェンス</option>
+              <option value="macd_divergence">MACDダイバージェンス</option>
+              <option value="obv_divergence">OBVダイバージェンス</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Candlestick">
-              <option value="morning_star">Morning Star</option>
-              <option value="bullish_engulfing">Bullish Engulfing</option>
-              <option value="three_white_soldiers">Three White Soldiers</option>
-              <option value="piercing_line">Piercing Line</option>
-              <option value="hammer">Hammer</option>
-              <option value="three_gap_reversal">Three Gap Reversal</option>
+            <optgroup label="&#9472;&#9472; ローソク足">
+              <option value="morning_star">モーニングスター</option>
+              <option value="bullish_engulfing">陽の包み足</option>
+              <option value="three_white_soldiers">三白兵</option>
+              <option value="piercing_line">切り込み線</option>
+              <option value="hammer">ハンマー</option>
+              <option value="three_gap_reversal">三空叩き込み</option>
             </optgroup>
-            <optgroup label="&#9472;&#9472; Wyckoff">
-              <option value="wyckoff_spring">Wyckoff Spring</option>
+            <optgroup label="&#9472;&#9472; ワイコフ">
+              <option value="wyckoff_spring">ワイコフスプリング</option>
             </optgroup>
           </select>
         </label>
 
-        <label>Probability (&ge;)
+        <label>確率 (&ge;)
           <select id="filter-prob">
-            <option value="0">All</option>
+            <option value="0">すべて</option>
             <option value="0.5" selected>&ge; 50%</option>
             <option value="0.6">&ge; 60%</option>
             <option value="0.7">&ge; 70%</option>
           </select>
         </label>
 
-        <label>Score (&ge;)
+        <label>スコア (&ge;)
           <select id="filter-score">
-            <option value="0">All</option>
+            <option value="0">すべて</option>
             <option value="30" selected>&ge; 30</option>
             <option value="50">&ge; 50</option>
             <option value="60">&ge; 60</option>
@@ -102,110 +102,110 @@
           </select>
         </label>
 
-        <label>RR Ratio (&ge;)
+        <label>RR比率 (&ge;)
           <select id="filter-rr">
-            <option value="0">All</option>
+            <option value="0">すべて</option>
             <option value="1.5">&ge; 1.5</option>
             <option value="2">&ge; 2.0</option>
             <option value="3">&ge; 3.0</option>
           </select>
         </label>
 
-        <label>Sector
+        <label>セクター
           <select id="filter-sector">
-            <option value="">All</option>
+            <option value="">すべて</option>
           </select>
         </label>
 
         <div class="filter-label-row">
-          <span class="filter-label-text">Preset</span>
-          <button class="preset-help-btn" id="preset-help-btn" aria-label="Preset descriptions" type="button">?</button>
+          <span class="filter-label-text">プリセット</span>
+          <button class="preset-help-btn" id="preset-help-btn" aria-label="プリセットの説明" type="button">?</button>
         </div>
         <div id="preset-tooltip" class="preset-tooltip hidden">
-          <div class="preset-tip-item"><strong>Breakout Play</strong><span>Resistance breakout stocks. Prob &ge; 50%, Score &ge; 30, RR &ge; 1.5. Trend-following oriented.</span></div>
-          <div class="preset-tip-item"><strong>Bottom Reversal</strong><span>Inverse H&amp;S and bottom patterns. Prob &ge; 50%, Score &ge; 30. Contrarian / pullback-buy oriented.</span></div>
-          <div class="preset-tip-item"><strong>Momentum Continuation</strong><span>Perfect Order forming &mdash; strong trend stocks. Prob &ge; 50%, Score &ge; 50.</span></div>
-          <div class="preset-tip-item"><strong>MA Squeeze Watchlist</strong><span>Multiple MAs converging &mdash; pre-breakout setup. No prob/RR filter, Score &ge; 30. Good for observation before entry.</span></div>
-          <div class="preset-tip-item"><strong>Ichimoku Bullish</strong><span>Cloud breakout + conversion line bullish. Prob &ge; 50%, Score &ge; 30. Suited for swing trades.</span></div>
+          <div class="preset-tip-item"><strong>ブレイクアウト</strong><span>レジスタンスブレイクアウト銘柄。確率&ge;50%、スコア&ge;30、RR&ge;1.5。トレンドフォロー向き。</span></div>
+          <div class="preset-tip-item"><strong>底値反転</strong><span>逆ヘッド&amp;ショルダーと底値パターン。確率&ge;50%、スコア&ge;30。逆張り/押し目買い向き。</span></div>
+          <div class="preset-tip-item"><strong>モメンタム継続</strong><span>パーフェクトオーダー形成中 &mdash; 強いトレンド銘柄。確率&ge;50%、スコア&ge;50。</span></div>
+          <div class="preset-tip-item"><strong>MAスクイーズ監視</strong><span>複数MAが収束中 &mdash; ブレイクアウト前の準備段階。確率/RRフィルターなし、スコア&ge;30。エントリー前の観察に最適。</span></div>
+          <div class="preset-tip-item"><strong>一目均衡表強気</strong><span>クラウドブレイクアウト＋転換線が強気。確率&ge;50%、スコア&ge;30。スイングトレード向き。</span></div>
         </div>
         <select id="preset">
-          <option value="">Custom</option>
-          <option value="breakout">Breakout Play</option>
-          <option value="reversal">Bottom Reversal</option>
-          <option value="momentum">Momentum Continuation</option>
-          <option value="ma_squeeze">MA Squeeze Watchlist</option>
-          <option value="ichimoku">Ichimoku Bullish</option>
+          <option value="">カスタム</option>
+          <option value="breakout">ブレイクアウト</option>
+          <option value="reversal">底値反転</option>
+          <option value="momentum">モメンタム継続</option>
+          <option value="ma_squeeze">MAスクイーズ監視</option>
+          <option value="ichimoku">一目均衡表強気</option>
         </select>
       </section>
 
       <section class="stats-section">
-        <h2>Scan Stats</h2>
+        <h2>スキャン統計</h2>
         <div id="stats" class="stats">
           <div class="stat-item">
-            <span class="stat-label">Scanned</span>
+            <span class="stat-label">スキャン済み</span>
             <span id="stat-scanned" class="stat-value">-</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Signals</span>
+            <span class="stat-label">シグナル</span>
             <span id="stat-signals" class="stat-value">-</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Showing</span>
+            <span class="stat-label">表示中</span>
             <span id="stat-showing" class="stat-value">-</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Favorites</span>
+            <span class="stat-label">お気に入り</span>
             <span id="stat-favorites" class="stat-value">0</span>
           </div>
         </div>
       </section>
     </aside>
 
-    <!-- Main content -->
+    <!-- メインコンテンツ -->
     <main class="content">
-      <!-- Sort bar -->
+      <!-- ソートバー -->
       <div class="sort-bar">
-        <span>Sort:</span>
-        <button class="sort-btn active" data-sort="score">Score &#9660;</button>
-        <button class="sort-btn" data-sort="probability">Prob</button>
+        <span>並び替え：</span>
+        <button class="sort-btn active" data-sort="score">スコア &#9660;</button>
+        <button class="sort-btn" data-sort="probability">確率</button>
         <button class="sort-btn" data-sort="rr_ratio">RR</button>
-        <button class="sort-btn" data-sort="price">Price</button>
+        <button class="sort-btn" data-sort="price">価格</button>
         <div class="sort-bar-right">
-          <button id="rec-toggle-btn" class="fav-toggle-btn">&#9733; Recommended</button>
-          <button id="fav-toggle-btn" class="fav-toggle-btn">&#11088; Favorites</button>
-          <a href="backtest.html" class="bt-toggle-btn" target="_blank" rel="noopener">&#128202; Backtest</a>
+          <button id="rec-toggle-btn" class="fav-toggle-btn">&#9733; おすすめ</button>
+          <button id="fav-toggle-btn" class="fav-toggle-btn">&#11088; お気に入り</button>
+          <a href="backtest.html" class="bt-toggle-btn" target="_blank" rel="noopener">&#128202; バックテスト</a>
         </div>
       </div>
 
-      <!-- Market condition banner -->
+      <!-- マーケット状況バナー -->
       <div id="market-banner" class="market-banner hidden"></div>
 
-      <!-- Results table -->
+      <!-- 結果テーブル -->
       <div class="table-wrapper">
         <table id="results-table">
           <thead>
             <tr>
               <th class="star-th"></th>
-              <th>Ticker</th>
-              <th>Company</th>
-              <th>Score</th>
-              <th>Day &Delta;</th>
-              <th>Wk &Delta;</th>
-              <th>Prob</th>
-              <th>Price</th>
-              <th>Target</th>
-              <th>Stop</th>
+              <th>ティッカー</th>
+              <th>会社名</th>
+              <th>スコア</th>
+              <th>日変動</th>
+              <th>週変動</th>
+              <th>確率</th>
+              <th>価格</th>
+              <th>目標</th>
+              <th>損切り</th>
               <th>RR</th>
-              <th>Pattern</th>
+              <th>パターン</th>
             </tr>
           </thead>
           <tbody id="results-body">
-            <tr><td colspan="12" class="loading">Loading data...</td></tr>
+            <tr><td colspan="12" class="loading">データ読み込み中...</td></tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Chart panel -->
+      <!-- チャートパネル -->
       <div id="chart-panel" class="chart-panel hidden">
         <div class="chart-header">
           <span id="chart-title"></span>
@@ -216,7 +216,7 @@
         <div id="signal-detail" class="signal-detail"></div>
         <div id="ind-help-panel" class="ind-help-panel hidden"></div>
         <div class="pattern-list-section">
-          <div class="pattern-list-header">Detected Patterns</div>
+          <div class="pattern-list-header">検出パターン</div>
           <div id="pattern-list" class="pattern-list"></div>
         </div>
       </div>
@@ -224,8 +224,8 @@
   </div>
 
   <footer class="site-footer">
-    This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
-    Data: Yahoo Finance &nbsp;|&nbsp; S&amp;P 500 constituents, updated daily after market close (ET)
+    本ツールは情報提供のみを目的としており、投資アドバイスを構成するものではありません。すべての投資判断はご自身のリスクで行ってください。
+    データ：Yahoo Finance &nbsp;|&nbsp; S&amp;P 500構成銘柄、米国市場クローズ後（ET）毎日更新
   </footer>
 
   <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>

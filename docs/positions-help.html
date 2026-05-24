@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Position Manager Guide | US Stock Technical Scanner</title>
+  <title>ポジション管理ガイド | 米国株テクニカルスキャナー</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/help.css" />
 </head>
@@ -11,8 +11,8 @@
 
 <header>
   <div class="help-header-inner">
-    <a href="positions.html" class="back-link">&larr; Back to Position Manager</a>
-    <h1>&#128203; Position Manager Guide</h1>
+    <a href="positions.html" class="back-link">&larr; ポジション管理に戻る</a>
+    <h1>&#128203; ポジション管理ガイド</h1>
   </div>
 </header>
 
@@ -20,170 +20,170 @@
 
   <nav class="help-nav" id="help-nav">
     <ul>
-      <li class="nav-section">Introduction</li>
-      <li><a href="#overview">What Is the Position Manager?</a></li>
-      <li><a href="#screen">Screen Overview</a></li>
-      <li class="nav-section">Basic Operations</li>
-      <li><a href="#add">Adding a Position</a></li>
-      <li><a href="#columns">Column Reference</a></li>
-      <li><a href="#progress">Progress Bar Guide</a></li>
-      <li class="nav-section">Stop Management</li>
-      <li><a href="#stop-advice">What Is Stop Advice?</a></li>
-      <li><a href="#stages">Stage Meanings</a></li>
-      <li><a href="#apply">Applying Stop Updates</a></li>
-      <li><a href="#rules">Stop-Loss Rules</a></li>
-      <li class="nav-section">Closing &amp; History</li>
-      <li><a href="#close">Recording a Close</a></li>
-      <li><a href="#history">Trade History</a></li>
-      <li class="nav-section">Daily Workflow</li>
-      <li><a href="#daily">Daily Checklist</a></li>
-      <li><a href="#storage">Data Storage</a></li>
+      <li class="nav-section">はじめに</li>
+      <li><a href="#overview">ポジション管理とは？</a></li>
+      <li><a href="#screen">画面の概要</a></li>
+      <li class="nav-section">基本操作</li>
+      <li><a href="#add">ポジションの追加</a></li>
+      <li><a href="#columns">カラムリファレンス</a></li>
+      <li><a href="#progress">プログレスバーの見方</a></li>
+      <li class="nav-section">ストップ管理</li>
+      <li><a href="#stop-advice">ストップアドバイスとは？</a></li>
+      <li><a href="#stages">ステージの意味</a></li>
+      <li><a href="#apply">ストップの更新適用</a></li>
+      <li><a href="#rules">ストップロスのルール</a></li>
+      <li class="nav-section">決済と履歴</li>
+      <li><a href="#close">決済の記録</a></li>
+      <li><a href="#history">取引履歴</a></li>
+      <li class="nav-section">日次ワークフロー</li>
+      <li><a href="#daily">デイリーチェックリスト</a></li>
+      <li><a href="#storage">データの保存</a></li>
     </ul>
   </nav>
 
   <main class="help-content">
 
     <section class="help-section" id="overview">
-      <h2>What Is the Position Manager?</h2>
-      <p>After purchasing a stock detected by the scanner, manage all your open positions &mdash; P&amp;L, progress, and stop-loss levels &mdash; in a single screen.</p>
+      <h2>ポジション管理とは？</h2>
+      <p>スキャナーで検出した銘柄を購入後、保有中の全ポジションの損益・進捗・ストップロス水準を一画面で管理できます。</p>
       <ul>
-        <li>Enter a ticker to auto-fill target, stop-loss, and ATR from today&rsquo;s scan results</li>
-        <li>Compare daily scan data to show P&amp;L, score, and distance to target/stop in real time</li>
-        <li><strong>Stop Advice column</strong>: automatically calculates optimal stop-raise stage from current price and ATR</li>
-        <li>Record exit price and date to maintain a trade history</li>
+        <li>ティッカーを入力すれば、当日のスキャン結果から目標・損切り・ATRを自動入力</li>
+        <li>日次スキャンデータと比較して、損益・スコア・目標/損切りまでの距離をリアルタイムで表示</li>
+        <li><strong>ストップアドバイス列</strong>：現在値とATRから最適な損切り引き上げステージを自動計算</li>
+        <li>決済価格と日付を記録して取引履歴を管理</li>
       </ul>
       <div class="info-box">
-        <p>Position data is stored in browser <strong>localStorage</strong>. It is never sent to any server. Clearing your browser cache will delete all data. There is no export feature &mdash; record important data via screenshots or notes.</p>
+        <p>ポジションデータはブラウザの <strong>localStorage</strong> に保存されます。サーバーには一切送信されません。ブラウザキャッシュをクリアするとデータが消えます。エクスポート機能はないため、重要なデータはスクリーンショットやメモで記録してください。</p>
       </div>
     </section>
 
     <section class="help-section" id="screen">
-      <h2>Screen Overview</h2>
+      <h2>画面の概要</h2>
       <table class="h-table">
-        <thead><tr><th>Area</th><th>Description</th></tr></thead>
+        <thead><tr><th>エリア</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td>Summary Cards (top)</td><td>Displays open position count, total P&amp;L, total cost, and number of positions with stop updates available</td></tr>
-          <tr><td>Add Position Button</td><td>Click &ldquo;&#65291; Add Position&rdquo; to expand the input form</td></tr>
-          <tr><td>Open Positions Table</td><td>List of all open positions. Updated daily against the latest scan results.</td></tr>
-          <tr><td>Closed Trades Table</td><td>P&amp;L history of recorded closed positions (shown only when at least one trade has been closed)</td></tr>
+          <tr><td>サマリーカード（上部）</td><td>保有ポジション数・合計損益・合計コスト・ストップ更新可能なポジション数を表示</td></tr>
+          <tr><td>ポジション追加ボタン</td><td>「&#65291; ポジション追加」をクリックして入力フォームを展開</td></tr>
+          <tr><td>保有ポジション表</td><td>全保有ポジションの一覧。毎日最新のスキャン結果と照合して更新。</td></tr>
+          <tr><td>決済済み取引表</td><td>記録済み決済ポジションの損益履歴（1件以上決済されている場合に表示）</td></tr>
         </tbody>
       </table>
 
-      <h3>Stop Updates Card</h3>
-      <p>Displays (in yellow) the number of positions where the recommended stop is higher than the current stop. When this number appears, it&rsquo;s time to raise your stop-loss levels. Use the <strong>&uarr; Apply All</strong> button in the table header to update them in bulk.</p>
+      <h3>ストップ更新カード</h3>
+      <p>推奨ストップが現在のストップより高いポジション数を（黄色で）表示します。この数字が表示されたら、損切りラインを引き上げるタイミングです。表ヘッダーの <strong>&uarr; 全て適用</strong> ボタンで一括更新できます。</p>
     </section>
 
     <section class="help-section" id="add">
-      <h2>Adding a Position</h2>
+      <h2>ポジションの追加</h2>
 
       <div class="step-list">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-body">
-            <strong>Click the &ldquo;&#65291; Add Position&rdquo; button</strong>
-            <span>The input form will expand.</span>
+            <strong>「&#65291; ポジション追加」ボタンをクリック</strong>
+            <span>入力フォームが展開されます。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-body">
-            <strong>Enter a ticker and press &ldquo;Auto-fill from Scan&rdquo;</strong>
-            <span>Today&rsquo;s scan data will auto-fill the company name, suggested entry price, target, and stop-loss. Stocks not in the scan must be entered manually.</span>
+            <strong>ティッカーを入力して「スキャンから自動入力」を押す</strong>
+            <span>当日のスキャンデータから会社名・推奨エントリー価格・目標・損切りが自動入力されます。スキャン対象外の銘柄は手動入力が必要です。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-body">
-            <strong>Enter your actual fill price</strong>
-            <span>Changing the entry price to your actual fill will auto-recalculate the target and stop-loss. Also enter the number of shares and entry date.</span>
+            <strong>実際の約定価格を入力</strong>
+            <span>エントリー価格を実際の約定値に変更すると、目標と損切りが自動再計算されます。株数と購入日も入力してください。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-body">
-            <strong>Press the &ldquo;Add&rdquo; button</strong>
-            <span>The position is added to the Open Positions table. ATR is saved at this time, so stop advice continues even if the stock later leaves the scan.</span>
+            <strong>「追加」ボタンを押す</strong>
+            <span>ポジションが保有ポジション表に追加されます。ATRもこの時点で保存されるため、銘柄が後日スキャン対象外になってもストップアドバイスは継続します。</span>
           </div>
         </div>
       </div>
 
-      <h3>Input Field Reference</h3>
+      <h3>入力フィールドリファレンス</h3>
       <table class="h-table">
-        <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+        <thead><tr><th>フィールド</th><th>必須</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td>Ticker</td><td class="good">Required</td><td>Stock ticker symbol (e.g. AAPL)</td></tr>
-          <tr><td>Company</td><td>Optional</td><td>Auto-filled from scan. Can be edited manually.</td></tr>
-          <tr><td>Shares</td><td class="good">Required</td><td>Number of shares purchased</td></tr>
-          <tr><td>Entry Price</td><td class="good">Required</td><td>Actual fill price ($). Changing this auto-recalculates target and stop-loss.</td></tr>
-          <tr><td>Entry Date</td><td>Optional</td><td>Purchase date. Defaults to today.</td></tr>
-          <tr><td>Target Price</td><td>Optional</td><td>Auto-filled from scan. Editable. Used for stop advice progress calculation.</td></tr>
-          <tr><td>Stop Loss</td><td>Optional</td><td>Auto-filled from scan. Set a matching stop order in your brokerage right after purchase.</td></tr>
+          <tr><td>ティッカー</td><td class="good">必須</td><td>銘柄コード（例：AAPL）</td></tr>
+          <tr><td>会社名</td><td>任意</td><td>スキャンから自動入力。手動編集可能。</td></tr>
+          <tr><td>株数</td><td class="good">必須</td><td>購入株数</td></tr>
+          <tr><td>エントリー価格</td><td class="good">必須</td><td>実際の約定価格（$）。変更すると目標と損切りが自動再計算されます。</td></tr>
+          <tr><td>購入日</td><td>任意</td><td>購入日。デフォルトは今日。</td></tr>
+          <tr><td>目標価格</td><td>任意</td><td>スキャンから自動入力。編集可能。ストップアドバイスの進捗計算に使用。</td></tr>
+          <tr><td>損切り価格</td><td>任意</td><td>スキャンから自動入力。購入直後に証券会社でストップ注文を設定してください。</td></tr>
         </tbody>
       </table>
 
       <div class="tip-box">
-        <p>&#128161; Register on scan day (after close to next morning) to get auto-filled target, stop-loss, and ATR. Changing the entry price to your actual fill will auto-recalculate target and stop-loss. Since scan data updates next day, register as soon as possible after purchasing.</p>
+        <p>&#128161; スキャン当日（引け後から翌朝）に登録すると、目標・損切り・ATRが自動入力されます。エントリー価格を実際の約定値に変更すると目標と損切りが自動再計算されます。スキャンデータは翌日更新されるため、購入後できるだけ早く登録してください。</p>
       </div>
     </section>
 
     <section class="help-section" id="columns">
-      <h2>Column Reference</h2>
+      <h2>カラムリファレンス</h2>
       <table class="h-table">
-        <thead><tr><th>Column</th><th>Description</th><th>Notes</th></tr></thead>
+        <thead><tr><th>カラム</th><th>説明</th><th>補足</th></tr></thead>
         <tbody>
           <tr>
-            <td><strong>Ticker</strong></td>
-            <td>Stock ticker. Shows &lsquo;Off-scan&rsquo; badge if not in today&rsquo;s scan.</td>
-            <td>Off-scan means no active signal, but stock data must be fetched separately.</td>
+            <td><strong>ティッカー</strong></td>
+            <td>銘柄コード。当日のスキャン対象外の場合は「スキャン外」バッジを表示。</td>
+            <td>スキャン外はアクティブシグナルがないことを意味しますが、株価データは別途取得が必要です。</td>
           </tr>
           <tr>
-            <td><strong>Shares</strong></td>
-            <td>Number of shares registered at add time.</td>
+            <td><strong>株数</strong></td>
+            <td>登録時に入力した株数。</td>
             <td>&mdash;</td>
           </tr>
           <tr>
-            <td><strong>Entry Price</strong></td>
-            <td>Purchase fill price ($).</td>
+            <td><strong>エントリー価格</strong></td>
+            <td>購入約定価格（$）。</td>
             <td>&mdash;</td>
           </tr>
           <tr>
-            <td><strong>Current Price</strong></td>
-            <td>Price from today&rsquo;s scan data ($).</td>
-            <td>Scan price (after 4 PM ET close). Not real-time.</td>
+            <td><strong>現在値</strong></td>
+            <td>当日のスキャンデータの価格（$）。</td>
+            <td>スキャン価格（ET午後4時の引け後）。リアルタイムではありません。</td>
           </tr>
           <tr>
-            <td><strong>P&amp;L</strong></td>
-            <td>(Current &minus; Entry) &times; Shares. Percentage shown below.</td>
-            <td>Taxes and commissions not included.</td>
+            <td><strong>損益</strong></td>
+            <td>（現在値 &minus; エントリー価格）&times; 株数。下段にパーセンテージ表示。</td>
+            <td>税金・手数料は含みません。</td>
           </tr>
           <tr>
-            <td><strong>Progress Bar</strong></td>
-            <td>Visualizes current price between stop-loss and target. Vertical line = entry price.</td>
-            <td>See &ldquo;Progress Bar Guide&rdquo; for details.</td>
+            <td><strong>プログレスバー</strong></td>
+            <td>損切りから目標までの範囲に現在値を可視化。縦線 = エントリー価格。</td>
+            <td>詳細は「プログレスバーの見方」を参照。</td>
           </tr>
           <tr>
-            <td><strong>To Target</strong></td>
-            <td>Remaining upside to target (%). Shown in green when &lt; 3%.</td>
+            <td><strong>目標まで</strong></td>
+            <td>目標までの残り上昇幅（%）。3%未満で緑表示。</td>
             <td>&mdash;</td>
           </tr>
           <tr>
-            <td><strong>To Stop</strong></td>
-            <td>Remaining downside to stop (%). Shown in red when &lt; 3%.</td>
-            <td>If red, verify your stop order in your brokerage.</td>
+            <td><strong>損切りまで</strong></td>
+            <td>損切りまでの残り下落幅（%）。3%未満で赤表示。</td>
+            <td>赤表示の場合は証券会社のストップ注文を確認してください。</td>
           </tr>
           <tr>
-            <td><strong>Stop Advice</strong></td>
-            <td>ATR-based recommended stop price and stage badge.</td>
-            <td>See &ldquo;What Is Stop Advice?&rdquo; for details.</td>
+            <td><strong>ストップアドバイス</strong></td>
+            <td>ATRベースの推奨ストップ価格とステージバッジ。</td>
+            <td>詳細は「ストップアドバイスとは？」を参照。</td>
           </tr>
           <tr>
-            <td><strong>Score</strong></td>
-            <td>Today&rsquo;s scan total score (0&ndash;100). &lsquo;Off-scan&rsquo; shown in red when score &lt; 30.</td>
-            <td>Score drop or off-scan is a signal to re-evaluate your position.</td>
+            <td><strong>スコア</strong></td>
+            <td>当日スキャンの総合スコア（0〜100）。スコア30未満の場合「スキャン外」を赤表示。</td>
+            <td>スコア低下やスキャン外はポジションの再評価シグナル。</td>
           </tr>
           <tr>
-            <td><strong>Entry Date</strong></td>
-            <td>Purchase date entered at registration.</td>
+            <td><strong>購入日</strong></td>
+            <td>登録時に入力した購入日。</td>
             <td>&mdash;</td>
           </tr>
         </tbody>
@@ -191,309 +191,309 @@
     </section>
 
     <section class="help-section" id="progress">
-      <h2>Progress Bar Guide</h2>
-      <p>The stop-to-target range is visualized as a single bar. See your current position at a glance.</p>
+      <h2>プログレスバーの見方</h2>
+      <p>損切りから目標までの範囲を1本のバーで可視化します。現在のポジション状況を一目で確認できます。</p>
 
       <table class="h-table">
-        <thead><tr><th>Element</th><th>Meaning</th></tr></thead>
+        <thead><tr><th>要素</th><th>意味</th></tr></thead>
         <tbody>
-          <tr><td>Left label</td><td>Stop-loss price ($)</td></tr>
-          <tr><td>Right label</td><td>Target price ($)</td></tr>
-          <tr><td>Vertical marker line</td><td>Entry price position</td></tr>
-          <tr><td class="good">Green bar</td><td>Current price &ge; entry (in profit). Longer = closer to target.</td></tr>
-          <tr><td class="bad">Red bar</td><td>Current price &lt; entry (in loss). Shorter = closer to stop.</td></tr>
+          <tr><td>左端ラベル</td><td>損切り価格（$）</td></tr>
+          <tr><td>右端ラベル</td><td>目標価格（$）</td></tr>
+          <tr><td>縦線マーカー</td><td>エントリー価格の位置</td></tr>
+          <tr><td class="good">緑バー</td><td>現在値 &ge; エントリー（含み益）。右に長いほど目標に近い。</td></tr>
+          <tr><td class="bad">赤バー</td><td>現在値 &lt; エントリー（含み損）。短いほど損切りに近い。</td></tr>
         </tbody>
       </table>
 
       <div class="tip-box">
-        <p>&#128161; The further right the current price is (toward the target), the better. When the green bar nears the target, consider taking partial profits.</p>
+        <p>&#128161; 現在値が右（目標方向）にあるほど良い状態です。緑バーが目標に近づいたら、一部利確を検討してください。</p>
       </div>
     </section>
 
     <section class="help-section" id="stop-advice">
-      <h2>What Is Stop Advice?</h2>
-      <p>Using current price and ATR (Average True Range) from daily scan data, this feature automatically calculates the optimal timing and price to raise your stop-loss.</p>
-      <p>By gradually raising the stop-loss as the price rises, you can protect profits while continuing to ride the uptrend (trailing stop).</p>
+      <h2>ストップアドバイスとは？</h2>
+      <p>日次スキャンデータの現在値とATR（アベレージ・トゥルー・レンジ）を使用して、損切りを引き上げる最適なタイミングと価格を自動計算する機能です。</p>
+      <p>株価上昇に合わせて段階的に損切りを引き上げることで、含み益を守りながらトレンドに乗り続けることができます（トレーリングストップ）。</p>
 
-      <h3>What Is ATR (Average True Range)?</h3>
-      <p>ATR is the 14-day average of the &ldquo;true range,&rdquo; representing each stock&rsquo;s daily volatility. For example, if ATR = $2.00, the stock moves an average of $2 per day. Using ATR for stop sizing ensures a rational buffer suited to each stock&rsquo;s price range and volatility.</p>
+      <h3>ATR（アベレージ・トゥルー・レンジ）とは？</h3>
+      <p>ATRは「真のレンジ」の14日移動平均で、各銘柄の日次ボラティリティを表します。例えばATR = $2.00なら、その株は平均$2動くことを意味します。ATRをストップ幅の基準にすることで、各銘柄の価格帯とボラティリティに合った合理的なバッファーを確保できます。</p>
 
       <table class="h-table">
-        <thead><tr><th>ATR Usage</th><th>Meaning</th></tr></thead>
+        <thead><tr><th>ATRの使い方</th><th>意味</th></tr></thead>
         <tbody>
-          <tr><td>Entry &minus; ATR&times;2</td><td>Initial stop (survives 2 average daily swings)</td></tr>
-          <tr><td>Entry</td><td>Breakeven (zero-risk point)</td></tr>
-          <tr><td>Entry + ATR&times;1</td><td>Lock in 1 ATR of profit</td></tr>
-          <tr><td>Price &minus; ATR&times;1.5</td><td>Trailing (allows 1.5 ATR of swing while following price)</td></tr>
+          <tr><td>エントリー &minus; ATR&times;2</td><td>初期ストップ（平均2日分の値動きに耐える）</td></tr>
+          <tr><td>エントリー</td><td>ブレイクイーブン（損益ゼロの安全地点）</td></tr>
+          <tr><td>エントリー + ATR&times;1</td><td>1ATR分の利益を確定</td></tr>
+          <tr><td>現在値 &minus; ATR&times;1.5</td><td>トレーリング（1.5ATRの値動きを許容しながら追随）</td></tr>
         </tbody>
       </table>
 
-      <h3>ATR Source Priority</h3>
+      <h3>ATRの参照優先順位</h3>
       <ol>
-        <li>Today&rsquo;s scan result (latest ATR)</li>
-        <li>ATR saved at registration time (works even if stock is off-scan)</li>
-        <li>Fallback: 3% of entry price (substitute when ATR is unavailable)</li>
+        <li>当日のスキャン結果（最新ATR）</li>
+        <li>登録時に保存されたATR（スキャン対象外でも有効）</li>
+        <li>フォールバック：エントリー価格の3%（ATR取得不能時の代替）</li>
       </ol>
     </section>
 
     <section class="help-section" id="stages">
-      <h2>Stage Meanings &amp; Actions</h2>
-      <p>The Stop Advice column shows a 4-stage badge based on current conditions.</p>
+      <h2>ステージの意味と対応アクション</h2>
+      <p>ストップアドバイス列は現在の状況に基づいて4段階のバッジを表示します。</p>
 
       <table class="h-table">
-        <thead><tr><th>Stage</th><th>Color</th><th>Trigger Condition</th><th>Recommended Stop</th><th>Action</th></tr></thead>
+        <thead><tr><th>ステージ</th><th>色</th><th>発動条件</th><th>推奨ストップ</th><th>アクション</th></tr></thead>
         <tbody>
           <tr>
-            <td><strong>Initial</strong></td>
-            <td style="color:var(--text-muted)">Gray</td>
-            <td>Price &lt; Entry + ATR&times;0.8</td>
-            <td>Entry &minus; ATR&times;2</td>
-            <td>No change needed. Keep original stop-loss.</td>
+            <td><strong>初期</strong></td>
+            <td style="color:var(--text-muted)">グレー</td>
+            <td>現在値 &lt; エントリー + ATR&times;0.8</td>
+            <td>エントリー &minus; ATR&times;2</td>
+            <td>変更不要。当初の損切りを維持。</td>
           </tr>
           <tr>
-            <td><strong>Breakeven</strong></td>
-            <td style="color:#58a6ff">Blue</td>
-            <td>Price &ge; Entry + ATR&times;0.8</td>
-            <td>Entry price</td>
-            <td><strong>Raise stop to entry price (zero-risk).</strong> Worst case from here is a breakeven exit.</td>
+            <td><strong>ブレイクイーブン</strong></td>
+            <td style="color:#58a6ff">青</td>
+            <td>現在値 &ge; エントリー + ATR&times;0.8</td>
+            <td>エントリー価格</td>
+            <td><strong>ストップをエントリー価格に引き上げ（損益ゼロ）。</strong>最悪でもブレイクイーブン決済になります。</td>
           </tr>
           <tr>
-            <td><strong>Lock Profit</strong></td>
-            <td style="color:#ffa348">Orange</td>
-            <td>Progress &ge; 50%</td>
-            <td>Entry + ATR&times;1</td>
-            <td><strong>Raise stop further to lock in partial profit.</strong> If hit, at least 1 ATR of profit is preserved.</td>
+            <td><strong>利益確定</strong></td>
+            <td style="color:#ffa348">オレンジ</td>
+            <td>進捗 &ge; 50%</td>
+            <td>エントリー + ATR&times;1</td>
+            <td><strong>ストップをさらに引き上げて部分的な利益を確定。</strong>ストップに当たっても最低1ATR分の利益が確保されます。</td>
           </tr>
           <tr>
-            <td><strong>Trailing</strong></td>
-            <td style="color:var(--green)">Green</td>
-            <td>Progress &ge; 70%</td>
-            <td>Price &minus; ATR&times;1.5</td>
-            <td><strong>Follow daily to maximize profits.</strong> Raises automatically as price climbs. Update each day.</td>
+            <td><strong>トレーリング</strong></td>
+            <td style="color:var(--green)">緑</td>
+            <td>進捗 &ge; 70%</td>
+            <td>現在値 &minus; ATR&times;1.5</td>
+            <td><strong>利益最大化のため毎日追随。</strong>株価上昇に合わせて自動的に引き上がります。毎日更新してください。</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Can Stages Go Backwards?</h3>
-      <p>Stages are always calculated from the current price relative to entry and target. A temporary price drop may shift a stage backward, but <strong>the stop-loss is only raised &mdash; never lowered</strong>. The &ldquo;&uarr; Apply&rdquo; button is active only when the recommended stop is higher than the current stop.</p>
+      <h3>ステージは戻ることがある？</h3>
+      <p>ステージは常にエントリーと目標に対する現在値から計算されます。一時的な株価下落でステージが戻ることがありますが、<strong>損切りは引き上げるのみで、下げることはありません</strong>。「&uarr; 適用」ボタンは推奨ストップが現在のストップより高い場合のみ有効です。</p>
 
       <div class="tip-box">
-        <p>&#128161; Progress = (Price &minus; Entry) &divide; (Target &minus; Entry) &times; 100%.<br>
-        If no target is set, only stages Initial or Breakeven are evaluated. We recommend setting a target price when registering.</p>
+        <p>&#128161; 進捗 = （現在値 &minus; エントリー）&divide;（目標 &minus; エントリー）&times; 100%。<br>
+        目標が未設定の場合は初期またはブレイクイーブンのみ評価されます。登録時に目標価格を設定することを推奨します。</p>
       </div>
     </section>
 
     <section class="help-section" id="apply">
-      <h2>Applying Stop Updates</h2>
-      <p>Once you&rsquo;ve reviewed the stop advice, update the stop-loss using one of these methods.</p>
+      <h2>ストップの更新適用</h2>
+      <p>ストップアドバイスを確認したら、以下のいずれかの方法で損切りを更新してください。</p>
 
-      <h3>Apply to Individual Positions</h3>
-      <p>Press the <strong>&uarr; Apply</strong> button in the Stop Advice column to update that position&rsquo;s stop-loss to the recommended price. The button appears only when the recommended price is higher than the current stop.</p>
+      <h3>個別ポジションへの適用</h3>
+      <p>ストップアドバイス列の <strong>&uarr; 適用</strong> ボタンを押すと、そのポジションの損切りを推奨価格に更新します。推奨価格が現在のストップより高い場合のみボタンが表示されます。</p>
 
-      <h3>Apply to All Positions at Once</h3>
-      <p>Press the <strong>&uarr; Apply All</strong> button in the table header to bulk-update all eligible positions. This button appears only when at least one position has an available update.</p>
+      <h3>全ポジションへの一括適用</h3>
+      <p>表ヘッダーの <strong>&uarr; 全て適用</strong> ボタンを押すと、対象の全ポジションを一括更新します。このボタンは更新可能なポジションが1件以上ある場合のみ表示されます。</p>
 
       <div class="warn-box">
-        <p>&#9888;&#65039; The stop-loss price in this tool is a management record only. <strong>Stop orders in your brokerage account must be updated manually.</strong> Updating the tool does NOT automatically change any brokerage orders.</p>
+        <p>&#9888;&#65039; このツール内の損切り価格は管理記録のみです。<strong>証券会社のストップ注文は手動で更新する必要があります。</strong>ツールを更新しても証券会社の注文は自動変更されません。</p>
       </div>
 
-      <h3>Post-Update Confirmation Flow</h3>
+      <h3>更新後の確認フロー</h3>
       <div class="step-list">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-body">
-            <strong>Press &ldquo;&uarr; Apply All&rdquo; to update the tool&rsquo;s stop-loss</strong>
-            <span>All eligible stops are updated to the recommended price.</span>
+            <strong>「&uarr; 全て適用」を押してツールの損切りを更新</strong>
+            <span>対象の全ストップが推奨価格に更新されます。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-body">
-            <strong>Open your brokerage app and update your stop orders</strong>
-            <span>Set your brokerage stop orders to match the updated &ldquo;Stop Loss&rdquo; column values.</span>
+            <strong>証券会社のアプリを開いてストップ注文を更新</strong>
+            <span>更新後の「損切り」列の値に合わせて証券会社のストップ注文を設定してください。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-body">
-            <strong>Confirm the changes</strong>
-            <span>Verify in your brokerage that the stop orders are updated correctly.</span>
+            <strong>変更を確認</strong>
+            <span>証券会社でストップ注文が正しく更新されているか確認してください。</span>
           </div>
         </div>
       </div>
     </section>
 
     <section class="help-section" id="rules">
-      <h2>Stop-Loss Rules</h2>
+      <h2>ストップロスのルール</h2>
 
-      <h3>Rules to Always Follow</h3>
+      <h3>常に守るべきルール</h3>
       <table class="h-table">
-        <thead><tr><th>Rule</th><th>Reason</th></tr></thead>
+        <thead><tr><th>ルール</th><th>理由</th></tr></thead>
         <tbody>
           <tr>
-            <td class="good">Only raise stops, never lower them</td>
-            <td>Lowering a stop risks unlimited losses. Respecting your stop is the foundation of systematic trading.</td>
+            <td class="good">ストップは引き上げるだけ、下げない</td>
+            <td>ストップを下げると損失が無限に拡大するリスクがあります。ストップを守ることが体系的トレードの基盤です。</td>
           </tr>
           <tr>
-            <td class="good">Execute the stop immediately when hit</td>
-            <td>&ldquo;Wait for a bounce&rdquo; hope statistically leads to larger losses. Automate with stop orders where possible.</td>
+            <td class="good">ストップに当たったら即座に執行</td>
+            <td>「反発を待つ」という希望的観測は統計的により大きな損失につながります。可能な限りストップ注文で自動化してください。</td>
           </tr>
           <tr>
-            <td class="good">Set a stop order immediately after purchase</td>
-            <td>Set it mechanically before emotion takes over. Forgetting exposes you to unlimited loss.</td>
+            <td class="good">購入直後にストップ注文を設定</td>
+            <td>感情が動く前に機械的に設定してください。設定を忘れると無限の損失リスクにさらされます。</td>
           </tr>
           <tr>
-            <td class="bad">Never &ldquo;wait and see&rdquo; when price nears the stop</td>
-            <td>Watching and hoping invalidates the stop. If no stop order is in place, set one immediately.</td>
+            <td class="bad">株価がストップに近づいたとき「様子見」をしない</td>
+            <td>見守って期待することはストップを無効にします。ストップ注文が入っていない場合は今すぐ設定してください。</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>When Score Drops or Goes Off-Scan</h3>
-      <p>If a held stock shows &lsquo;Off-scan&rsquo; or its score drops significantly, check the following:</p>
+      <h3>スコアが下がったり、スキャン外になった場合</h3>
+      <p>保有銘柄が「スキャン外」になったり、スコアが大きく下落した場合は、以下を確認してください：</p>
       <table class="h-table">
-        <thead><tr><th>Situation</th><th>Response</th></tr></thead>
+        <thead><tr><th>状況</th><th>対応</th></tr></thead>
         <tbody>
           <tr>
-            <td>Score drops by 10+ points</td>
-            <td>Technical environment deteriorating. Tighten the stop closer to current price. Execute cleanly if stop is hit.</td>
+            <td>スコアが10ポイント以上下落</td>
+            <td>テクニカル環境が悪化しています。ストップを現在値に近づけて締めてください。ストップに当たったら迷わず執行。</td>
           </tr>
           <tr>
-            <td>Score goes &lsquo;Off-scan&rsquo; (&lt; 30)</td>
-            <td>Signal has disappeared. Even if stop hasn&rsquo;t been hit, the rationale for the trade has weakened. Consider partial or full exit.</td>
+            <td>スコアが「スキャン外」（30未満）</td>
+            <td>シグナルが消えました。ストップに当たっていなくても、トレードの根拠が薄れています。一部または全部の早期決済を検討してください。</td>
           </tr>
           <tr>
-            <td>Pattern has broken down (check chart)</td>
-            <td>Entry rationale is gone. Consider early exit even if stop hasn&rsquo;t been triggered.</td>
+            <td>パターンが崩壊（チャートで確認）</td>
+            <td>エントリー根拠がなくなりました。ストップが発動していなくても早期決済を検討してください。</td>
           </tr>
         </tbody>
       </table>
 
       <div class="info-box">
-        <p>A stop-loss is not a failure &mdash; it is a planned exit. Executing stops promptly keeps capital available for the next opportunity.</p>
+        <p>損切りは失敗ではなく、計画されたエグジットです。迅速なストップ執行は次の機会のための資本を保全します。</p>
       </div>
     </section>
 
     <section class="help-section" id="close">
-      <h2>Recording a Close</h2>
-      <p>When you sell (close) a position, record it in the tool as well.</p>
+      <h2>決済の記録</h2>
+      <p>ポジションを売却（決済）した際は、ツールにも記録してください。</p>
 
       <div class="step-list">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-body">
-            <strong>Press the &ldquo;Close&rdquo; button on the target position</strong>
-            <span>The close recording modal will appear.</span>
+            <strong>対象ポジションの「決済」ボタンを押す</strong>
+            <span>決済記録モーダルが表示されます。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-body">
-            <strong>Enter exit price and exit date</strong>
-            <span>Check your brokerage&rsquo;s fill history and enter the exact values. Defaults to current price and today&rsquo;s date.</span>
+            <strong>決済価格と決済日を入力</strong>
+            <span>証券会社の約定履歴を確認して正確な値を入力してください。デフォルトは現在値と今日の日付。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-body">
-            <strong>Press &ldquo;Save&rdquo;</strong>
-            <span>The position moves from Open Positions to Closed Trades. The realized P&amp;L is displayed.</span>
+            <strong>「保存」を押す</strong>
+            <span>ポジションが保有ポジションから決済済み取引に移動します。実現損益が表示されます。</span>
           </div>
         </div>
       </div>
 
       <div class="tip-box">
-        <p>&#128161; Closed trades can be removed with the &ldquo;Delete&rdquo; button. Deleted data cannot be recovered.</p>
+        <p>&#128161; 決済済み取引は「削除」ボタンで削除できます。削除したデータは復元できません。</p>
       </div>
     </section>
 
     <section class="help-section" id="history">
-      <h2>Trade History</h2>
-      <p>The Closed Trades table shows the P&amp;L of all recorded exits. It appears only when at least one trade has been closed.</p>
+      <h2>取引履歴</h2>
+      <p>決済済み取引表には、記録済みの全決済の損益が表示されます。1件以上決済されている場合のみ表示されます。</p>
 
       <table class="h-table">
-        <thead><tr><th>Column</th><th>Description</th></tr></thead>
+        <thead><tr><th>カラム</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td>Entry Price</td><td>Purchase fill price ($)</td></tr>
-          <tr><td>Exit Price</td><td>Sale fill price ($)</td></tr>
-          <tr><td>P&amp;L</td><td>(Exit &minus; Entry) &times; Shares. Positive = profit, negative = loss.</td></tr>
-          <tr><td>Entry Date / Exit Date</td><td>Dates entered at registration and close</td></tr>
+          <tr><td>エントリー価格</td><td>購入約定価格（$）</td></tr>
+          <tr><td>決済価格</td><td>売却約定価格（$）</td></tr>
+          <tr><td>損益</td><td>（決済価格 &minus; エントリー価格）&times; 株数。プラス = 利益、マイナス = 損失。</td></tr>
+          <tr><td>購入日 / 決済日</td><td>登録時と決済時に入力した日付</td></tr>
         </tbody>
       </table>
 
       <div class="info-box">
-        <p>P&amp;L does not include taxes or commissions. Actual realized P&amp;L may differ.</p>
+        <p>損益には税金・手数料は含まれません。実際の実現損益とは異なる場合があります。</p>
       </div>
     </section>
 
     <section class="help-section" id="daily">
-      <h2>Daily Workflow (approx. 3 minutes)</h2>
-      <p>Check the following after each trading day, once the scan has completed (typically by 5:00 PM ET).</p>
+      <h2>日次ワークフロー（約3分）</h2>
+      <p>スキャン完了後（通常ET午後5時頃）、各取引日の終わりに以下を確認してください。</p>
 
       <div class="step-list">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-body">
-            <strong>Check for score-drop alerts</strong>
-            <span>If any held stocks appear in alerts, open this page and check their Score column.</span>
+            <strong>スコア低下アラートを確認</strong>
+            <span>保有銘柄がアラートに表示されている場合は、このページを開いてスコア列を確認してください。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-body">
-            <strong>Check the &ldquo;Stop Updates&rdquo; card</strong>
-            <span>If shown, press &ldquo;&uarr; Apply All&rdquo; to raise the stops.</span>
+            <strong>「ストップ更新」カードを確認</strong>
+            <span>表示されている場合は「&uarr; 全て適用」を押してストップを引き上げてください。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-body">
-            <strong>Check red &ldquo;To Stop&rdquo; column values</strong>
-            <span>If any show red (within 3%), verify that your brokerage stop orders are correctly set.</span>
+            <strong>赤い「損切りまで」列の値を確認</strong>
+            <span>赤表示（3%以内）がある場合は、証券会社のストップ注文が正しく設定されているか確認してください。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-body">
-            <strong>Update brokerage stop orders</strong>
-            <span>Manually update your brokerage stop orders to match the stops updated in Step 2.</span>
+            <strong>証券会社のストップ注文を更新</strong>
+            <span>ステップ2で更新したストップに合わせて、証券会社のストップ注文を手動で更新してください。</span>
           </div>
         </div>
         <div class="step">
           <div class="step-num">5</div>
           <div class="step-body">
-            <strong>Check for off-scan or score-drop stocks</strong>
-            <span>Signal of deteriorating technical conditions. Tighten stops or consider early exit.</span>
+            <strong>スキャン外またはスコア低下銘柄を確認</strong>
+            <span>テクニカル環境の悪化シグナルです。ストップを締めるか早期決済を検討してください。</span>
           </div>
         </div>
       </div>
 
-      <h3>Daily Checklist (copy and use)</h3>
+      <h3>デイリーチェックリスト（コピーして活用）</h3>
       <div class="formula" style="font-size:13px;line-height:1.9;">
-&#9744; Check score-drop alerts &mdash; are any held stocks listed?
-&#9744; Press &ldquo;&uarr; Apply All&rdquo; if the Stop Updates card is shown
-&#9744; Check &ldquo;To Stop&rdquo; red values &mdash; verify brokerage stop orders
-&#9744; Update brokerage stop orders to match raised stops
-&#9744; Assess any &ldquo;Off-scan&rdquo; or score-drop stocks and decide on action
+&#9744; スコア低下アラートを確認 &mdash; 保有銘柄が該当していないか？
+&#9744; ストップ更新カードが表示されていたら「&uarr; 全て適用」を押す
+&#9744; 「損切りまで」赤表示を確認 &mdash; 証券会社のストップ注文を検証
+&#9744; 引き上げたストップに合わせて証券会社のストップ注文を更新
+&#9744; 「スキャン外」またはスコア低下銘柄を評価してアクションを決定
       </div>
     </section>
 
     <section class="help-section" id="storage">
-      <h2>Data Storage</h2>
+      <h2>データの保存</h2>
 
       <table class="h-table">
-        <thead><tr><th>Item</th><th>Details</th></tr></thead>
+        <thead><tr><th>項目</th><th>詳細</th></tr></thead>
         <tbody>
-          <tr><td>Storage Location</td><td>Browser <strong>localStorage</strong> (this device and browser only)</td></tr>
-          <tr><td>Server Transmission</td><td>None. Data is never sent externally.</td></tr>
-          <tr><td>When Deleted</td><td>Browser cache clear, history deletion, or end of private browsing session</td></tr>
-          <tr><td>Cross-Device Sync</td><td>Not possible. Data is not synchronized between devices or browsers.</td></tr>
-          <tr><td>Backup</td><td>No export feature. Save important data manually via screenshots or notes.</td></tr>
+          <tr><td>保存場所</td><td>ブラウザの <strong>localStorage</strong>（このデバイスとブラウザのみ）</td></tr>
+          <tr><td>サーバー送信</td><td>なし。データは外部に送信されません。</td></tr>
+          <tr><td>削除タイミング</td><td>ブラウザキャッシュのクリア・履歴削除・プライベートブラウジング終了時</td></tr>
+          <tr><td>デバイス間同期</td><td>不可。デバイスやブラウザ間でデータは同期されません。</td></tr>
+          <tr><td>バックアップ</td><td>エクスポート機能なし。重要なデータはスクリーンショットやメモで手動保存してください。</td></tr>
         </tbody>
       </table>
 
       <div class="warn-box">
-        <p>&#9888;&#65039; Clearing your browser cache will permanently delete all position data. We recommend regularly recording your closed trade P&amp;L in a notebook or spreadsheet.</p>
+        <p>&#9888;&#65039; ブラウザキャッシュをクリアすると全ポジションデータが完全に消えます。決済済み取引の損益を定期的にノートやスプレッドシートに記録することをお勧めします。</p>
       </div>
     </section>
 
@@ -501,7 +501,7 @@
 </div>
 
 <footer class="site-footer">
-  This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
+  このツールは情報提供のみを目的としており、投資アドバイスを構成するものではありません。全ての投資判断はご自身の責任において行ってください。
 </footer>
 
 <script>
