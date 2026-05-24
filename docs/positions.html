@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Position Manager | US Stock Technical Scanner</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .pos-page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .back-link { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+    .back-link:hover { color: var(--text); }
+
+    .pos-summary {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .pos-summary-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      min-width: 140px;
+    }
+    .pos-summary-card .sc-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+    .pos-summary-card .sc-value { font-size: 22px; font-weight: 700; line-height: 1.2; }
+    .pos-summary-card .sc-sub   { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .pnl-pos { color: var(--green); }
+    .pnl-neg { color: var(--red); }
+    .pnl-zero { color: var(--text-muted); }
+
+    .pos-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      transition: opacity 0.15s;
+    }
+    .pos-add-btn:hover { opacity: 0.85; }
+
+    .pos-form-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .pos-form-wrap.hidden { display: none; }
+    .pos-form-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .pos-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .pos-form-field { display: flex; flex-direction: column; gap: 4px; }
+    .pos-form-field label { font-size: 11px; color: var(--text-muted); }
+    .pos-form-field input {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 13px;
+      padding: 6px 8px;
+    }
+    .pos-form-field input:focus { outline: none; border-color: var(--accent); }
+    .pos-form-actions { display: flex; gap: 8px; align-items: center; }
+    .pos-form-hint { font-size: 11px; color: var(--text-muted); }
+    .btn-primary {
+      background: var(--accent); border: none; border-radius: var(--radius);
+      color: #fff; cursor: pointer; font-size: 13px; font-weight: 600;
+      padding: 7px 16px;
+    }
+    .btn-cancel {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text-muted); cursor: pointer; font-size: 13px; padding: 7px 14px;
+    }
+    .btn-autofill {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 4px;
+      color: var(--text-muted); cursor: pointer; font-size: 11px; padding: 2px 8px;
+      margin-top: 2px; align-self: flex-start;
+    }
+    .btn-autofill:hover { border-color: var(--accent); color: var(--text); }
+
+    .pos-table-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .pos-table-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pos-table-head-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pos-scan-time { font-size: 11px; color: var(--text-muted); }
+    .pos-scroll { overflow-x: auto; }
+    .pos-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .pos-table th {
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .pos-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .pos-table tbody tr:last-child td { border-bottom: none; }
+    .pos-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+    .num { text-align: right; }
+    .not-in-scan {
+      display: inline-block;
+      font-size: 10px;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .prog-wrap { min-width: 100px; }
+    .prog-bg {
+      position: relative;
+      height: 6px;
+      background: var(--bg3);
+      border-radius: 3px;
+      overflow: visible;
+    }
+    .prog-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+    .prog-fill-pos { background: var(--green); }
+    .prog-fill-neg { background: var(--red); }
+    .prog-entry-mark {
+      position: absolute;
+      top: -3px;
+      width: 2px;
+      height: 12px;
+      background: var(--text-muted);
+      border-radius: 1px;
+      transform: translateX(-50%);
+    }
+    .prog-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .score-hi  { color: var(--green); font-weight: 600; }
+    .score-mid { color: var(--yellow); }
+    .score-lo  { color: var(--text-muted); }
+    .score-gone { color: var(--red); font-size: 11px; }
+
+    .near-target { color: var(--green); font-weight: 600; }
+    .near-stop   { color: var(--red);   font-weight: 600; }
+
+    .pos-close-btn {
+      background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.3);
+      border-radius: 4px; color: var(--green); cursor: pointer;
+      font-size: 11px; padding: 3px 8px; margin-right: 4px;
+    }
+    .pos-del-btn {
+      background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3);
+      border-radius: 4px; color: var(--red); cursor: pointer;
+      font-size: 11px; padding: 3px 8px;
+    }
+    .pos-close-btn:hover { background: rgba(63,185,80,0.2); }
+    .pos-del-btn:hover   { background: rgba(248,81,73,0.2); }
+
+    .pos-empty {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 40px 16px;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .pos-history-toggle {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 12px; padding: 4px 0;
+      text-decoration: underline;
+    }
+
+    .stop-advice { display:flex; flex-direction:column; gap:3px; min-width:100px; }
+    .stop-stage-badge {
+      display:inline-block; font-size:10px; font-weight:600;
+      border-radius:3px; padding:1px 6px; letter-spacing:0.03em; cursor:default;
+    }
+    .stage-initial   { background:rgba(128,128,128,0.15); color:var(--text-muted); }
+    .stage-breakeven { background:rgba(88,166,255,0.15);  color:#58a6ff; }
+    .stage-profit    { background:rgba(255,163,72,0.15);  color:#ffa348; }
+    .stage-trailing  { background:rgba(63,185,80,0.15);   color:var(--green); }
+    .stop-rec-price  { font-size:12px; font-weight:600; }
+    .apply-stop-btn {
+      background:rgba(88,166,255,0.1); border:1px solid rgba(88,166,255,0.3);
+      border-radius:4px; color:#58a6ff; cursor:pointer;
+      font-size:11px; padding:2px 8px; align-self:flex-start;
+    }
+    .apply-stop-btn:hover { background:rgba(88,166,255,0.2); }
+    .bulk-advice-btn {
+      background:rgba(88,166,255,0.1); border:1px solid rgba(88,166,255,0.4);
+      border-radius:var(--radius); color:#58a6ff; cursor:pointer;
+      font-size:11px; font-weight:600; padding:3px 10px;
+    }
+    .bulk-advice-btn:hover { background:rgba(88,166,255,0.2); }
+
+    .code-link { color: inherit; text-decoration: none; }
+    .code-link:hover strong { color: var(--accent); text-decoration: underline; }
+
+    .col-tip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      font-size: 9px;
+      font-weight: 700;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text-muted);
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 3px;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .col-tip:hover { border-color: var(--accent); color: var(--accent); }
+
+    .monthly-perf-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px 10px;
+    }
+    .monthly-perf-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .monthly-perf-title { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+    .monthly-perf-pct   { font-size: 26px; font-weight: 700; line-height: 1; }
+    .monthly-perf-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 10px;
+    }
+    .mpb-achieved { background: rgba(63,185,80,0.15);   color: var(--green);  }
+    .mpb-required { background: rgba(88,166,255,0.15);  color: #58a6ff;       }
+    .mpb-progress { background: rgba(210,153,34,0.15);  color: var(--yellow); }
+    .mpb-loss     { background: rgba(248,81,73,0.12);   color: var(--red);    }
+    .gauge-track {
+      position: relative;
+      height: 10px;
+      background: var(--bg3);
+      border-radius: 5px;
+      margin-bottom: 22px;
+    }
+    .gauge-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.45s ease;
+      min-width: 3px;
+    }
+    .gf-green  { background: var(--green); }
+    .gf-blue   { background: #58a6ff; }
+    .gf-yellow { background: var(--yellow); }
+    .gf-red    { background: var(--red); }
+    .gauge-marker {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .gauge-marker-tick {
+      width: 2px;
+      height: 16px;
+      background: var(--text-muted);
+      margin-top: -3px;
+      opacity: 0.6;
+    }
+    .gauge-marker-lbl {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .gauge-axis {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: -18px;
+    }
+
+    .tax-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      white-space: nowrap;
+    }
+    .tax-btn:hover { border-color: var(--accent); color: var(--text); }
+    .tax-btn.tax-active {
+      background: rgba(88,166,255,0.1);
+      border-color: rgba(88,166,255,0.5);
+      color: #58a6ff;
+    }
+
+    .bench-legend {
+      display: flex;
+      gap: 14px;
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+    .bench-legend-item { white-space: nowrap; font-weight: 600; }
+    .bench-color-user { color: #3fb950; }
+    .bench-color-nk   { color: #58a6ff; }
+    .bench-color-tp   { color: #ffa348; }
+
+    .deadline-ok   { color: var(--text-muted); font-size: 12px; white-space: nowrap; }
+    .deadline-near { color: var(--yellow);     font-size: 12px; white-space: nowrap; font-weight: 600; }
+    .deadline-over { color: var(--red);        font-size: 12px; white-space: nowrap; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .pos-page { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="index.html" class="back-link">&larr; Back to Scanner</a>
+      <h1>&#128203; Position Manager</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <a href="positions-help.html" class="help-btn" rel="noopener">&#10067; Guide</a>
+      <span id="pos-scan-time" class="last-update"></span>
+    </div>
+  </div>
+</header>
+
+<div class="pos-page">
+
+  <!-- Summary cards -->
+  <div class="pos-summary" id="pos-summary">
+    <div class="pos-summary-card">
+      <div class="sc-label">Open Positions</div>
+      <div class="sc-value" id="sum-count">0</div>
+      <div class="sc-sub">positions</div>
+    </div>
+    <div class="pos-summary-card">
+      <div class="sc-label">Total P&amp;L</div>
+      <div class="sc-value" id="sum-pnl">-</div>
+      <div class="sc-sub" id="sum-pnl-pct"></div>
+    </div>
+    <div class="pos-summary-card">
+      <div class="sc-label">Total Cost</div>
+      <div class="sc-value" id="sum-cost">-</div>
+      <div class="sc-sub">USD</div>
+    </div>
+    <div class="pos-summary-card" id="sum-upgrades-card" style="display:none;">
+      <div class="sc-label">Stop Updates</div>
+      <div class="sc-value" id="sum-upgrades" style="color:var(--yellow)">0</div>
+      <div class="sc-sub">positions</div>
+    </div>
+  </div>
+
+  <!-- Monthly performance gauge -->
+  <div class="monthly-perf-wrap" id="monthly-perf-wrap" style="display:none">
+    <div class="monthly-perf-head">
+      <span class="monthly-perf-title">This Month's Return</span>
+      <span class="monthly-perf-pct" id="monthly-perf-pct">-</span>
+      <span class="monthly-perf-badge" id="monthly-perf-badge"></span>
+      <span style="margin-left:auto;font-size:11px;color:var(--text-muted)" id="monthly-perf-sub"></span>
+    </div>
+    <div class="gauge-track">
+      <div class="gauge-fill" id="gauge-fill" style="width:0%"></div>
+      <!-- Required 7% marker: 7/15*100 = 46.67% -->
+      <div class="gauge-marker" style="left:46.67%">
+        <div class="gauge-marker-tick"></div>
+        <div class="gauge-marker-lbl">Required<br>7%</div>
+      </div>
+      <!-- Goal 10% marker: 10/15*100 = 66.67% -->
+      <div class="gauge-marker" style="left:66.67%">
+        <div class="gauge-marker-tick"></div>
+        <div class="gauge-marker-lbl">Goal<br>10%</div>
+      </div>
+    </div>
+    <div class="gauge-axis"><span>0%</span><span>15%+</span></div>
+  </div>
+
+  <!-- P&L chart (daily) -->
+  <div class="pnl-chart-wrap" id="pnl-chart-wrap" style="display:none">
+    <div class="pos-table-head">
+      <span class="pos-table-head-title">P&amp;L History (Daily)</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="tax-btn" id="tax-btn" onclick="toggleTax()">Pre-Tax</button>
+        <span style="font-size:11px;color:var(--text-muted)">Open this page each day to record your P&amp;L</span>
+      </div>
+    </div>
+    <div class="pnl-chart-container" id="pnl-chart-container"></div>
+  </div>
+
+  <!-- Benchmark comparison chart -->
+  <div class="pnl-chart-wrap" id="bench-chart-wrap" style="display:none">
+    <div class="pos-table-head">
+      <span class="pos-table-head-title">Market Comparison (Cumulative Return %)</span>
+      <div class="bench-legend">
+        <span class="bench-legend-item bench-color-user" id="bench-legend-user">Mine</span>
+        <span class="bench-legend-item bench-color-nk">&mdash;&mdash; S&amp;P 500</span>
+        <span class="bench-legend-item bench-color-tp">&mdash;&mdash; NASDAQ</span>
+      </div>
+    </div>
+    <div class="pnl-chart-container" id="bench-chart-container"></div>
+  </div>
+
+  <!-- Add position button / hint -->
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="pos-add-btn" id="add-btn" onclick="toggleForm()">&#65291; Add Position</button>
+    <span class="pos-form-hint">Enter a ticker to auto-fill from today's scan results</span>
+  </div>
+
+  <div class="pos-form-wrap hidden" id="pos-form-wrap">
+    <div class="pos-form-title">Add New Position</div>
+    <div class="pos-form-grid">
+      <div class="pos-form-field">
+        <label>Ticker <span style="color:var(--red)">*</span></label>
+        <input type="text" id="f-code" placeholder="e.g. AAPL" maxlength="10" />
+        <button class="btn-autofill" onclick="autoFill()">Auto-fill from Scan</button>
+      </div>
+      <div class="pos-form-field">
+        <label>Company</label>
+        <input type="text" id="f-name" placeholder="Auto-fill or enter manually" />
+      </div>
+      <div class="pos-form-field">
+        <label>Shares <span style="color:var(--red)">*</span></label>
+        <input type="number" id="f-shares" placeholder="100" min="1" />
+      </div>
+      <div class="pos-form-field">
+        <label>Entry Price ($) <span style="color:var(--red)">*</span></label>
+        <input type="number" id="f-entry" placeholder="e.g. 150.00" min="0.01" step="0.01" oninput="recalcTargets()" />
+      </div>
+      <div class="pos-form-field">
+        <label>Entry Date</label>
+        <input type="date" id="f-date" />
+      </div>
+      <div class="pos-form-field">
+        <label>Target Price ($)</label>
+        <input type="number" id="f-target" placeholder="Auto-fill or enter manually" min="0.01" step="0.01" />
+      </div>
+      <div class="pos-form-field">
+        <label>Stop Loss ($)</label>
+        <input type="number" id="f-stop" placeholder="Auto-fill or enter manually" min="0.01" step="0.01" />
+      </div>
+    </div>
+    <div class="pos-form-actions">
+      <button class="btn-primary" onclick="submitAdd()">Add</button>
+      <button class="btn-cancel" onclick="toggleForm()">Cancel</button>
+      <span class="pos-form-hint" id="form-error" style="color:var(--red)"></span>
+    </div>
+  </div>
+
+  <!-- Open positions table -->
+  <div class="pos-table-wrap">
+    <div class="pos-table-head">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="pos-table-head-title">Open</span>
+        <button id="bulk-advice-btn" class="bulk-advice-btn" onclick="applyAllAdvice()" style="display:none;">&uarr; Apply All</button>
+      </div>
+      <span id="pos-scan-label" class="pos-scan-time"></span>
+    </div>
+    <div class="pos-scroll">
+      <table class="pos-table">
+        <thead>
+          <tr>
+            <th>Ticker <span class="col-tip" data-tip="Stock ticker. Click to open the scanner chart. 'Off-scan' means not in today's scan results.">?</span></th>
+            <th>Company</th>
+            <th class="num">Shares <span class="col-tip" data-tip="Number of shares held.">?</span></th>
+            <th class="num">Entry Price <span class="col-tip" data-tip="Average purchase price ($). Used as basis for P&amp;L and stop calculations.">?</span></th>
+            <th class="num">Current Price <span class="col-tip" data-tip="Closing price at today's scan time ($). Not real-time. Scan updates daily after market close (ET).">?</span></th>
+            <th class="num">P&amp;L <span class="col-tip" data-tip="(Current &minus; Entry) &times; Shares. Bottom row shows % change. Updates only when scan data refreshes.">?</span></th>
+            <th>Progress (Stop&rarr;Target) <span class="col-tip" data-tip="Progress bar with stop = 0% and target = 100%. Vertical line marks entry price. Further right = closer to target.">?</span></th>
+            <th class="num">To Target <span class="col-tip" data-tip="Remaining upside to target (%). Shown in green bold when &lt; 3% (near target).">?</span></th>
+            <th class="num">To Stop <span class="col-tip" data-tip="Remaining downside to stop (%). Shown in red bold when &lt; 3% (danger zone). Raise your stop to give more breathing room.">?</span></th>
+            <th>Stop Advice <span class="col-tip" data-tip="ATR-based staged stop-raise recommendation. Stages: &amp;#9312;Initial (entry&minus;ATR&times;2) &rarr;&amp;#9313;Breakeven (entry) &rarr;&amp;#9314;Lock Profit (entry+ATR) &rarr;&amp;#9315;Trailing (price&minus;ATR&times;1.5). Press '&uarr; Apply' to update.">?</span></th>
+            <th class="num">Score <span class="col-tip" data-tip="Today's scan total score (0&ndash;100). Sum of Trend, Pattern, Momentum, Volume, and RS. 'Off-scan' means score &lt; 30, not included in scan results.">?</span></th>
+            <th>Entry Date <span class="col-tip" data-tip="Date the position was entered. Used to calculate the trade deadline.">?</span></th>
+            <th>Deadline <span class="col-tip" data-tip="Entry date + pattern holding period (weeks_max &times; 7 days). E.g. Inverse H&amp;S 12 wks, Hammer 3 wks. Past deadline with no target &rarr; review your strategy. Consider exiting even if stop not hit.">?</span></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="pos-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Closed trades -->
+  <div id="history-section" style="display:none">
+    <div class="pos-table-wrap">
+      <div class="pos-table-head">
+        <span class="pos-table-head-title">Closed Trades</span>
+      </div>
+      <div class="pos-scroll">
+        <table class="pos-table">
+          <thead>
+            <tr>
+              <th>Ticker</th><th>Company</th><th class="num">Shares</th>
+              <th class="num">Entry</th><th class="num">Exit</th>
+              <th class="num">P&amp;L</th><th>Entry Date</th><th>Exit Date</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Close modal -->
+  <div id="close-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;min-width:280px;max-width:360px;">
+      <div style="font-size:15px;font-weight:600;margin-bottom:16px;">Record Close</div>
+      <div class="pos-form-field" style="margin-bottom:12px;">
+        <label>Exit Price ($)</label>
+        <input type="number" id="close-price" min="0.01" step="0.01" />
+      </div>
+      <div class="pos-form-field" style="margin-bottom:16px;">
+        <label>Exit Date</label>
+        <input type="date" id="close-date" />
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-primary" onclick="confirmClose()">Save</button>
+        <button class="btn-cancel" onclick="hideCloseModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="col-tip-popup" class="col-tip-popup"></div>
+
+<footer class="site-footer">
+  Position data is stored in browser localStorage. Cleared when cache is cleared.
+  &nbsp;|&nbsp; All investment decisions are at your own risk.
+</footer>
+
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<script src="js/positions.js"></script>
+<script>
+(function () {
+  const popup = document.getElementById('col-tip-popup');
+  document.addEventListener('click', function (e) {
+    const tip = e.target.closest('.col-tip');
+    if (tip) {
+      e.stopPropagation();
+      popup.textContent = tip.dataset.tip;
+      popup.style.display = 'block';
+      const r  = tip.getBoundingClientRect();
+      const pw = popup.offsetWidth;
+      const ph = popup.offsetHeight;
+      let left = r.left;
+      let top  = r.bottom + 6;
+      if (left + pw > window.innerWidth  - 8) left = window.innerWidth  - pw - 8;
+      if (left < 8) left = 8;
+      if (top  + ph > window.innerHeight - 8) top  = r.top - ph - 6;
+      popup.style.left = left + 'px';
+      popup.style.top  = top  + 'px';
+      return;
+    }
+    popup.style.display = 'none';
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') popup.style.display = 'none';
+  });
+})();
+</script>
+</body>
+</html>

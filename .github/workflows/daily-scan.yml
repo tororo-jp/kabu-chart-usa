@@ -1,0 +1,54 @@
+name: Single Scan (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample_mode:
+        description: 'Sample mode (first 100 stocks only)'
+        required: false
+        default: 'false'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scanner/requirements.txt
+
+      - name: Run scanner
+        env:
+          SAMPLE_MODE: ${{ github.event.inputs.sample_mode || 'false' }}
+        run: |
+          python scanner/main.py \
+            --output docs/data/results.json
+        timeout-minutes: 45
+
+      - name: Fetch benchmark data
+        run: python scanner/fetch_benchmark.py
+
+      - name: Archive daily result
+        run: |
+          DATE=$(TZ=America/New_York date +%Y-%m-%d)
+          cp docs/data/results.json "docs/data/results_${DATE}.json"
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/
+          git diff --staged --quiet || \
+            git commit -m "$(TZ=America/New_York date '+%Y-%m-%d %H:%M ET') scan complete"
+          git push

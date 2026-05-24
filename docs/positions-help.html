@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Position Manager Guide | US Stock Technical Scanner</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/help.css" />
+</head>
+<body>
+
+<header>
+  <div class="help-header-inner">
+    <a href="positions.html" class="back-link">&larr; Back to Position Manager</a>
+    <h1>&#128203; Position Manager Guide</h1>
+  </div>
+</header>
+
+<div class="help-layout">
+
+  <nav class="help-nav" id="help-nav">
+    <ul>
+      <li class="nav-section">Introduction</li>
+      <li><a href="#overview">What Is the Position Manager?</a></li>
+      <li><a href="#screen">Screen Overview</a></li>
+      <li class="nav-section">Basic Operations</li>
+      <li><a href="#add">Adding a Position</a></li>
+      <li><a href="#columns">Column Reference</a></li>
+      <li><a href="#progress">Progress Bar Guide</a></li>
+      <li class="nav-section">Stop Management</li>
+      <li><a href="#stop-advice">What Is Stop Advice?</a></li>
+      <li><a href="#stages">Stage Meanings</a></li>
+      <li><a href="#apply">Applying Stop Updates</a></li>
+      <li><a href="#rules">Stop-Loss Rules</a></li>
+      <li class="nav-section">Closing &amp; History</li>
+      <li><a href="#close">Recording a Close</a></li>
+      <li><a href="#history">Trade History</a></li>
+      <li class="nav-section">Daily Workflow</li>
+      <li><a href="#daily">Daily Checklist</a></li>
+      <li><a href="#storage">Data Storage</a></li>
+    </ul>
+  </nav>
+
+  <main class="help-content">
+
+    <section class="help-section" id="overview">
+      <h2>What Is the Position Manager?</h2>
+      <p>After purchasing a stock detected by the scanner, manage all your open positions &mdash; P&amp;L, progress, and stop-loss levels &mdash; in a single screen.</p>
+      <ul>
+        <li>Enter a ticker to auto-fill target, stop-loss, and ATR from today&rsquo;s scan results</li>
+        <li>Compare daily scan data to show P&amp;L, score, and distance to target/stop in real time</li>
+        <li><strong>Stop Advice column</strong>: automatically calculates optimal stop-raise stage from current price and ATR</li>
+        <li>Record exit price and date to maintain a trade history</li>
+      </ul>
+      <div class="info-box">
+        <p>Position data is stored in browser <strong>localStorage</strong>. It is never sent to any server. Clearing your browser cache will delete all data. There is no export feature &mdash; record important data via screenshots or notes.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="screen">
+      <h2>Screen Overview</h2>
+      <table class="h-table">
+        <thead><tr><th>Area</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Summary Cards (top)</td><td>Displays open position count, total P&amp;L, total cost, and number of positions with stop updates available</td></tr>
+          <tr><td>Add Position Button</td><td>Click &ldquo;&#65291; Add Position&rdquo; to expand the input form</td></tr>
+          <tr><td>Open Positions Table</td><td>List of all open positions. Updated daily against the latest scan results.</td></tr>
+          <tr><td>Closed Trades Table</td><td>P&amp;L history of recorded closed positions (shown only when at least one trade has been closed)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Stop Updates Card</h3>
+      <p>Displays (in yellow) the number of positions where the recommended stop is higher than the current stop. When this number appears, it&rsquo;s time to raise your stop-loss levels. Use the <strong>&uarr; Apply All</strong> button in the table header to update them in bulk.</p>
+    </section>
+
+    <section class="help-section" id="add">
+      <h2>Adding a Position</h2>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Click the &ldquo;&#65291; Add Position&rdquo; button</strong>
+            <span>The input form will expand.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Enter a ticker and press &ldquo;Auto-fill from Scan&rdquo;</strong>
+            <span>Today&rsquo;s scan data will auto-fill the company name, suggested entry price, target, and stop-loss. Stocks not in the scan must be entered manually.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Enter your actual fill price</strong>
+            <span>Changing the entry price to your actual fill will auto-recalculate the target and stop-loss. Also enter the number of shares and entry date.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Press the &ldquo;Add&rdquo; button</strong>
+            <span>The position is added to the Open Positions table. ATR is saved at this time, so stop advice continues even if the stock later leaves the scan.</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Input Field Reference</h3>
+      <table class="h-table">
+        <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Ticker</td><td class="good">Required</td><td>Stock ticker symbol (e.g. AAPL)</td></tr>
+          <tr><td>Company</td><td>Optional</td><td>Auto-filled from scan. Can be edited manually.</td></tr>
+          <tr><td>Shares</td><td class="good">Required</td><td>Number of shares purchased</td></tr>
+          <tr><td>Entry Price</td><td class="good">Required</td><td>Actual fill price ($). Changing this auto-recalculates target and stop-loss.</td></tr>
+          <tr><td>Entry Date</td><td>Optional</td><td>Purchase date. Defaults to today.</td></tr>
+          <tr><td>Target Price</td><td>Optional</td><td>Auto-filled from scan. Editable. Used for stop advice progress calculation.</td></tr>
+          <tr><td>Stop Loss</td><td>Optional</td><td>Auto-filled from scan. Set a matching stop order in your brokerage right after purchase.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <p>&#128161; Register on scan day (after close to next morning) to get auto-filled target, stop-loss, and ATR. Changing the entry price to your actual fill will auto-recalculate target and stop-loss. Since scan data updates next day, register as soon as possible after purchasing.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="columns">
+      <h2>Column Reference</h2>
+      <table class="h-table">
+        <thead><tr><th>Column</th><th>Description</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Ticker</strong></td>
+            <td>Stock ticker. Shows &lsquo;Off-scan&rsquo; badge if not in today&rsquo;s scan.</td>
+            <td>Off-scan means no active signal, but stock data must be fetched separately.</td>
+          </tr>
+          <tr>
+            <td><strong>Shares</strong></td>
+            <td>Number of shares registered at add time.</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Entry Price</strong></td>
+            <td>Purchase fill price ($).</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Current Price</strong></td>
+            <td>Price from today&rsquo;s scan data ($).</td>
+            <td>Scan price (after 4 PM ET close). Not real-time.</td>
+          </tr>
+          <tr>
+            <td><strong>P&amp;L</strong></td>
+            <td>(Current &minus; Entry) &times; Shares. Percentage shown below.</td>
+            <td>Taxes and commissions not included.</td>
+          </tr>
+          <tr>
+            <td><strong>Progress Bar</strong></td>
+            <td>Visualizes current price between stop-loss and target. Vertical line = entry price.</td>
+            <td>See &ldquo;Progress Bar Guide&rdquo; for details.</td>
+          </tr>
+          <tr>
+            <td><strong>To Target</strong></td>
+            <td>Remaining upside to target (%). Shown in green when &lt; 3%.</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>To Stop</strong></td>
+            <td>Remaining downside to stop (%). Shown in red when &lt; 3%.</td>
+            <td>If red, verify your stop order in your brokerage.</td>
+          </tr>
+          <tr>
+            <td><strong>Stop Advice</strong></td>
+            <td>ATR-based recommended stop price and stage badge.</td>
+            <td>See &ldquo;What Is Stop Advice?&rdquo; for details.</td>
+          </tr>
+          <tr>
+            <td><strong>Score</strong></td>
+            <td>Today&rsquo;s scan total score (0&ndash;100). &lsquo;Off-scan&rsquo; shown in red when score &lt; 30.</td>
+            <td>Score drop or off-scan is a signal to re-evaluate your position.</td>
+          </tr>
+          <tr>
+            <td><strong>Entry Date</strong></td>
+            <td>Purchase date entered at registration.</td>
+            <td>&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="help-section" id="progress">
+      <h2>Progress Bar Guide</h2>
+      <p>The stop-to-target range is visualized as a single bar. See your current position at a glance.</p>
+
+      <table class="h-table">
+        <thead><tr><th>Element</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Left label</td><td>Stop-loss price ($)</td></tr>
+          <tr><td>Right label</td><td>Target price ($)</td></tr>
+          <tr><td>Vertical marker line</td><td>Entry price position</td></tr>
+          <tr><td class="good">Green bar</td><td>Current price &ge; entry (in profit). Longer = closer to target.</td></tr>
+          <tr><td class="bad">Red bar</td><td>Current price &lt; entry (in loss). Shorter = closer to stop.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <p>&#128161; The further right the current price is (toward the target), the better. When the green bar nears the target, consider taking partial profits.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="stop-advice">
+      <h2>What Is Stop Advice?</h2>
+      <p>Using current price and ATR (Average True Range) from daily scan data, this feature automatically calculates the optimal timing and price to raise your stop-loss.</p>
+      <p>By gradually raising the stop-loss as the price rises, you can protect profits while continuing to ride the uptrend (trailing stop).</p>
+
+      <h3>What Is ATR (Average True Range)?</h3>
+      <p>ATR is the 14-day average of the &ldquo;true range,&rdquo; representing each stock&rsquo;s daily volatility. For example, if ATR = $2.00, the stock moves an average of $2 per day. Using ATR for stop sizing ensures a rational buffer suited to each stock&rsquo;s price range and volatility.</p>
+
+      <table class="h-table">
+        <thead><tr><th>ATR Usage</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Entry &minus; ATR&times;2</td><td>Initial stop (survives 2 average daily swings)</td></tr>
+          <tr><td>Entry</td><td>Breakeven (zero-risk point)</td></tr>
+          <tr><td>Entry + ATR&times;1</td><td>Lock in 1 ATR of profit</td></tr>
+          <tr><td>Price &minus; ATR&times;1.5</td><td>Trailing (allows 1.5 ATR of swing while following price)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>ATR Source Priority</h3>
+      <ol>
+        <li>Today&rsquo;s scan result (latest ATR)</li>
+        <li>ATR saved at registration time (works even if stock is off-scan)</li>
+        <li>Fallback: 3% of entry price (substitute when ATR is unavailable)</li>
+      </ol>
+    </section>
+
+    <section class="help-section" id="stages">
+      <h2>Stage Meanings &amp; Actions</h2>
+      <p>The Stop Advice column shows a 4-stage badge based on current conditions.</p>
+
+      <table class="h-table">
+        <thead><tr><th>Stage</th><th>Color</th><th>Trigger Condition</th><th>Recommended Stop</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Initial</strong></td>
+            <td style="color:var(--text-muted)">Gray</td>
+            <td>Price &lt; Entry + ATR&times;0.8</td>
+            <td>Entry &minus; ATR&times;2</td>
+            <td>No change needed. Keep original stop-loss.</td>
+          </tr>
+          <tr>
+            <td><strong>Breakeven</strong></td>
+            <td style="color:#58a6ff">Blue</td>
+            <td>Price &ge; Entry + ATR&times;0.8</td>
+            <td>Entry price</td>
+            <td><strong>Raise stop to entry price (zero-risk).</strong> Worst case from here is a breakeven exit.</td>
+          </tr>
+          <tr>
+            <td><strong>Lock Profit</strong></td>
+            <td style="color:#ffa348">Orange</td>
+            <td>Progress &ge; 50%</td>
+            <td>Entry + ATR&times;1</td>
+            <td><strong>Raise stop further to lock in partial profit.</strong> If hit, at least 1 ATR of profit is preserved.</td>
+          </tr>
+          <tr>
+            <td><strong>Trailing</strong></td>
+            <td style="color:var(--green)">Green</td>
+            <td>Progress &ge; 70%</td>
+            <td>Price &minus; ATR&times;1.5</td>
+            <td><strong>Follow daily to maximize profits.</strong> Raises automatically as price climbs. Update each day.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Can Stages Go Backwards?</h3>
+      <p>Stages are always calculated from the current price relative to entry and target. A temporary price drop may shift a stage backward, but <strong>the stop-loss is only raised &mdash; never lowered</strong>. The &ldquo;&uarr; Apply&rdquo; button is active only when the recommended stop is higher than the current stop.</p>
+
+      <div class="tip-box">
+        <p>&#128161; Progress = (Price &minus; Entry) &divide; (Target &minus; Entry) &times; 100%.<br>
+        If no target is set, only stages Initial or Breakeven are evaluated. We recommend setting a target price when registering.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="apply">
+      <h2>Applying Stop Updates</h2>
+      <p>Once you&rsquo;ve reviewed the stop advice, update the stop-loss using one of these methods.</p>
+
+      <h3>Apply to Individual Positions</h3>
+      <p>Press the <strong>&uarr; Apply</strong> button in the Stop Advice column to update that position&rsquo;s stop-loss to the recommended price. The button appears only when the recommended price is higher than the current stop.</p>
+
+      <h3>Apply to All Positions at Once</h3>
+      <p>Press the <strong>&uarr; Apply All</strong> button in the table header to bulk-update all eligible positions. This button appears only when at least one position has an available update.</p>
+
+      <div class="warn-box">
+        <p>&#9888;&#65039; The stop-loss price in this tool is a management record only. <strong>Stop orders in your brokerage account must be updated manually.</strong> Updating the tool does NOT automatically change any brokerage orders.</p>
+      </div>
+
+      <h3>Post-Update Confirmation Flow</h3>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Press &ldquo;&uarr; Apply All&rdquo; to update the tool&rsquo;s stop-loss</strong>
+            <span>All eligible stops are updated to the recommended price.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Open your brokerage app and update your stop orders</strong>
+            <span>Set your brokerage stop orders to match the updated &ldquo;Stop Loss&rdquo; column values.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Confirm the changes</strong>
+            <span>Verify in your brokerage that the stop orders are updated correctly.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="help-section" id="rules">
+      <h2>Stop-Loss Rules</h2>
+
+      <h3>Rules to Always Follow</h3>
+      <table class="h-table">
+        <thead><tr><th>Rule</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="good">Only raise stops, never lower them</td>
+            <td>Lowering a stop risks unlimited losses. Respecting your stop is the foundation of systematic trading.</td>
+          </tr>
+          <tr>
+            <td class="good">Execute the stop immediately when hit</td>
+            <td>&ldquo;Wait for a bounce&rdquo; hope statistically leads to larger losses. Automate with stop orders where possible.</td>
+          </tr>
+          <tr>
+            <td class="good">Set a stop order immediately after purchase</td>
+            <td>Set it mechanically before emotion takes over. Forgetting exposes you to unlimited loss.</td>
+          </tr>
+          <tr>
+            <td class="bad">Never &ldquo;wait and see&rdquo; when price nears the stop</td>
+            <td>Watching and hoping invalidates the stop. If no stop order is in place, set one immediately.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>When Score Drops or Goes Off-Scan</h3>
+      <p>If a held stock shows &lsquo;Off-scan&rsquo; or its score drops significantly, check the following:</p>
+      <table class="h-table">
+        <thead><tr><th>Situation</th><th>Response</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Score drops by 10+ points</td>
+            <td>Technical environment deteriorating. Tighten the stop closer to current price. Execute cleanly if stop is hit.</td>
+          </tr>
+          <tr>
+            <td>Score goes &lsquo;Off-scan&rsquo; (&lt; 30)</td>
+            <td>Signal has disappeared. Even if stop hasn&rsquo;t been hit, the rationale for the trade has weakened. Consider partial or full exit.</td>
+          </tr>
+          <tr>
+            <td>Pattern has broken down (check chart)</td>
+            <td>Entry rationale is gone. Consider early exit even if stop hasn&rsquo;t been triggered.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <p>A stop-loss is not a failure &mdash; it is a planned exit. Executing stops promptly keeps capital available for the next opportunity.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="close">
+      <h2>Recording a Close</h2>
+      <p>When you sell (close) a position, record it in the tool as well.</p>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Press the &ldquo;Close&rdquo; button on the target position</strong>
+            <span>The close recording modal will appear.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Enter exit price and exit date</strong>
+            <span>Check your brokerage&rsquo;s fill history and enter the exact values. Defaults to current price and today&rsquo;s date.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Press &ldquo;Save&rdquo;</strong>
+            <span>The position moves from Open Positions to Closed Trades. The realized P&amp;L is displayed.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <p>&#128161; Closed trades can be removed with the &ldquo;Delete&rdquo; button. Deleted data cannot be recovered.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="history">
+      <h2>Trade History</h2>
+      <p>The Closed Trades table shows the P&amp;L of all recorded exits. It appears only when at least one trade has been closed.</p>
+
+      <table class="h-table">
+        <thead><tr><th>Column</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Entry Price</td><td>Purchase fill price ($)</td></tr>
+          <tr><td>Exit Price</td><td>Sale fill price ($)</td></tr>
+          <tr><td>P&amp;L</td><td>(Exit &minus; Entry) &times; Shares. Positive = profit, negative = loss.</td></tr>
+          <tr><td>Entry Date / Exit Date</td><td>Dates entered at registration and close</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <p>P&amp;L does not include taxes or commissions. Actual realized P&amp;L may differ.</p>
+      </div>
+    </section>
+
+    <section class="help-section" id="daily">
+      <h2>Daily Workflow (approx. 3 minutes)</h2>
+      <p>Check the following after each trading day, once the scan has completed (typically by 5:00 PM ET).</p>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Check for score-drop alerts</strong>
+            <span>If any held stocks appear in alerts, open this page and check their Score column.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Check the &ldquo;Stop Updates&rdquo; card</strong>
+            <span>If shown, press &ldquo;&uarr; Apply All&rdquo; to raise the stops.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Check red &ldquo;To Stop&rdquo; column values</strong>
+            <span>If any show red (within 3%), verify that your brokerage stop orders are correctly set.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Update brokerage stop orders</strong>
+            <span>Manually update your brokerage stop orders to match the stops updated in Step 2.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Check for off-scan or score-drop stocks</strong>
+            <span>Signal of deteriorating technical conditions. Tighten stops or consider early exit.</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Daily Checklist (copy and use)</h3>
+      <div class="formula" style="font-size:13px;line-height:1.9;">
+&#9744; Check score-drop alerts &mdash; are any held stocks listed?
+&#9744; Press &ldquo;&uarr; Apply All&rdquo; if the Stop Updates card is shown
+&#9744; Check &ldquo;To Stop&rdquo; red values &mdash; verify brokerage stop orders
+&#9744; Update brokerage stop orders to match raised stops
+&#9744; Assess any &ldquo;Off-scan&rdquo; or score-drop stocks and decide on action
+      </div>
+    </section>
+
+    <section class="help-section" id="storage">
+      <h2>Data Storage</h2>
+
+      <table class="h-table">
+        <thead><tr><th>Item</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr><td>Storage Location</td><td>Browser <strong>localStorage</strong> (this device and browser only)</td></tr>
+          <tr><td>Server Transmission</td><td>None. Data is never sent externally.</td></tr>
+          <tr><td>When Deleted</td><td>Browser cache clear, history deletion, or end of private browsing session</td></tr>
+          <tr><td>Cross-Device Sync</td><td>Not possible. Data is not synchronized between devices or browsers.</td></tr>
+          <tr><td>Backup</td><td>No export feature. Save important data manually via screenshots or notes.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warn-box">
+        <p>&#9888;&#65039; Clearing your browser cache will permanently delete all position data. We recommend regularly recording your closed trade P&amp;L in a notebook or spreadsheet.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  This tool is for informational purposes only and does not constitute investment advice. All investment decisions are at your own risk.
+</footer>
+
+<script>
+  const sections = document.querySelectorAll(".help-section");
+  const navLinks = document.querySelectorAll(".help-nav a");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove("active"));
+        const link = document.querySelector(`.help-nav a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
