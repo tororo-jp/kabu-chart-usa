@@ -6,17 +6,11 @@ on:
     - cron: '0 4 1 * *'
 
   workflow_dispatch:
-    inputs:
-      with_yfinance:
-        description: 'Also fetch sectors via yfinance for non-S&P-1500 tickers (~2h)'
-        required: false
-        default: 'false'
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    # 30 min for Wikipedia-only; up to 3h if with_yfinance=true
-    timeout-minutes: 180
+    timeout-minutes: 30
 
     permissions:
       contents: write
@@ -31,13 +25,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r scanner/requirements.txt
 
-      - name: Build universe (Wikipedia sectors)
-        if: ${{ github.event.inputs.with_yfinance != 'true' }}
+      - name: Build universe
         run: python scanner/build_universe.py
-
-      - name: Build universe (Wikipedia + yfinance sectors)
-        if: ${{ github.event.inputs.with_yfinance == 'true' }}
-        run: python scanner/build_universe.py --with-yfinance --yf-sleep 2.0
 
       - name: Commit results
         run: |
