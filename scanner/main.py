@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from fetcher import fetch_all_ohlcv, fetch_upcoming_earnings
 from market_filter import check_market_env
 from indicators import compute_all, compute_12m_return, blue_sky_check
-from master import get_sp500_tickers, get_stock_info
+from master import get_universe_tickers, get_universe_info
 from patterns import detect_all_patterns
 from scorer import calculate_score, calculate_probability
 from target_calculator import calculate_targets
@@ -163,19 +163,23 @@ def main():
     args = parse_args()
     sample_mode = os.environ.get("SAMPLE_MODE", "false").lower() == "true"
 
-    tickers = get_sp500_tickers(
+    tickers = get_universe_tickers(
+        universe_path="stocks/universe.txt",
         master_path=args.master,
         txt_cache="stocks/sp500_tickers.txt",
     )
     if not tickers:
-        logger.error("No tickers found. Check sp500_info.csv or Wikipedia fetch.")
+        logger.error("No tickers found. Run scanner/build_universe.py or check sp500_info.csv.")
         sys.exit(1)
 
     if sample_mode:
         tickers = tickers[:100]
         logger.info("Sample mode: using first %d tickers", len(tickers))
 
-    stock_info = get_stock_info(args.master)
+    stock_info = get_universe_info(
+        sector_map_path="stocks/sector_map.json",
+        master_path=args.master,
+    )
 
     logger.info("Checking market environment...")
     market_env = check_market_env()
