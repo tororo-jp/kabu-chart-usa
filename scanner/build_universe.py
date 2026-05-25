@@ -1,8 +1,9 @@
 """Build NYSE + NASDAQ universe with sector filtering.
 
 Sector data sources (in priority order):
-  1. NASDAQ Screener CSV — all NYSE+NASDAQ stocks, single request, no rate limits
-  2. Wikipedia           — S&P 500/400/600, GICS sector, used as override/fallback
+  1. GitHub raw CSV     — S&P 500 GICS sectors, reliable plain CSV, always accessible
+  2. Wikipedia          — S&P 500/400/600, GICS sector, used as override/fallback
+  3. NASDAQ Screener CSV— all NYSE+NASDAQ stocks, single request (may return 403)
 
 yfinance is NOT used for sector data (avoids rate limiting).
 
@@ -91,7 +92,13 @@ _GICS_TO_NORM: dict[str, str] = {
 _NASDAQ_LISTED_URL = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"
 _OTHER_LISTED_URL  = "https://www.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt"
 
-# NASDAQ screener — try multiple URL variants for resilience
+# GitHub datasets — plain CSV, no auth, always accessible
+_GITHUB_SP500_URL = (
+    "https://raw.githubusercontent.com/datasets/s-and-p-500-companies"
+    "/main/data/constituents.csv"
+)
+
+# NASDAQ screener — try multiple URL variants for resilience (may return 403)
 _SCREENER_URLS = [
     "https://api.nasdaq.com/api/screener/stocks?tableonly=true&download=true",
     "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=10000&offset=0&download=true",
@@ -210,42 +217,96 @@ def fetch_nasdaq_screener() -> dict[str, dict]:
         except Exception as e:
             logger.warning("NASDAQ screener fetch failed (%s): %s", url, e)
 
-    logger.warning("All NASDAQ screener URLs failed — will rely on Wikipedia only.")
+    logger.warning("All NASDAQ screener URLs failed — will rely on other sources.")
     return {}
 
 
-# ── Step 2b: Sector map from Wikipedia (S&P 1500) ───────────────────────────
+# ── Step 2b: Sector map from GitHub raw CSV (S&P 500) ───────────────────────
+
+def fetch_github_sp500() -> dict[str, dict]:
+    """Fetch S&P 500 sector data from GitHub datasets public CSV.
+
+    URL never requires auth and returns plain CSV — the most reliable source.
+    Columns: Symbol, Security, GICS Sector, GICS Sub-Industry, ...
+    """
+    try:
+        df = pd.read_csv(_GITHUB_SP500_URL, dtype=str)
+        df.columns = [c.strip() for c in df.columns]
+
+        sym_col  = next((c for c in df.columns if c.lower() in ("symbol", "ticker")), None)
+        name_col = next((c for c in df.columns if "security" in c.lower() or c.lower() == "name"), None)
+        sect_col = next((c for c in df.columns if "gics sector" in c.lower()), None)
+        if sect_col is None:
+            sect_col = next((c for c in df.columns if c.lower() == "sector"), None)
+        sub_col  = next((c for c in df.columns if "sub-industry" in c.lower() or "sub_industry" in c.lower()), None)
+
+        if sym_col is None or sect_col is None:
+            logger.warning("GitHub S&P 500 CSV: unexpected columns: %s", list(df.columns))
+            return {}
+
+        result: dict[str, dict] = {}
+        for _, row in df.iterrows():
+            sym = str(row[sym_col]).strip().replace(".", "-")
+            if not sym or sym == "nan" or not _is_common_stock(sym):
+                continue
+            gics   = str(row[sect_col]).strip()
+            sector = _GICS_TO_NORM.get(gics, gics or "Unknown")
+            name   = str(row[name_col]).strip() if name_col else sym
+            sub    = str(row[sub_col]).strip() if sub_col else ""
+            result[sym] = {"sector": sector, "name": name, "sub_sector": sub}
+
+        logger.info("GitHub S&P 500 CSV: %d tickers with sector data", len(result))
+        return result
+    except Exception as e:
+        logger.warning("GitHub S&P 500 CSV fetch failed: %s", e)
+        return {}
+
+
+# ── Step 2c: Sector map from Wikipedia (S&P 1500) ───────────────────────────
 
 def fetch_wikipedia_sectors() -> dict[str, dict]:
     """Fetch sector + name for S&P 500/400/600 from Wikipedia.
 
-    Used as an override on top of NASDAQ screener data (GICS is more precise).
+    Used as an override on top of other sector data (GICS is more precise).
+    S&P 500 uses "Symbol" column; S&P 400/600 use "Ticker" column.
     """
     result: dict[str, dict] = {}
 
     for index_name, url in _WIKI_URLS.items():
         try:
-            tables    = pd.read_html(url, header=0)
-            df        = tables[0]
-            sym_col   = next((c for c in df.columns if "symbol"   in c.lower()), None)
-            name_col  = next((c for c in df.columns if "security" in c.lower() or "company" in c.lower()), None)
-            sect_col  = next((c for c in df.columns if "sector"   in c.lower()), None)
-
-            if sym_col is None:
-                logger.warning("Wikipedia %s: symbol column not found", index_name)
-                continue
-
-            before = len(result)
-            for _, row in df.iterrows():
-                sym = str(row[sym_col]).strip().replace(".", "-")
-                if not sym or sym == "nan":
+            tables = pd.read_html(url, header=0)
+            matched = False
+            for table_idx, df in enumerate(tables[:4]):
+                sym_col = next(
+                    (c for c in df.columns if c.lower() in ("symbol", "ticker")), None
+                )
+                if sym_col is None:
                     continue
-                gics   = str(row[sect_col]).strip() if sect_col else ""
-                sector = _GICS_TO_NORM.get(gics, gics or "Unknown")
-                name   = str(row[name_col]).strip() if name_col else sym
-                result[sym] = {"sector": sector, "name": name}
+                name_col = next(
+                    (c for c in df.columns if "security" in c.lower() or "company" in c.lower() or "name" in c.lower()),
+                    None,
+                )
+                sect_col = next((c for c in df.columns if "sector" in c.lower()), None)
 
-            logger.info("Wikipedia %s: +%d tickers (total %d)", index_name, len(result) - before, len(result))
+                before = len(result)
+                for _, row in df.iterrows():
+                    sym = str(row[sym_col]).strip().replace(".", "-")
+                    if not sym or sym == "nan":
+                        continue
+                    gics   = str(row[sect_col]).strip() if sect_col else ""
+                    sector = _GICS_TO_NORM.get(gics, gics or "Unknown")
+                    name   = str(row[name_col]).strip() if name_col else sym
+                    result[sym] = {"sector": sector, "name": name}
+
+                logger.info(
+                    "Wikipedia %s (table %d): +%d tickers (total %d)",
+                    index_name, table_idx, len(result) - before, len(result),
+                )
+                matched = True
+                break
+
+            if not matched:
+                logger.warning("Wikipedia %s: symbol/ticker column not found in first 4 tables", index_name)
         except Exception as e:
             logger.warning("Wikipedia %s fetch failed: %s", index_name, e)
 
@@ -273,17 +334,22 @@ def build_universe(
             sector_map = json.load(f)
         logger.info("Loaded existing sector map: %d entries", len(sector_map))
 
-    # 3. NASDAQ screener — broad coverage, single request
-    logger.info("Fetching sector data from NASDAQ screener...")
+    # 3. NASDAQ screener — broad coverage (may return 403; best-effort)
+    logger.info("Fetching sector data from NASDAQ screener (best-effort)...")
     screener_data = fetch_nasdaq_screener()
     sector_map.update(screener_data)
 
-    # 4. Wikipedia — override with precise GICS data for S&P 1500
+    # 4. GitHub raw CSV — reliable S&P 500 GICS data (plain CSV, always accessible)
+    logger.info("Fetching sector data from GitHub S&P 500 CSV...")
+    github_data = fetch_github_sp500()
+    sector_map.update(github_data)   # overrides screener with GICS-precise data
+
+    # 5. Wikipedia — override with precise GICS data for S&P 400/600
     logger.info("Fetching sector data from Wikipedia (S&P 1500)...")
     wiki_data = fetch_wikipedia_sectors()
     sector_map.update(wiki_data)   # Wikipedia takes precedence over screener
 
-    # 5. Coverage report
+    # 6. Coverage report
     covered   = sum(1 for t in tickers if t in sector_map)
     uncovered = len(tickers) - covered
     logger.info(
@@ -291,12 +357,12 @@ def build_universe(
         covered, len(tickers), uncovered,
     )
 
-    # 6. Save sector map
+    # 7. Save sector map
     with open(sector_map_path, "w", encoding="utf-8") as f:
         json.dump(sector_map, f, ensure_ascii=False)
     logger.info("Sector map saved: %s", sector_map_path)
 
-    # 7. Apply sector filter
+    # 8. Apply sector filter
     # Unknown sector (no data) → included by default
     filtered  = [
         t for t in tickers
