@@ -20,14 +20,24 @@ def _stooq(symbol: str, d1: str, d2: str) -> list[dict]:
     )
     r = requests.get(url, timeout=20)
     r.raise_for_status()
+    lines = r.text.strip().splitlines()
+    if not lines:
+        return []
+    # Find Close column from header row instead of assuming index 4
+    header = [h.strip() for h in lines[0].split(",")]
+    try:
+        close_idx = header.index("Close")
+        date_idx  = header.index("Date")
+    except ValueError:
+        return []
     rows = []
-    for line in r.text.strip().splitlines()[1:]:
+    for line in lines[1:]:
         cols = line.split(",")
-        if len(cols) < 5:
+        if len(cols) <= max(close_idx, date_idx):
             continue
-        date = cols[0].strip()
+        date = cols[date_idx].strip()
         try:
-            close = float(cols[4])
+            close = float(cols[close_idx])
         except ValueError:
             continue
         if close > 0:
@@ -41,9 +51,15 @@ def _yfinance(symbol: str, period: str = "2y") -> list[dict]:
     df = yf.download(symbol, period=period, auto_adjust=True, progress=False)
     if df.empty:
         return []
+    # Newer yfinance returns MultiIndex columns even for single tickers
+    if getattr(df.columns, "nlevels", 1) > 1:
+        df.columns = df.columns.get_level_values(0)
     rows = []
     for dt, row in df.iterrows():
-        close = float(row["Close"])
+        try:
+            close = float(row["Close"])
+        except (TypeError, ValueError):
+            continue
         if close > 0:
             rows.append({"date": dt.strftime("%Y-%m-%d"), "close": round(close, 2)})
     rows.sort(key=lambda x: x["date"])
